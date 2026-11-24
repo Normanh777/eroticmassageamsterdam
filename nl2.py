@@ -162,7 +162,7 @@ def build_nl2():
     global L
     L = "nl"
     urls = []
-    mchips = "".join(f'<li><a href="{NLMAP[f"/{s}/"]}">{E(n)}</a></li>' for s, n, _ in MASSAGES_NL) + '<li><a href="/nl/happy-ending-massage/">Happy ending massage</a></li>'
+    mchips = "".join(f'<li><a href="{NLMAP[f"/{s}/"]}">{E(n)}</a></li>' for s, n, _ in MASSAGES_NL) + '<li><a href="/nl/happy-ending-massage/">Happy ending massage</a></li><li><a href="/nl/nuru-massage/">Nuru massage</a></li>'
     top = [("/nl/pakketten/dinner-date/", "Dinner Date & Erotische Massage"), ("/nl/pakketten/amsterdam-tour/", "Amsterdam Tour & Massage"), ("/nl/pakketten/duo-deluxe/", "Duo Deluxe"),
            ("/nl/pakketten/schiphol-stopover/", "Schiphol Stopover"), ("/nl/pakketten/", "Alle pakketten")]
     topchips = "".join(f'<li><a href="{u}">{E(t)}</a></li>' for u, t in top)
@@ -269,3 +269,58 @@ def viewer(m):
             f'<button type="button" class="pv-nav pv-prev" data-pv-step="-1" aria-label="{"Vorige foto" if nl else "Previous photo"}">‹</button>'
             f'<button type="button" class="pv-nav pv-next" data-pv-step="1" aria-label="{"Volgende foto" if nl else "Next photo"}">›</button>'
             f'<ul class="pv-thumbs">{thumbs}</ul></div>')
+
+
+NLMAP["/nuru-massage/"] = "/nl/nuru-massage/"
+ENMAP = {v: k for k, v in NLMAP.items()}
+NURU = ("Nuru Massage Amsterdam | Gel Body Slide at Your Hotel", "Nuru Massage Amsterdam",
+    "The famous Japanese body slide with warm nuru gel, at your hotel or home in Amsterdam.",
+    "Nuru massage in Amsterdam at your hotel or home. A full body slide with warm nuru gel by a masseuse you choose, with happy ending. Booked by chat.",
+    [("What is a nuru massage?", ["Nuru massage comes from Japan, and the word nuru means slippery. It is a body slide: your masseuse covers herself and you in a warm, clear gel and then glides over your body with her own, from your shoulders to your feet and back again.",
+                                   "The gel is what makes the difference. It is far more slippery than massage oil, so every movement becomes one long, effortless slide. It has no scent and no colour, and it rinses off under the shower."]),
+     ("How does it go?", ["Your masseuse comes to your hotel or home. After a warm shower you lie down on towels, she warms the gel and spreads it over your back and legs, and the slide begins. Halfway you turn over and it continues on your front.",
+                          "A nuru massage is playful and intense at the same time, and it ends with a happy ending, like all our erotic massages."]),
+     ("Nuru or body to body?", ["Both are skin to skin massages. A body to body massage is given with warm oil and feels soft and sensual. A nuru massage uses gel, is much more slippery and feels wilder and more playful. If you cannot choose, book two hours and combine them."]),
+     ("What do you need?", ["A bed with a few large towels on it, or even better a spare sheet, because the gel is wet. A good shower for before and after. That is all."])],
+    [("What is the difference between a nuru massage and a body to body massage?", "A body to body massage uses warm oil. A nuru massage uses a very slippery gel, which makes the whole massage one long body slide."),
+     ("Does nuru gel stain?", "No. Nuru gel is water based, clear and odourless. It rinses off your skin under the shower and washes out of towels and sheets."),
+     ("How much is a nuru massage in Amsterdam?", "In Amsterdam the rate is € 160 per hour and every extra hour is € 160. For other cities see the prices page."),
+     ("Can I book a nuru massage in my hotel room?", "Yes. Put a few large towels on the bed and make sure you have a shower. Your masseuse comes to your hotel or home.")])
+NL_NURU = ("Nuru Massage Amsterdam | Body Slide met Gel in uw Hotel", "Nuru massage Amsterdam",
+    "De beroemde Japanse body slide met warme nuru gel, bij u in het hotel of thuis in Amsterdam.",
+    "Nuru massage in Amsterdam bij u in het hotel of thuis. Een body slide met warme nuru gel door een masseuse naar keuze, met happy ending. Boeken via de chat.",
+    [("Wat is een nuru massage?", ["Nuru massage komt uit Japan, en het woord nuru betekent glad. Het is een body slide: uw masseuse smeert zichzelf en u in met een warme, heldere gel en glijdt daarna met haar lichaam over het uwe, van uw schouders tot uw voeten en weer terug.",
+                                    "De gel maakt het verschil. Die is veel gladder dan massageolie, waardoor elke beweging één lange, moeiteloze glijbeweging wordt. De gel is geur- en kleurloos en spoelt onder de douche weer af."]),
+     ("Hoe verloopt het?", ["Uw masseuse komt naar uw hotel of naar u thuis. Na een warme douche gaat u op handdoeken liggen, zij verwarmt de gel en verdeelt die over uw rug en benen, en de slide begint. Halverwege draait u zich om en gaat het verder op uw voorkant.",
+                            "Een nuru massage is speels en intens tegelijk, en eindigt met een happy ending, zoals al onze erotische massages."]),
+     ("Nuru of body to body?", ["Beide zijn huid-op-huid massages. Een body to body massage wordt gegeven met warme olie en voelt zacht en sensueel. Een nuru massage gebruikt gel, is veel gladder en voelt wilder en speelser. Kunt u niet kiezen, boek dan twee uur en combineer ze."]),
+     ("Wat heeft u nodig?", ["Een bed met een paar grote handdoeken erop, of nog beter een extra laken, want de gel is nat. Een goede douche voor vooraf en achteraf. Meer niet."])],
+    [("Wat is het verschil tussen een nuru massage en een body to body massage?", "Een body to body massage gebruikt warme olie. Een nuru massage gebruikt een zeer gladde gel, waardoor de hele massage één lange body slide wordt."),
+     ("Geeft nuru gel vlekken?", "Nee. Nuru gel is op waterbasis, helder en geurloos. Het spoelt onder de douche van uw huid en wast uit handdoeken en lakens."),
+     ("Wat kost een nuru massage in Amsterdam?", "In Amsterdam is het tarief € 160 per uur en elk extra uur is € 160. Voor andere steden zie de prijzenpagina."),
+     ("Kan ik een nuru massage in mijn hotelkamer boeken?", "Ja. Leg een paar grote handdoeken op het bed en zorg dat u een douche heeft. Uw masseuse komt naar uw hotel of naar u thuis.")])
+
+
+def nuru_pages():
+    global L
+    urls = []
+    for lang, data in (("en", NURU), ("nl", NL_NURU)):
+        L = lang
+        nl = lang == "nl"
+        t, h1, lead, d, blocks, faq = data
+        fh, fs = faq_block(faq, "Vragen over nuru massage" if nl else "Questions about nuru massage")
+        ms = MASSAGES_NL if nl else MASSAGES
+        ml = "".join(f'<li><a href="{P(f"/{s}/")}">{E(n)}</a></li>' for s, n, _ in ms) + f'<li><a href="{P("/happy-ending-massage/")}">Happy ending massage</a></li>'
+        price = ('<h2>Prijs</h2><p>Een nuru massage in Amsterdam kost € 160 per uur en elk extra uur is € 160. Voor andere steden zie onze <a href="/nl/prijzen/">prijzen</a>.</p>' if nl else
+                 '<h2>Price</h2><p>A nuru massage in Amsterdam is € 160 per hour, and every extra hour is € 160. For other cities see our <a href="/prices/">prices</a>.</p>')
+        inner = (f'<section class="sec"><div class="wrap narrow prose"><figure class="fig">{pic("nuru-massage-amsterdam", h1, 600, 400, eager=True)}</figure>{prose(blocks)}{price}</div></section>'
+                 f'{cta("Boek uw nuru massage in de chat. Wij bevestigen masseuse, tijd en tarief voordat iets definitief is." if nl else "Book your nuru massage in the chat. We confirm masseuse, time and rate before anything is final.")}{fh}'
+                 f'<section class="sec"><div class="wrap"><h2>{"Andere massages" if nl else "Other massages"}</h2><ul class="chips">{ml}</ul>'
+                 f'<h2 class="mt">{"Kies uw masseuse" if nl else "Choose your masseuse"}</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:10])}</ul>'
+                 f'<p class="center"><a class="link" href="{P("/our-masseuses/")}">{"Bekijk alle masseuses" if nl else "View all masseuses"}</a></p></div></section>')
+        path = P("/nuru-massage/")
+        svc = {"@context": "https://schema.org", "@type": "Service", "name": h1, "serviceType": "Nuru massage", "description": d, "provider": {"@id": SITE + "/#org"},
+               "areaServed": {"@type": "City", "name": "Amsterdam"}, "url": SITE + path}
+        urls.append(sub(path, t, d, h1, lead, inner, [("Massages" if nl else "Services", P("/services/"))], [svc, fs]))
+    L = "en"
+    return urls

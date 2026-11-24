@@ -68,7 +68,7 @@ def footer():
 <div><p class="logo">{LOGO_MARK}<span class="logo-t"><span>Erotic Massage</span><small>Amsterdam</small></span></p>
 <p>Erotische massage bij u in het hotel of thuis, in Amsterdam en omgeving. Discreet, persoonlijk en geregeld via de chat.</p>
 <p><a class="btn btn-sm" href="/nl/contact/" data-chat>Direct contact</a></p></div>
-{col("Massages", [(P(f"/{s}/"), n) for s, n, _ in MASSAGES_NL] + [("/nl/happy-ending-massage/", "Happy ending massage"), ("/nl/massages/", "Alle massages")])}
+{col("Massages", [(P(f"/{s}/"), n) for s, n, _ in MASSAGES_NL] + [("/nl/happy-ending-massage/", "Happy ending massage"), ("/nl/nuru-massage/", "Nuru massage"), ("/nl/massages/", "Alle massages")])}
 {col("Locaties", [(P(f"/{s}/"), f"Erotische massage {n}") for s, n in CITIES[:9]] + [("/nl/locaties/", "Alle locaties")])}
 {col("Informatie", [("/nl/masseuses/", "Onze masseuses"), ("/nl/prijzen/", "Prijzen"), ("/nl/pakketten/", "Pakketten"), ("/nl/boeken/", "Boeken"), ("/nl/contact/", "Contact"), ("/", "English")])}
 </div>
@@ -293,7 +293,7 @@ def build_nl():
     urls = []
     tile = lambda s, n, d, h: (f'<li><a class="tile tile-img" href="{NLMAP[f"/{s}/"]}">{pic(s + "-amsterdam", n + " in Amsterdam", 600, 400)}'
                                f'<span class="tile-b"><{h}>{E(n)}</{h}><p>{E(d)}</p><span class="more">Lees meer</span></span></a></li>')
-    mchips = "".join(f'<li><a href="{NLMAP[f"/{s}/"]}">{E(n)}</a></li>' for s, n, _ in MASSAGES_NL) + '<li><a href="/nl/happy-ending-massage/">Happy ending massage</a></li>'
+    mchips = "".join(f'<li><a href="{NLMAP[f"/{s}/"]}">{E(n)}</a></li>' for s, n, _ in MASSAGES_NL) + '<li><a href="/nl/happy-ending-massage/">Happy ending massage</a></li><li><a href="/nl/nuru-massage/">Nuru massage</a></li>'
     cchips = lambda skip=None: '<li><a href="/nl/">Erotische massage Amsterdam</a></li>' + "".join(
         f'<li><a href="{NLMAP[f"/{s}/"]}">Erotische massage {E(n)}</a></li>' for s, n in CITIES if n != skip) + '<li><a href="/nl/locaties/">Alle locaties</a></li>'
     ncity = len(set(p[0] for p in PRICES) | set(n for _, n in CITIES))
@@ -319,7 +319,7 @@ def build_nl():
 <section class="stats" aria-label="Erotic Massage Amsterdam in cijfers">
 <ul class="wrap">
 <li><strong>{len(MASSEUSES)}</strong><span>masseuses om uit te kiezen</span></li>
-<li><strong>{len(MASSAGES)}</strong><span>erotische massages</span></li>
+<li><strong>{len(MASSAGES) + 2}</strong><span>erotische massages</span></li>
 <li><strong>{ncity}</strong><span>steden en dorpen</span></li>
 <li><strong>€ 160</strong><span>per uur in Amsterdam</span></li>
 </ul>
@@ -410,7 +410,7 @@ def build_nl():
                  f'<h2>Prijs</h2><p>Een {E(name.lower())} in Amsterdam, Schiphol, Haarlem of Hoofddorp kost € 160 per uur en elk extra uur is € 160. '
                  f'Voor andere steden zie onze <a href="/nl/prijzen/">prijzen</a>.</p></div></section>'
                  f'{cta(f"Boek uw {name.lower()} in de chat. Wij bevestigen masseuse, tijd en tarief voordat iets definitief is.")}{fh}'
-                 f'<section class="sec"><div class="wrap"><h2>Andere massages</h2><ul class="chips">{others}<li><a href="/nl/happy-ending-massage/">Happy ending massage</a></li><li><a href="/nl/massages/">Alle massages</a></li></ul>'
+                 f'<section class="sec"><div class="wrap"><h2>Andere massages</h2><ul class="chips">{others}<li><a href="/nl/happy-ending-massage/">Happy ending massage</a></li><li><a href="/nl/nuru-massage/">Nuru massage</a></li><li><a href="/nl/massages/">Alle massages</a></li></ul>'
                  f'<h2 class="mt">Waar wij komen</h2><ul class="chips">{cchips()}</ul>'
                  f'<h2 class="mt">Kies uw masseuse</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:10])}</ul>'
                  f'<p class="center"><a class="link" href="/nl/masseuses/">Bekijk alle masseuses</a></p></div></section>')
@@ -455,7 +455,7 @@ def build_nl():
                         f"Erotische massage in {name}: uw masseuse komt naar uw hotel of naar u thuis.", inner, [("Locaties", "/nl/locaties/")], [svc, fs]))
     rest = ", ".join(n for _, n in CITIES if n not in PRICE_OF)
     inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Waar wij komen</h2><p>Amsterdam is onze thuisbasis, maar onze masseuses reizen. Hieronder vindt u de locaties met hun tarief. Voor steden met een eigen pagina leest u meer via de link.</p>{price_table_nl(PRICES)}'
-             f'<p>Wij komen ook in {E(rest)}. Vraag het tarief voor deze plaatsen in de chat.</p><p>Staat uw plaats er niet bij? Vraag het ons in de chat. Voor langere afstanden werken wij met een minimum aantal uren.</p></div></section>'
+             f'<p>{("Wij komen ook in " + E(rest) + ". Vraag het tarief in de chat.") if rest else ""}</p><p>Staat uw plaats er niet bij? Vraag het ons in de chat. Voor langere afstanden werken wij met een minimum aantal uren.</p></div></section>'
              f'<section class="sec sec-alt"><div class="wrap"><h2>Locaties met een eigen pagina</h2><ul class="chips">{cchips()}</ul></div></section>{cta()}')
     urls.append(sub("/nl/locaties/", "Erotische Massage Locaties | Steden rond Amsterdam",
                     "Erotische massage buiten Amsterdam: Schiphol, Amstelveen, Haarlem, Almere, Utrecht, Rotterdam, Den Haag en meer. Hotel- en thuisbezoek met tarieven per stad.",

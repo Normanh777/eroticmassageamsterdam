@@ -198,7 +198,7 @@ def footer():
 <div><p class="logo">{LOGO_MARK}<span class="logo-t"><span>Erotic Massage</span><small>Amsterdam</small></span></p>
 <p>Sensual outcall massage at your hotel or home in Amsterdam and beyond. Discreet, personal and arranged by chat.</p>
 <p><a class="btn btn-sm" href="/contact/" data-chat>Direct contact</a></p></div>
-{col("Massages", [(f"/{s}/", n) for s, n, _ in MASSAGES] + [("/happy-ending-massage/", "Happy Ending Massage"), ("/services/", "All services")])}
+{col("Massages", [(f"/{s}/", n) for s, n, _ in MASSAGES] + [("/happy-ending-massage/", "Happy Ending Massage"), ("/nuru-massage/", "Nuru Massage"), ("/services/", "All services")])}
 {col("Locations", [(f"/{s}/", f"Erotic massage {n}") for s, n in CITIES[:9]] + [("/other-cities/", "All locations")])}
 {col("Packages", [("/packages/dinner-date/", "Dinner Date & Massage"), ("/packages/amsterdam-tour/", "Amsterdam Tour & Massage"), ("/packages/duo-deluxe/", "Duo Deluxe"), ("/packages/schiphol-stopover/", "Schiphol Stopover"), ("/packages/couples-massage/", "Couples Massage"), ("/packages/", "All packages")])}
 {col("Information", [("/our-masseuses/", "Our masseuses"), ("/prices/", "Prices"), ("/bookings/", "Bookings"), ("/our-partners/", "Our partners"), ("/contact/", "Contact")])}
@@ -294,7 +294,7 @@ def home():
 <section class="stats" aria-label="Erotic Massage Amsterdam in numbers">
 <ul class="wrap">
 <li><strong>{len(MASSEUSES)}</strong><span>masseuses to choose from</span></li>
-<li><strong>{len(MASSAGES)}</strong><span>erotic massages</span></li>
+<li><strong>{len(MASSAGES) + 2}</strong><span>erotic massages</span></li>
 <li><strong>{len(set(p[0] for p in PRICES) | set(n for _, n in CITIES))}</strong><span>cities and towns we visit</span></li>
 <li><strong>€ 160</strong><span>per hour in Amsterdam</span></li>
 </ul>
@@ -405,6 +405,8 @@ PRICES = [  # location, price label, extra hour
     ("Vianen", "€ 200", "€ 160"), ("Rotterdam", "2 hours € 350", "€ 160"), ("Den Haag", "2 hours € 350", "€ 160"),
     ("Eindhoven", "3 hours € 600", "€ 160"), ("Delft", "2 hours € 350", "€ 160"), ("Zandvoort", "€ 180", "€ 160"),
     ("Hilversum", "€ 180", "€ 160"), ("Heemskerk", "€ 180", "€ 160"), ("Maastricht", "6 hours € 1200", "€ 160"),
+    ("Amstelveen", "€ 160", "€ 160"), ("Diemen", "€ 160", "€ 160"), ("Zaandam", "€ 160", "€ 160"), ("Weesp", "€ 160", "€ 160"), ("Aalsmeer", "€ 160", "€ 160"),
+    ("Purmerend", "€ 180", "€ 160"), ("Naarden", "€ 180", "€ 160"), ("Bussum", "€ 180", "€ 160"), ("Laren", "€ 180", "€ 160"), ("Uithoorn", "€ 180", "€ 160"), ("Almere", "€ 200", "€ 160"),
 ]
 PRICE_OF = {p[0]: p[1] for p in PRICES}
 CITY_SLUG = {n: s for s, n in CITIES}
@@ -584,7 +586,7 @@ def massage_pages():
                  f'For other cities see our <a href="/prices/">prices</a>.</p></div></section>'
                  f'{cta(f"Book your {name.lower()} in the chat. We confirm masseuse, time and rate before anything is final.")}'
                  '<!--faq-->'
-                 f'<section class="sec"><div class="wrap"><h2>Other massages</h2><ul class="chips">{others}<li><a href="/happy-ending-massage/">Happy Ending Massage</a></li><li><a href="/services/">All services</a></li></ul>'
+                 f'<section class="sec"><div class="wrap"><h2>Other massages</h2><ul class="chips">{others}<li><a href="/happy-ending-massage/">Happy Ending Massage</a></li><li><a href="/nuru-massage/">Nuru Massage</a></li><li><a href="/services/">All services</a></li></ul>'
                  f'{link_row("Popular packages", TOP_PKG)}{link_row("Where we come", [("/", "Amsterdam")] + [(f"/{cs}/", cn) for cs, cn in CITIES[:11]] + [("/other-cities/", "All locations")])}'
                  f'<h2 class="mt">Choose your masseuse</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:6])}</ul>'
                  f'<p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>')
@@ -610,7 +612,7 @@ def massage_pages():
     inner = (f'<section class="sec"><div class="wrap"><ul class="tiles">{tiles}</ul></div></section>'
              '<section class="sec sec-alt"><div class="wrap split"><div class="split-img">' + pic("hot-stone-massage", "Massage with warm stones", 900, 600) + '</div><div class="prose"><h2>One service, your way</h2>'
              '<p>Every massage on this page is an outcall massage: your masseuse comes to your hotel or home. You choose the massage and the masseuse, and you can combine massages in a longer booking.</p>'
-             '<p>Looking for a <a href="/happy-ending-massage/">happy ending massage</a>? It is part of all our erotic massages.</p><p>Not sure what suits you? Tell us in the chat what you enjoy, whether you prefer soft or firm, and how much time you have. We suggest a massage and a masseuse, and you decide.</p></div></div></section>'
+             '<p>Looking for a <a href="/happy-ending-massage/">happy ending massage</a>? It is part of all our erotic massages. We also offer a <a href="/nuru-massage/">nuru massage</a> with gel.</p><p>Not sure what suits you? Tell us in the chat what you enjoy, whether you prefer soft or firm, and how much time you have. We suggest a massage and a masseuse, and you decide.</p></div></div></section>'
              f'{cta()}')
     urls.append(sub("/services/", "Erotic Massage Services | Erotic Massage Amsterdam",
                     "All erotic massage services in Amsterdam: sensual, tantra, body 2 body, 4 hands, Thai and full body massage at your hotel or home. Booked by chat.",
@@ -659,7 +661,7 @@ def city_pages():
                         f"Outcall erotic massage in {name}: your masseuse comes to your hotel or home.", inner, [("Locations", "/other-cities/")], [svc, cf_schema]))
     chips = "".join(f'<li><a href="/{s}/">Erotic massage {E(n)}</a></li>' for s, n in CITIES)
     inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Where we come</h2><p>Amsterdam is our home base, but our masseuses travel. Below you find every location we visit, with the rate for each one. For the cities with their own page you can read more by following the link.</p>{price_table(PRICES)}'
-             '<p>We also visit ' + ', '.join(n for _, n in CITIES if n not in PRICE_OF) + '. Ask us for the rate for these places in the chat.</p><p>Is your city not listed? Ask us in the chat. For longer distances we work with a minimum number of hours.</p></div></section>'
+             '<p>' + (('We also visit ' + ', '.join(n for _, n in CITIES if n not in PRICE_OF) + '. Ask us for the rate in the chat.') if any(n not in PRICE_OF for _, n in CITIES) else '') + '</p><p>Is your city not listed? Ask us in the chat. For longer distances we work with a minimum number of hours.</p></div></section>'
              f'<section class="sec sec-alt"><div class="wrap"><h2>Locations with their own page</h2><ul class="chips"><li><a href="/">Erotic massage Amsterdam</a></li>{chips}</ul></div></section>{cta()}')
     urls.append(sub("/other-cities/", "Erotic Massage in Other Cities | Erotic Massage Amsterdam",
                     "Erotic massage outside Amsterdam: Schiphol, Amstelveen, Haarlem, Almere, Utrecht, Rotterdam, Den Haag and more. Hotel and home visits, rates per city.",
@@ -800,7 +802,7 @@ def masseuse_pages():
         inner = (f'<section class="sec"><div class="wrap prof"><div class="prof-img">{viewer(m)}</div>'
                  f'<div class="prose"><h2>About {E(name)}</h2>{"".join(f"<p>{E(p)}</p>" for p in profile_text(m, idx))}<dl class="facts">{dl}</dl>'
                  f'<p><a class="btn" href="/contact/" data-chat>Book {E(name)}</a> <a class="link" href="/prices/">See prices</a></p>'
-                 f'<h2>Massages with {E(name)}</h2><ul class="chips">{ml}<li><a href="/happy-ending-massage/">Happy Ending Massage</a></li></ul>'
+                 f'<h2>Massages with {E(name)}</h2><ul class="chips">{ml}<li><a href="/happy-ending-massage/">Happy Ending Massage</a></li><li><a href="/nuru-massage/">Nuru Massage</a></li></ul>'
                  f'<h2>Packages with {E(name)}</h2><ul class="chips">{"".join(f"<li><a href=" + chr(34) + u + chr(34) + f">{E(t)}</a></li>" for u, t in TOP_PKG)}</ul></div></div></section>'
                  f'<section class="sec sec-alt"><div class="wrap"><h2>More masseuses</h2><ul class="cards">{rest}</ul>'
                  f'<p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>')
@@ -1059,7 +1061,7 @@ def info_pages():
                  f'<section class="sec sec-alt sec-c"><div class="wrap"><h2>How it works</h2><ol class="steps">{steps}</ol></div></section>'
                  f'<section class="sec"><div class="wrap narrow prose"><h2>What is included</h2><ul class="ticks">{"".join(f"<li>{E(x)}</li>" for x in inc)}</ul>'
                  f'<h2>Good to know</h2><ul class="ticks">{"".join(f"<li>{E(x)}</li>" for x in know)}</ul>'
-                 f'{OWNER.get(pid, "")}<h2>Choose your massage</h2><p>Every package includes an erotic massage of your choice, with a happy ending. Read more about each massage:</p><ul class="chips">{p_ml}<li><a href="/happy-ending-massage/">Happy Ending Massage</a></li></ul></div></section>'
+                 f'{OWNER.get(pid, "")}<h2>Choose your massage</h2><p>Every package includes an erotic massage of your choice, with a happy ending. Read more about each massage:</p><ul class="chips">{p_ml}<li><a href="/happy-ending-massage/">Happy Ending Massage</a></li><li><a href="/nuru-massage/">Nuru Massage</a></li></ul></div></section>'
                  f'{pf_html}{cta(f"Book {name} in the chat. We confirm masseuse, time and rate before you book.")}'
                  f'<section class="sec"><div class="wrap"><h2>Choose your masseuse</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:10])}</ul><p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p>'
                  f'<h2 class="mt">More packages</h2><ul class="chips">{rel}<li><a href="/packages/">All packages</a></li></ul></div></section>')
@@ -1120,7 +1122,7 @@ def build():
     static = os.path.join(ROOT, "static")
     if os.path.isdir(static):
         shutil.copytree(static, DIST, dirs_exist_ok=True)
-    urls = [home()] + masseuse_pages() + massage_pages() + city_pages() + info_pages() + build_nl() + build_nl2()
+    urls = [home()] + masseuse_pages() + massage_pages() + city_pages() + info_pages() + build_nl() + build_nl2() + nuru_pages()
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
         f"<url><loc>{u}</loc><lastmod>{TODAY}</lastmod></url>\n" for u in urls) + "</urlset>\n"
     open(os.path.join(DIST, "sitemap.xml"), "w").write(sm)
