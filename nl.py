@@ -488,7 +488,7 @@ def build_nl():
                     "Pakketten", "Dertien manieren om een erotische massage te combineren met een mooie dag of avond in Amsterdam.", secs + kf + cta("Vertel ons welk pakket u wilt. Wij bevestigen masseuse, tijd en tarief voordat u boekt."), [], [ks]))
 
     # ---- masseuses overview
-    inner = (f'<section class="sec"><div class="wrap"><ul class="cards cards-lg">{"".join(card(m, eager=i < 2) for i, m in enumerate(MASSEUSES))}</ul></div></section>'
+    inner = (f'<section class="sec"><div class="wrap"><ul class="cards cards-lg">{"".join(card(m, eager=i < 1) for i, m in enumerate(MASSEUSES))}</ul></div></section>'
              '<section class="sec sec-alt"><div class="wrap narrow prose"><h2>Kies de masseuse die u aanspreekt</h2>'
              '<p>Neem rustig de tijd om de profielen te bekijken. Elke masseuse heeft een eigen pagina met foto\'s en gegevens.</p>'
              '<p>Noem haar naam in de chat wanneer u boekt. Is uw eerste keuze niet beschikbaar op het gewenste tijdstip, dan laten wij dat direct weten en stellen wij iemand anders voor.</p></div></section>' + cta())
@@ -516,6 +516,8 @@ def build_nl():
              '<p><a class="btn" href="/nl/contact/" data-chat>Direct contact</a></p>'
              '<h2>Waarmee kunnen wij u helpen?</h2><ul class="ticks"><li>Een massage boeken in uw hotel of thuis</li><li>Advies over welke massage of masseuse bij u past</li>'
              '<li>Tarieven voor uw stad</li><li>Een boeking wijzigen of annuleren</li></ul>'
+             '<h2>Wat zet u in uw eerste bericht?</h2><p>Hoe meer wij weten, hoe sneller wij kunnen bevestigen. Vertel ons de stad en het hotel of adres, de dag en het tijdstip, hoe lang u wilt boeken en welke massage of masseuse uw voorkeur heeft. Voor een vraag hoeft u uw volledige naam niet te geven.</p>'
+             '<h2>Discretie</h2><p>Uw gegevens worden gebruikt om uw afspraak te regelen en nergens anders voor.</p>'
              '<p>Zie ook de pagina\'s <a href="/nl/boeken/">boeken</a> en <a href="/nl/prijzen/">prijzen</a>.</p>'
              '<noscript><p>De chat heeft JavaScript nodig. Schakel JavaScript in uw browser in om contact op te nemen.</p></noscript></div></section>')
     urls.append(sub("/nl/contact/", "Contact Opnemen | Erotic Massage Amsterdam",

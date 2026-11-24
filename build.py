@@ -210,7 +210,7 @@ def footer():
 def page(path, title, desc, body, schema, og_image=None):
     url = SITE + path
     head_schema = "".join(jsonld(s) for s in schema)
-    og = f'<meta property="og:image" content="{og_image}">' if og_image else ""
+    og = f'<meta property="og:image" content="{og_image or SITE + "/images/site/erotic-massage-amsterdam-share.jpg"}">'
     doc = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -230,7 +230,10 @@ def page(path, title, desc, body, schema, og_image=None):
 <meta property="og:locale" content="en_GB">
 {og}
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://passionescorts.nl" crossorigin>
 <style>{CSS_MIN}</style>
 {head_schema}
@@ -815,7 +818,7 @@ def masseuse_pages():
                         meta_line(m) + " · Hotel and home visits", inner, [("Our masseuses", "/our-masseuses/")], og_image=ogi))
     lst = {"@context": "https://schema.org", "@type": "ItemList", "name": "Masseuses of Erotic Massage Amsterdam", "itemListElement": [
         {"@type": "ListItem", "position": i + 1, "name": m[1], "url": f"{SITE}/dames/{m[0]}/"} for i, m in enumerate(MASSEUSES)]}
-    inner = (f'<section class="sec"><div class="wrap"><ul class="cards cards-lg">{"".join(card(m, eager=i < 2) for i, m in enumerate(MASSEUSES))}</ul></div></section>'
+    inner = (f'<section class="sec"><div class="wrap"><ul class="cards cards-lg">{"".join(card(m, eager=i < 1) for i, m in enumerate(MASSEUSES))}</ul></div></section>'
              '<section class="sec sec-alt"><div class="wrap narrow prose"><h2>Choose the masseuse you like</h2>'
              '<p>Take your time to browse the profiles. Every masseuse has her own page with photos and details.</p>'
              '<p>Open a profile to read more, and mention her name in the chat when you book. If your first choice is not available at the time you want, we tell you straight away and suggest someone else.</p></div></section>'
@@ -1097,6 +1100,8 @@ def info_pages():
              '<p><a class="btn" href="/contact/" data-chat>Direct contact</a></p>'
              '<h2>What can we help you with?</h2><ul class="ticks"><li>Booking a massage at your hotel or home</li><li>Advice on which massage or masseuse suits you</li>'
              '<li>Rates for your city</li><li>Changing or cancelling a booking</li></ul>'
+             '<h2>What to put in your first message</h2><p>The more we know, the faster we can confirm. Tell us the city and the hotel or address, the day and time you have in mind, how long you would like to book, and the massage or masseuse you prefer. You do not need to give your full name to ask a question.</p>'
+             '<h2>Discretion</h2><p>Your details are used to arrange your appointment and for nothing else.</p>'
              '<p>See also our <a href="/bookings/">bookings</a> and <a href="/prices/">prices</a> pages.</p>'
              '<noscript><p>The chat needs JavaScript. Please enable JavaScript in your browser to contact us.</p></noscript></div></section>')
     urls.append(sub("/contact/", "Contact | Erotic Massage Amsterdam",
@@ -1123,6 +1128,12 @@ def build():
     if os.path.isdir(static):
         shutil.copytree(static, DIST, dirs_exist_ok=True)
     urls = [home()] + masseuse_pages() + massage_pages() + city_pages() + info_pages() + build_nl() + build_nl2() + nuru_pages()
+    # pages without real content yet stay out of the index and the sitemap
+    for thin in ("/our-partners/",):
+        fp = os.path.join(DIST, thin.strip("/"), "index.html")
+        doc = open(fp, encoding="utf-8").read().replace('content="index,follow,max-image-preview:large"', 'content="noindex,follow"', 1)
+        open(fp, "w", encoding="utf-8").write(doc)
+        urls = [u for u in urls if not u.endswith(thin)]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
         f"<url><loc>{u}</loc><lastmod>{TODAY}</lastmod></url>\n" for u in urls) + "</urlset>\n"
     open(os.path.join(DIST, "sitemap.xml"), "w").write(sm)
