@@ -11,17 +11,8 @@ RewriteRule ^index\.html$ / [R=301,L]
 RedirectMatch 404 /\.git
 RedirectMatch 404 ^/_tools
 # Old profiles without a current masseuse
-RewriteRule ^dames/amanda/?$ /our-masseuses/ [R=301,L]
-RewriteRule ^dames/pandora/?$ /our-masseuses/ [R=301,L]
-RewriteRule ^dames/sara/?$ /our-masseuses/ [R=301,L]
-RewriteRule ^dames/vanessa/?$ /our-masseuses/ [R=301,L]
-RewriteRule ^dames/annabel/?$ /our-masseuses/ [R=301,L]
-RewriteRule ^dames/roxy/?$ /our-masseuses/ [R=301,L]
 RewriteRule ^dames/cristina/?$ /our-masseuses/ [R=301,L]
-RewriteRule ^dames/ella/?$ /our-masseuses/ [R=301,L]
-RewriteRule ^dames/kimberly/?$ /our-masseuses/ [R=301,L]
 RewriteRule ^dames/yuki/?$ /our-masseuses/ [R=301,L]
-RewriteRule ^dames/anna/?$ /our-masseuses/ [R=301,L]
 
 <IfModule mod_headers.c>
 Header set X-Content-Type-Options "nosniff"
