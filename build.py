@@ -797,11 +797,11 @@ def masseuse_pages():
         ml = "".join(f'<li><a href="/{s}/">{E(n)}</a></li>' for s, n, _ in MASSAGES)
         k = len(MASSEUSES)
         rest = "".join(card(MASSEUSES[(idx + j) % k]) for j in range(1, 9))
-        inner = (f'<section class="sec"><div class="wrap prof"><div class="prof-img">{img(m, eager=True, sizes="(max-width:48rem) 90vw, 420px")}</div>'
+        inner = (f'<section class="sec"><div class="wrap prof"><div class="prof-img">{viewer(m)}</div>'
                  f'<div class="prose"><h2>About {E(name)}</h2>{"".join(f"<p>{E(p)}</p>" for p in profile_text(m, idx))}<dl class="facts">{dl}</dl>'
                  f'<p><a class="btn" href="/contact/" data-chat>Book {E(name)}</a> <a class="link" href="/prices/">See prices</a></p>'
                  f'<h2>Massages with {E(name)}</h2><ul class="chips">{ml}<li><a href="/happy-ending-massage/">Happy Ending Massage</a></li></ul>'
-                 f'<h2>Packages with {E(name)}</h2><ul class="chips">{"".join(f"<li><a href=" + chr(34) + u + chr(34) + f">{E(t)}</a></li>" for u, t in TOP_PKG)}</ul></div></div></section>{gallery(m)}'
+                 f'<h2>Packages with {E(name)}</h2><ul class="chips">{"".join(f"<li><a href=" + chr(34) + u + chr(34) + f">{E(t)}</a></li>" for u, t in TOP_PKG)}</ul></div></div></section>'
                  f'<section class="sec sec-alt"><div class="wrap"><h2>More masseuses</h2><ul class="cards">{rest}</ul>'
                  f'<p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>')
         ogi = f"{SITE}/images/masseuses/{slug}-erotic-massage-amsterdam-card.jpg"
@@ -1111,6 +1111,7 @@ def info_pages():
 
 
 exec(open(os.path.join(ROOT, "nl.py"), encoding="utf-8").read())
+exec(open(os.path.join(ROOT, "nl2.py"), encoding="utf-8").read())
 
 
 def build():
@@ -1119,7 +1120,7 @@ def build():
     static = os.path.join(ROOT, "static")
     if os.path.isdir(static):
         shutil.copytree(static, DIST, dirs_exist_ok=True)
-    urls = [home()] + masseuse_pages() + massage_pages() + city_pages() + info_pages() + build_nl()
+    urls = [home()] + masseuse_pages() + massage_pages() + city_pages() + info_pages() + build_nl() + build_nl2()
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
         f"<url><loc>{u}</loc><lastmod>{TODAY}</lastmod></url>\n" for u in urls) + "</urlset>\n"
     open(os.path.join(DIST, "sitemap.xml"), "w").write(sm)

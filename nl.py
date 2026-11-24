@@ -490,7 +490,7 @@ def build_nl():
     # ---- masseuses overview
     inner = (f'<section class="sec"><div class="wrap"><ul class="cards cards-lg">{"".join(card(m, eager=i < 2) for i, m in enumerate(MASSEUSES))}</ul></div></section>'
              '<section class="sec sec-alt"><div class="wrap narrow prose"><h2>Kies de masseuse die u aanspreekt</h2>'
-             '<p>Neem rustig de tijd om de profielen te bekijken. Elke masseuse heeft een eigen pagina met foto\'s en gegevens; de profielpagina\'s zijn in het Engels.</p>'
+             '<p>Neem rustig de tijd om de profielen te bekijken. Elke masseuse heeft een eigen pagina met foto\'s en gegevens.</p>'
              '<p>Noem haar naam in de chat wanneer u boekt. Is uw eerste keuze niet beschikbaar op het gewenste tijdstip, dan laten wij dat direct weten en stellen wij iemand anders voor.</p></div></section>' + cta())
     urls.append(sub("/nl/masseuses/", "Onze Masseuses | Erotic Massage Amsterdam",
                     f"Maak kennis met de {len(MASSEUSES)} masseuses van Erotic Massage Amsterdam. Bekijk de profielen en foto's en kies wie u bezoekt in uw hotel of thuis.",
