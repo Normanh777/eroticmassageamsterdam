@@ -547,7 +547,7 @@ def cta(text="Ready to book? Tell us your location, time and wishes in the chat.
 
 def sub(path, title, desc, h1, lead, inner, trail, schema=None, og_image=None):
     """trail: [(name, path)] between Home and this page."""
-    items = [("Home", "/")] + trail + [(h1, path)]
+    items = [("Home", P("/"))] + trail + [(h1, path)]
     nav = '<nav class="crumbs" aria-label="Breadcrumb"><ol>' + "".join(
         f'<li><a href="{p}">{E(n)}</a></li>' if i < len(items) - 1 else f'<li aria-current="page">{E(n)}</li>'
         for i, (n, p) in enumerate(items)) + "</ol></nav>"
@@ -647,7 +647,7 @@ def city_pages():
         inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Erotic massage at your hotel or home in {E(name)}</h2><p>{E(a)}</p><p>{E(b)}</p>'
                  f'<h2>Price in {E(name)}</h2><p>{E(price_line)} See all <a href="/prices/">prices</a>.</p>'
                  f'<h2>Which massages can I book in {E(name)}?</h2><p>All our massages are available in {E(name)}:</p><ul class="chips">{ml}</ul>'
-                 f'<h2>How to book</h2><p>Open the chat, tell us your address or hotel in {E(name)}, the time you prefer and the masseuse you like. We confirm availability and rate, and your masseuse comes to you. Read more on the <a href="/bookings/">bookings</a> page.</p>{nl}</div></section>'
+                 f'<h2>How to book</h2><p>Open the chat, tell us your address or hotel in {E(name)}, the time you prefer and the masseuse you like. We confirm availability and rate, and your masseuse comes to you. Read more on the <a href="/bookings/">bookings</a> page.</p></div></section>'
                  f'<section class="sec sec-alt"><div class="wrap"><h2>Our masseuses</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:8])}</ul><p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>'
                  f'{cta(f"Book your erotic massage in {name} in the chat.")}'
                  f'{cf_html}'
@@ -655,7 +655,7 @@ def city_pages():
         desc = f"Erotic massage in {name} at your hotel or home. Sensual, tantra and body 2 body massage by selected masseuses from Amsterdam. Discreet, booked by chat."
         svc = {"@context": "https://schema.org", "@type": "Service", "name": f"Erotic massage {name}", "serviceType": "Erotic massage",
                "provider": {"@id": SITE + "/#org"}, "areaServed": {"@type": "City", "name": name}, "url": f"{SITE}/{slug}/"}
-        urls.append(sub(f"/{slug}/", f"Erotic Massage {name} | Erotische Massage {name}", desc, f"Erotic Massage {name}",
+        urls.append(sub(f"/{slug}/", f"Erotic Massage {name} | Hotel & Home Visits", desc, f"Erotic Massage {name}",
                         f"Outcall erotic massage in {name}: your masseuse comes to your hotel or home.", inner, [("Locations", "/other-cities/")], [svc, cf_schema]))
     chips = "".join(f'<li><a href="/{s}/">Erotic massage {E(n)}</a></li>' for s, n in CITIES)
     inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Where we come</h2><p>Amsterdam is our home base, but our masseuses travel. Below you find every location we visit, with the rate for each one. For the cities with their own page you can read more by following the link.</p>{price_table(PRICES)}'
@@ -1110,13 +1110,16 @@ def info_pages():
     return urls
 
 
+exec(open(os.path.join(ROOT, "nl.py"), encoding="utf-8").read())
+
+
 def build():
     shutil.rmtree(DIST, ignore_errors=True)
     os.makedirs(DIST)
     static = os.path.join(ROOT, "static")
     if os.path.isdir(static):
         shutil.copytree(static, DIST, dirs_exist_ok=True)
-    urls = [home()] + masseuse_pages() + massage_pages() + city_pages() + info_pages()
+    urls = [home()] + masseuse_pages() + massage_pages() + city_pages() + info_pages() + build_nl()
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
         f"<url><loc>{u}</loc><lastmod>{TODAY}</lastmod></url>\n" for u in urls) + "</urlset>\n"
     open(os.path.join(DIST, "sitemap.xml"), "w").write(sm)

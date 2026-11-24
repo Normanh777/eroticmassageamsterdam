@@ -268,3 +268,6 @@ td:nth-child(2){color:var(--gold2);font-weight:600}
 .pkg-m span{font-size:.74rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gold)}
 .pkg-m strong{background:linear-gradient(135deg,#f3d9a8,#c9a06a);color:#1b1410;border-radius:999px;padding:.3rem .85rem;font-size:.88rem;white-space:nowrap}
 .pkg:target{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold),0 18px 40px rgba(0,0,0,.4)}
+
+.lang{font-size:.8rem!important;color:var(--gold2)!important;border:1px solid rgba(217,178,124,.4);border-radius:999px;padding:.25rem .75rem!important;display:inline-block!important}
+.lang:hover{background:rgba(217,178,124,.12)}
