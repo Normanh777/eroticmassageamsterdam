@@ -128,6 +128,8 @@ FAQ = [
      "Yes. Browse the profiles, pick the masseuse you like and mention her name in the chat. If she is not available at your time, we suggest an alternative and you decide."),
     ("Is the service discreet?",
      "Discretion is the starting point of every booking. Your details are used only to arrange your appointment and are not shared."),
+    ("Do you offer a happy ending massage in Amsterdam?",
+     "Yes. A happy ending is part of all our erotic massages, whether you choose a sensual, tantra or body to body massage."),
     ("What does a massage cost?",
      "The rate depends on your location. In Amsterdam, Schiphol, Haarlem and Hoofddorp the rate is € 160 and every extra hour is € 160. You find all locations on the prices page."),
 ]
@@ -196,9 +198,10 @@ def footer():
 <div><p class="logo">{LOGO_MARK}<span class="logo-t"><span>Erotic Massage</span><small>Amsterdam</small></span></p>
 <p>Sensual outcall massage at your hotel or home in Amsterdam and beyond. Discreet, personal and arranged by chat.</p>
 <p><a class="btn btn-sm" href="/contact/" data-chat>Direct contact</a></p></div>
-{col("Massages", [(f"/{s}/", n) for s, n, _ in MASSAGES] + [("/services/", "All services")])}
+{col("Massages", [(f"/{s}/", n) for s, n, _ in MASSAGES] + [("/happy-ending-massage/", "Happy Ending Massage"), ("/services/", "All services")])}
 {col("Locations", [(f"/{s}/", f"Erotic massage {n}") for s, n in CITIES[:9]] + [("/other-cities/", "All locations")])}
-{col("Information", [("/our-masseuses/", "Our masseuses"), ("/prices/", "Prices"), ("/packages/", "Packages"), ("/bookings/", "Bookings"), ("/our-partners/", "Our partners"), ("/contact/", "Contact")])}
+{col("Packages", [("/packages/dinner-date/", "Dinner Date & Massage"), ("/packages/amsterdam-tour/", "Amsterdam Tour & Massage"), ("/packages/duo-deluxe/", "Duo Deluxe"), ("/packages/schiphol-stopover/", "Schiphol Stopover"), ("/packages/couples-massage/", "Couples Massage"), ("/packages/", "All packages")])}
+{col("Information", [("/our-masseuses/", "Our masseuses"), ("/prices/", "Prices"), ("/bookings/", "Bookings"), ("/our-partners/", "Our partners"), ("/contact/", "Contact")])}
 </div>
 <div class="wrap ftr-base"><p>© {date.today().year} {BRAND}</p><p>18+ · Adults only</p></div>
 </footer>"""
@@ -266,8 +269,8 @@ WEBSITE = {"@context": "https://schema.org", "@type": "WebSite", "@id": SITE + "
 
 def home():
     title = "Erotic Massage Amsterdam | Sensual Outcall Massage"
-    desc = ("Erotic massage in Amsterdam at your hotel or home. Sensual, tantra, body 2 body and 4 hands massage "
-            "by selected masseuses. Discreet service, booked by chat.")
+    desc = ("Erotic massage in Amsterdam at your hotel or home. Sensual, tantra and body to body massage with happy ending "
+            "by a masseuse you choose. From € 160 per hour.")
     massages = "".join(
         f'<li><a class="tile tile-img" href="/{s}/">{pic(s + "-amsterdam", n + " in Amsterdam", 600, 400)}<span class="tile-b"><h3>{E(n)}</h3><p>{E(d)}</p><span class="more">Read more</span></span></a></li>'
         for s, n, d in MASSAGES)
@@ -314,7 +317,7 @@ def home():
 <h2 id="h-massages">Our erotic massages</h2>
 <p class="intro">Every massage is given one to one, at your pace. Not sure which one suits you? Describe what you like in the chat and we advise you.</p>
 <ul class="tiles">{massages}</ul>
-<p class="center"><a class="link" href="/services/">View all services</a></p>
+<p class="center"><a class="link" href="/services/">View all services</a> <a class="link" href="/happy-ending-massage/">Happy ending massage</a></p>
 </div>
 </section>
 
@@ -580,19 +583,34 @@ def massage_pages():
                  f'<h2>Price</h2><p>A {E(name.lower())} in Amsterdam, Schiphol, Haarlem or Hoofddorp is {PRICE_OF["Amsterdam"]}, and every extra hour is € 160. '
                  f'For other cities see our <a href="/prices/">prices</a>.</p></div></section>'
                  f'{cta(f"Book your {name.lower()} in the chat. We confirm masseuse, time and rate before anything is final.")}'
-                 f'<section class="sec"><div class="wrap"><h2>Other massages</h2><ul class="chips">{others}<li><a href="/services/">All services</a></li></ul>'
+                 '<!--faq-->'
+                 f'<section class="sec"><div class="wrap"><h2>Other massages</h2><ul class="chips">{others}<li><a href="/happy-ending-massage/">Happy Ending Massage</a></li><li><a href="/services/">All services</a></li></ul>'
+                 f'{link_row("Popular packages", TOP_PKG)}{link_row("Where we come", [("/", "Amsterdam")] + [(f"/{cs}/", cn) for cs, cn in CITIES[:11]] + [("/other-cities/", "All locations")])}'
                  f'<h2 class="mt">Choose your masseuse</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:6])}</ul>'
                  f'<p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>')
         svc = {"@context": "https://schema.org", "@type": "Service", "name": f"{name} Amsterdam", "serviceType": name,
                "description": t["desc"], "provider": {"@id": SITE + "/#org"}, "areaServed": {"@type": "City", "name": "Amsterdam"},
                "url": f"{SITE}/{slug}/"}
-        urls.append(sub(f"/{slug}/", f"{name} Amsterdam | Erotic Massage Amsterdam", t["desc"], f"{name} Amsterdam", t["lead"], inner,
-                        [("Services", "/services/")], [svc]))
+        m_title, m_h1, m_faq = MASSAGE_SEO[slug]
+        fq_html, fq_schema = faq_block(m_faq, f"Questions about {name.lower()}")
+        inner = inner.replace("<!--faq-->", fq_html)
+        urls.append(sub(f"/{slug}/", m_title, t["desc"], m_h1, t["lead"], inner,
+                        [("Services", "/services/")], [svc, fq_schema]))
+    hq_html, hq_schema = faq_block(HAPPY["faq"], "Questions about a happy ending massage")
+    ml = "".join(f'<li><a href="/{s}/">{E(n)}</a></li>' for s, n, _ in MASSAGES)
+    inner = (f'<section class="sec"><div class="wrap narrow prose"><figure class="fig">{pic("happy-ending-massage-amsterdam", "Happy ending massage in Amsterdam", 600, 400, eager=True)}</figure>{prose(HAPPY["body"])}'
+             f'<h2>Price</h2><p>A happy ending massage in Amsterdam, Schiphol, Haarlem or Hoofddorp is € 160 per hour, and every extra hour is € 160. For other cities see our <a href="/prices/">prices</a>.</p></div></section>'
+             f'{cta("Book your happy ending massage in the chat. We confirm masseuse, time and rate before anything is final.")}{hq_html}'
+             f'<section class="sec"><div class="wrap"><h2>Choose your massage</h2><ul class="chips">{ml}</ul>{link_row("Popular packages", TOP_PKG)}'
+             f'<h2 class="mt">Choose your masseuse</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:10])}</ul><p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>')
+    urls.append(sub("/happy-ending-massage/", HAPPY["title"], HAPPY["desc"], "Happy Ending Massage Amsterdam", HAPPY["lead"], inner, [("Services", "/services/")],
+                    [{"@context": "https://schema.org", "@type": "Service", "name": "Happy ending massage Amsterdam", "serviceType": "Erotic massage", "provider": {"@id": SITE + "/#org"},
+                      "areaServed": {"@type": "City", "name": "Amsterdam"}, "url": SITE + "/happy-ending-massage/"}, hq_schema]))
     tiles = "".join(f'<li><a class="tile tile-img" href="/{s}/">{pic(s + "-amsterdam", n + " in Amsterdam", 600, 400)}<span class="tile-b"><h2>{E(n)}</h2><p>{E(d)}</p><span class="more">Read more</span></span></a></li>' for s, n, d in MASSAGES)
     inner = (f'<section class="sec"><div class="wrap"><ul class="tiles">{tiles}</ul></div></section>'
              '<section class="sec sec-alt"><div class="wrap split"><div class="split-img">' + pic("hot-stone-massage", "Massage with warm stones", 900, 600) + '</div><div class="prose"><h2>One service, your way</h2>'
              '<p>Every massage on this page is an outcall massage: your masseuse comes to your hotel or home. You choose the massage and the masseuse, and you can combine massages in a longer booking.</p>'
-             '<p>Not sure what suits you? Tell us in the chat what you enjoy, whether you prefer soft or firm, and how much time you have. We suggest a massage and a masseuse, and you decide.</p></div></div></section>'
+             '<p>Looking for a <a href="/happy-ending-massage/">happy ending massage</a>? It is part of all our erotic massages.</p><p>Not sure what suits you? Tell us in the chat what you enjoy, whether you prefer soft or firm, and how much time you have. We suggest a massage and a masseuse, and you decide.</p></div></div></section>'
              f'{cta()}')
     urls.append(sub("/services/", "Erotic Massage Services | Erotic Massage Amsterdam",
                     "All erotic massage services in Amsterdam: sensual, tantra, body 2 body, 4 hands, Thai and full body massage at your hotel or home. Booked by chat.",
@@ -613,18 +631,32 @@ def city_pages():
                           else f"In {name} the rate is {price}. ") + "Every extra hour is € 160. Your rate is always confirmed in the chat before you book."
         others = "".join(f'<li><a href="/{s}/">Erotic massage {E(n)}</a></li>' for s, n in CITIES if s != slug)
         ml = "".join(f'<li><a href="/{s}/">{E(n)}</a></li>' for s, n, _ in MASSAGES)
+        if not price:
+            nl_price = f"Vraag het tarief voor {name} in de chat."
+        elif minimum:
+            nl_price = f"Het tarief in {name} is {price.replace('2 hours ', '')} voor minimaal 2 uur; elk extra uur is € 160."
+        else:
+            nl_price = f"Het tarief in {name} is {price} per uur; elk extra uur is € 160."
+        nl = (f'<h2 lang="nl">Erotische massage {E(name)}</h2><p lang="nl">Zoekt u een erotische massage in {E(name)}? Onze masseuses komen naar uw hotel of bij u thuis in {E(name)}. '
+              f'U kiest zelf de massage en de masseuse en boekt eenvoudig via de chat, met live chat, WhatsApp of Telegram. {E(nl_price)}</p>')
+        c_faq = [(f"What does an erotic massage in {name} cost?", price_line),
+                 (f"Do you visit hotels and private addresses in {name}?", f"Yes. Your masseuse comes to your hotel, apartment or home in {name}. Tell us the address and the time you prefer in the chat."),
+                 (f"How far in advance should I book in {name}?", f"The earlier the better, because your masseuse travels to {name} and your favourite may be booked. Same day bookings are often possible; ask us in the chat."),
+                 (f"Which massages can I book in {name}?", f"All our erotic massages: sensual, tantra, body to body, 4 hands, Thai and full body massage, each with a happy ending.")]
+        cf_html, cf_schema = faq_block(c_faq, f"Questions about erotic massage in {name}")
         inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Erotic massage at your hotel or home in {E(name)}</h2><p>{E(a)}</p><p>{E(b)}</p>'
                  f'<h2>Price in {E(name)}</h2><p>{E(price_line)} See all <a href="/prices/">prices</a>.</p>'
                  f'<h2>Which massages can I book in {E(name)}?</h2><p>All our massages are available in {E(name)}:</p><ul class="chips">{ml}</ul>'
-                 f'<h2>How to book</h2><p>Open the chat, tell us your address or hotel in {E(name)}, the time you prefer and the masseuse you like. We confirm availability and rate, and your masseuse comes to you. Read more on the <a href="/bookings/">bookings</a> page.</p></div></section>'
+                 f'<h2>How to book</h2><p>Open the chat, tell us your address or hotel in {E(name)}, the time you prefer and the masseuse you like. We confirm availability and rate, and your masseuse comes to you. Read more on the <a href="/bookings/">bookings</a> page.</p>{nl}</div></section>'
                  f'<section class="sec sec-alt"><div class="wrap"><h2>Our masseuses</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:8])}</ul><p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>'
                  f'{cta(f"Book your erotic massage in {name} in the chat.")}'
-                 f'<section class="sec"><div class="wrap"><h2>Other locations</h2><ul class="chips"><li><a href="/">Erotic massage Amsterdam</a></li>{others}<li><a href="/other-cities/">Other cities</a></li></ul></div></section>')
+                 f'{cf_html}'
+                 f'<section class="sec"><div class="wrap"><h2>Other locations</h2><ul class="chips"><li><a href="/">Erotic massage Amsterdam</a></li>{others}<li><a href="/other-cities/">Other cities</a></li></ul>{link_row("Popular packages", TOP_PKG)}</div></section>')
         desc = f"Erotic massage in {name} at your hotel or home. Sensual, tantra and body 2 body massage by selected masseuses from Amsterdam. Discreet, booked by chat."
         svc = {"@context": "https://schema.org", "@type": "Service", "name": f"Erotic massage {name}", "serviceType": "Erotic massage",
                "provider": {"@id": SITE + "/#org"}, "areaServed": {"@type": "City", "name": name}, "url": f"{SITE}/{slug}/"}
-        urls.append(sub(f"/{slug}/", f"Erotic Massage {name} | Hotel & Home Visits", desc, f"Erotic Massage {name}",
-                        f"Outcall erotic massage in {name}: your masseuse comes to your hotel or home.", inner, [("Locations", "/other-cities/")], [svc]))
+        urls.append(sub(f"/{slug}/", f"Erotic Massage {name} | Erotische Massage {name}", desc, f"Erotic Massage {name}",
+                        f"Outcall erotic massage in {name}: your masseuse comes to your hotel or home.", inner, [("Locations", "/other-cities/")], [svc, cf_schema]))
     chips = "".join(f'<li><a href="/{s}/">Erotic massage {E(n)}</a></li>' for s, n in CITIES)
     inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Where we come</h2><p>Amsterdam is our home base, but our masseuses travel. Below you find every location we visit, with the rate for each one. For the cities with their own page you can read more by following the link.</p>{price_table(PRICES)}'
              '<p>We also visit ' + ', '.join(n for _, n in CITIES if n not in PRICE_OF) + '. Ask us for the rate for these places in the chat.</p><p>Is your city not listed? Ask us in the chat. For longer distances we work with a minimum number of hours.</p></div></section>'
@@ -686,7 +718,8 @@ def masseuse_pages():
         inner = (f'<section class="sec"><div class="wrap prof"><div class="prof-img">{img(m, eager=True, sizes="(max-width:48rem) 90vw, 420px")}</div>'
                  f'<div class="prose"><h2>About {E(name)}</h2>{"".join(f"<p>{E(p)}</p>" for p in profile_text(m, idx))}<dl class="facts">{dl}</dl>'
                  f'<p><a class="btn" href="/contact/" data-chat>Book {E(name)}</a> <a class="link" href="/prices/">See prices</a></p>'
-                 f'<h2>Massages with {E(name)}</h2><ul class="chips">{ml}</ul></div></div></section>{gallery(m)}'
+                 f'<h2>Massages with {E(name)}</h2><ul class="chips">{ml}<li><a href="/happy-ending-massage/">Happy Ending Massage</a></li></ul>'
+                 f'<h2>Packages with {E(name)}</h2><ul class="chips">{"".join(f"<li><a href=" + chr(34) + u + chr(34) + f">{E(t)}</a></li>" for u, t in TOP_PKG)}</ul></div></div></section>{gallery(m)}'
                  f'<section class="sec sec-alt"><div class="wrap"><h2>More masseuses</h2><ul class="cards">{rest}</ul>'
                  f'<p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>')
         ogi = f"{SITE}/images/masseuses/{slug}-erotic-massage-amsterdam-card.jpg"
@@ -757,7 +790,131 @@ def pkg_card(p, h="h3"):
     lis = "".join(f"<li>{E(x)}</li>" for x in inc)
     return (f'<li class="pkg" id="{pid}">{pic(photo, name, 600, 400)}<div class="pkg-b"><p class="pkg-m"><span>{E(dur)}</span><strong>{E(price)}</strong></p>'
             f'<{h}>{E(name)}</{h}><p>{E(d)}</p><ul class="ticks">{lis}</ul>'
-            f'<p><a class="btn btn-sm" href="/contact/" data-chat>Book this package</a></p></div></li>')
+            f'<p><a class="btn btn-sm" href="/contact/" data-chat>Book this package</a> <a class="link" href="/packages/{pid}/">More about {E(name)}</a></p></div></li>')
+
+
+def faq_block(qas, title="Frequently asked questions", alt=True):
+    fq = "".join(f"<details><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in qas)
+    html_ = f'<section class="sec{" sec-alt" if alt else ""} sec-c"><div class="wrap narrow"><h2>{E(title)}</h2><div class="faq">{fq}</div></div></section>'
+    schema = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in qas]}
+    return html_, schema
+
+
+def link_row(title, items):
+    return f'<h2 class="mt">{E(title)}</h2><ul class="chips">' + "".join(f'<li><a href="{u}">{E(t)}</a></li>' for u, t in items) + "</ul>"
+
+
+TOP_PKG = [("/packages/dinner-date/", "Dinner Date & Erotic Massage"), ("/packages/amsterdam-tour/", "Amsterdam Tour & Massage"),
+           ("/packages/duo-deluxe/", "Duo Deluxe"), ("/packages/schiphol-stopover/", "Schiphol Stopover"), ("/packages/", "All packages")]
+
+MASSAGE_SEO = {  # slug: (title, h1, [faq])
+    "sensual-massage": ("Sensual Massage Amsterdam | At Your Hotel or Home", "Sensual Massage Amsterdam", [
+        ("What is the difference between a sensual and an erotic massage?", "A sensual massage is the softest form of erotic massage. The focus is on slow, flowing touch over the whole body and on building up relaxation and excitement gradually."),
+        ("How long does a sensual massage take?", "You can book from one hour. With two hours there is more time for a slow build-up, and every extra hour is € 160."),
+        ("Can I book a sensual massage at my hotel in Amsterdam?", "Yes. Our masseuses visit hotels and private addresses in Amsterdam and the surrounding area. Tell us your hotel and preferred time in the chat."),
+    ]),
+    "tantra-massage": ("Tantra Massage Amsterdam | At Your Hotel or Home", "Tantra Massage Amsterdam", [
+        ("What happens during a tantra massage?", "A tantra massage starts with calm, grounding strokes and deep breathing. The touch slowly becomes lighter and more sensual, and the whole body is included."),
+        ("Do I need experience with tantra?", "No. You do not need any experience with tantra or meditation. Your masseuse guides you through the massage step by step."),
+        ("How much is a tantra massage in Amsterdam?", "In Amsterdam, Schiphol, Haarlem and Hoofddorp the rate is € 160 for the first hour and € 160 for every extra hour. For tantra we advise two hours or more."),
+    ]),
+    "body-2-body-massage": ("Body to Body Massage Amsterdam | B2B at Your Hotel", "Body 2 Body Massage Amsterdam", [
+        ("What is a body to body massage?", "In a body to body massage, also called B2B or body 2 body massage, your masseuse uses her whole body and plenty of warm oil to massage yours, skin to skin."),
+        ("Is a body to body massage the same as a nuru massage?", "They are close relatives. Both are skin to skin massages in which the masseuse glides over your body. A nuru massage uses a special gel, a body to body massage uses warm massage oil."),
+        ("What do I need to prepare?", "A shower before and after, and one or two large towels on the bed, because a lot of oil is used."),
+    ]),
+    "4-hands-massage": ("4 Hands Massage Amsterdam | Two Masseuses", "4 Hands Massage Amsterdam", [
+        ("How does a 4 hands massage work?", "Two masseuses massage you at the same time. They mirror each other or work on different parts of your body, so you feel four hands in one rhythm."),
+        ("Can I choose both masseuses?", "Yes. Mention both names in the chat and book a little ahead, because not every combination is free at every moment."),
+        ("What does a 4 hands massage cost?", "You book two masseuses for the same time, so the rate differs from a massage with one masseuse. Ask for the rate in the chat and we confirm it before you book."),
+    ]),
+    "thai-massage": ("Thai Massage Amsterdam | With a Sensual Finish", "Thai Massage Amsterdam", [
+        ("Is this a traditional Thai massage?", "The first part uses traditional Thai techniques: pressure along the muscles and gentle stretches. The second part is softer, with oil and a sensual finish."),
+        ("Is a Thai massage painful?", "It is firmer than a sensual massage, but it should never hurt. You can always ask your masseuse for more or less pressure."),
+        ("Can I have a Thai massage in my hotel room?", "Yes. Your masseuse comes to your hotel or home in Amsterdam and the surrounding area."),
+    ]),
+    "full-body-massage": ("Full Body Massage Amsterdam | At Your Hotel or Home", "Full Body Massage Amsterdam", [
+        ("What is included in a full body massage?", "Neck, shoulders, back, arms, hands, legs and feet. No part of your body is skipped, and you decide whether the massage stays relaxing or becomes sensual."),
+        ("How long does a full body massage take?", "One hour is enough for a complete massage. With two hours there is time to take it slowly and add a sensual massage."),
+        ("Can I combine a full body massage with another massage?", "Yes. A popular combination is a full body massage followed by a body to body massage in a two hour booking."),
+    ]),
+}
+
+HAPPY = {
+    "title": "Happy Ending Massage Amsterdam | At Your Hotel or Home",
+    "desc": "Happy ending massage in Amsterdam at your hotel or home. A full erotic massage by a masseuse you choose, with a relaxed and discreet finish. Booked by chat.",
+    "lead": "A complete erotic massage at your hotel or home in Amsterdam, with the ending you are hoping for.",
+    "body": [
+        ("What is a happy ending massage?", ["A happy ending massage is an erotic massage that does not stop where a regular massage stops. It begins as a relaxing massage of your whole body and slowly becomes more sensual, until it ends with a release that leaves you completely relaxed.",
+                                             "In Amsterdam the term is used for many different things. With us it simply means this: an unhurried erotic massage by an adult masseuse who enjoys her work, at your hotel or at home, with a happy ending as the natural finish."]),
+        ("How does it go?", ["Your masseuse comes to you at the time you agreed in the chat. After a shower you lie down, and she starts with your back, shoulders and legs. There is no rush, and you can always say what you like.",
+                             "When you turn over, the massage becomes lighter and more teasing. The happy ending is part of the massage, not something separate, so you never have to ask or negotiate."]),
+        ("Which massage should I choose?", ["A happy ending is part of all our erotic massages. A sensual massage is soft and slow, a body to body massage is skin to skin, and a tantra massage builds up the tension for as long as possible. If you cannot choose, tell us what you like and we advise you."]),
+        ("Discreet and respectful", ["Discretion is where every booking starts. Your details are used only to arrange your appointment. Our masseuses treat every guest with respect and expect the same in return."]),
+    ],
+    "faq": [
+        ("Is a happy ending included in the price?", "Yes. A happy ending is part of our erotic massages and is included in the rate. In Amsterdam, Schiphol, Haarlem and Hoofddorp the rate is € 160 per hour."),
+        ("Where does the massage take place?", "At your hotel or at your home. Our masseuses visit Amsterdam and many cities and towns around it."),
+        ("Can I choose my masseuse?", "Yes. Browse the profiles, choose the masseuse you like and mention her name in the chat."),
+        ("How do I book a happy ending massage in Amsterdam?", "Open the chat, choose live chat, WhatsApp or Telegram, and tell us your location, the time you prefer and the masseuse you like. We confirm everything before it is final."),
+    ],
+}
+
+PKG_MORE = {
+    "amsterdam-tour": ("Amsterdam Tour with Happy Ending | Tour & Erotic Massage", "Amsterdam is at its best when you see it with someone who knows the city. With this package you spend the first part of your time outside, and the second part in your hotel room.",
+        [("Meet at your hotel", "Your masseuse meets you in the lobby or at a place you agree on in the chat."), ("Discover the city together", "Walk through the old centre and along the canals, or take a canal cruise. You decide the route and the pace."), ("Back to your room", "Afterwards you return to your hotel for the erotic massage of your choice, with a happy ending.")],
+        ["Tickets for a cruise or museum and any drinks along the way are paid by you.", "Four hours is the minimum, so that neither the tour nor the massage feels rushed.", "Tell us in the chat what you would like to see, and we plan the timing with you."],
+        [("Can I choose the route of the tour?", "Yes. Tell us what you would like to see, for example the canals, the Jordaan or the Red Light District, and we plan it with you."), ("Is the massage part of the four hours?", "Yes. The package is four hours in total. You decide how you divide the time between the tour and the massage.")]),
+    "dinner-date": ("Dinner Date & Erotic Massage Amsterdam | Evening Package", "Some evenings deserve more than an hour. A dinner date gives you time to talk, laugh and get to know each other before the massage begins, and that makes everything afterwards better.",
+        [("Choose your restaurant", "Pick a restaurant in Amsterdam or have dinner at your hotel. Your masseuse meets you there, dressed for the occasion."), ("Enjoy dinner together", "Take your time. Good food and good conversation are the best start of the evening."), ("End the evening in your room", "After dinner you go to your hotel for an unhurried erotic massage of your choice.")],
+        ["The restaurant bill is paid by you.", "Three hours is the minimum. With four hours you do not have to watch the clock at the table.", "Let us know the restaurant and time in advance, so your masseuse can dress appropriately."],
+        [("Can you recommend a restaurant?", "We are happy to think along. Tell us in the chat where you are staying and what kind of food you like."), ("What will my masseuse wear to dinner?", "She dresses stylishly and appropriately for the restaurant you choose. If you have a preference, mention it in the chat.")]),
+    "amsterdam-by-night": ("Amsterdam by Night | Drinks & Erotic Massage", "Not hungry, but not in a hurry either? A drink together is the easiest way to break the ice. By the time you go upstairs, you already feel at ease with each other.",
+        [("Meet for a drink", "At your hotel bar or a cocktail bar nearby. You choose the place."), ("Relax and get acquainted", "One or two drinks, no programme, no pressure."), ("Your massage", "Then you go to your room for a sensual or body to body massage.")],
+        ["Drinks are paid by you.", "Two hours is the minimum; add an hour if you like to take your time.", "Often possible on the day itself, depending on availability."],
+        [("Can I book this for tonight?", "Often you can. Send us a message in the chat with your hotel and the time you have in mind, and we tell you who is available."), ("Do we have to go out for the drink?", "No. Many guests choose the bar of their own hotel, or simply a drink in the room.")]),
+    "schiphol-stopover": ("Schiphol Stopover Massage | Erotic Massage Airport Hotel", "A long layover or a night at an airport hotel does not have to be lost time. Your masseuse comes to your hotel at or near Schiphol, so you never have to go into the city.",
+        [("Send your flight times", "Tell us in the chat when you land and when you have to leave again."), ("Your masseuse comes to your hotel", "She visits hotels at Schiphol and in Hoofddorp and Aalsmeer."), ("Relax before you fly", "An hour of massage and you board your next flight a different person.")],
+        ["Possible at hotels at Schiphol, in Hoofddorp and in Aalsmeer.", "Book as early as you can if your time window is short.", "Extra time is € 160 per hour."],
+        [("Is one hour enough?", "Yes. One hour is enough for a complete sensual or full body massage. If you have more time, you can add an hour."), ("Can I book before I land?", "Yes, and we recommend it. Send us your hotel and arrival time, and your masseuse is planned around your flight.")]),
+    "jetlag-relief": ("Jetlag Relief Massage Amsterdam | Massage After Your Flight", "A long flight leaves its mark: a stiff neck, heavy legs and a head that will not switch off. This package tackles the body first, and the mind right after.",
+        [("Arrive and shower", "Check in, take a warm shower and let us know you are ready."), ("First hour: full body massage", "Firm, calm strokes for your back, neck, shoulders and legs."), ("Second hour: sensual finish", "The pace drops, the touch becomes lighter, and the tension disappears completely.")],
+        ["Two hours in total.", "Tell your masseuse where you feel the flight most.", "Most guests book this for their day of arrival."],
+        [("Does a massage help against jetlag?", "A massage relaxes muscles that have been still for hours and helps you unwind, which makes it easier to fall asleep at the right time."), ("Can I book this late in the evening?", "Tell us your arrival time in the chat and we check which masseuse is available.")]),
+    "after-work": ("After Work Massage Amsterdam | Late Evening at Your Hotel", "In Amsterdam for work? After a day of meetings, presentations or a trade fair, the best plan is no plan. Let your masseuse come to you.",
+        [("One message in the chat", "Your hotel, the time and the massage you feel like."), ("We confirm", "You hear who is available and what the rate is."), ("Your masseuse arrives", "At your hotel or home. You only have to open the door.")],
+        ["One hour, with the option to extend for € 160 per hour.", "At your hotel or at home.", "Discreet from first message to goodbye."],
+        [("How late can I book?", "Tell us the time you have in mind. Availability in the late evening differs per day, and we answer in the chat straight away."), ("Can I pay for an extra hour on the spot?", "If your masseuse has time, you can extend. The extra hour rate is € 160.")]),
+    "duo-deluxe": ("Duo Massage Amsterdam | 4 Hands with Two Masseuses", "One masseuse is a treat. Two is an experience you will talk about for a long time, even if only to yourself. Duo Deluxe gives you two masseuses for two full hours.",
+        [("Choose two masseuses", "Pick your favourites from the profiles, or let us suggest a duo that works well together."), ("Four hands in rhythm", "They start with a 4 hands massage in which they mirror each other."), ("Body 2 body for two", "In the second part they take turns and work together, skin to skin.")],
+        ["Two masseuses for two hours.", "The rate depends on the two masseuses you choose; ask for it in the chat.", "Book ahead, because both masseuses must be free at the same time."],
+        [("Can I choose both masseuses myself?", "Yes. Mention both names in the chat. If one of them is not available, we suggest an alternative."), ("Is two hours necessary?", "It is what we recommend. With two masseuses there is a lot to experience, and one hour goes by very quickly.")]),
+    "tantra-ritual": ("Tantra Ritual Amsterdam | Extended Tantra Massage", "A tantra massage needs time. In this ritual nothing is hurried: every stage of the massage gets the attention it deserves.",
+        [("Arrive in the moment", "The ritual starts with breathing and calm, grounding touch."), ("Slow build-up", "The whole body is massaged, with long strokes that become lighter and more sensual."), ("The finish", "Tension is built up, released and built up again, until the massage reaches its natural ending.")],
+        ["From two hours; three hours is ideal.", "No experience with tantra is needed.", "A quiet room and a phone on silent make a real difference."],
+        [("What makes this different from a regular tantra massage?", "The length. With two or three hours the build-up is much slower, and the experience is deeper."), ("Is a tantra ritual suitable for beginners?", "Yes. Your masseuse guides you, and you only have to follow your breathing.")]),
+    "bath-and-massage": ("Bath & Massage Amsterdam | Bath or Shower with Body 2 Body", "Warm water is the best start of any massage. It relaxes your muscles, clears your head and breaks the ice in the most natural way.",
+        [("Start in the water", "Together in the bath, or under a warm shower."), ("Dry off and lie down", "Towels on the bed, warm oil within reach."), ("Body 2 body massage", "Skin to skin, with slow gliding movements from head to toe.")],
+        ["Two hours in total.", "You need a hotel room or home with a bathtub or a spacious shower.", "Have a few extra large towels ready."],
+        [("My room only has a shower. Is that a problem?", "Not at all. A spacious shower works just as well as a bath."), ("Do I need to bring anything?", "Only towels. Ask your hotel for a few extra if needed.")]),
+    "champagne-evening": ("Champagne Evening Amsterdam | Champagne & Sensual Massage", "For a birthday, a closed deal, or no reason at all. Three hours with champagne, good company and a long sensual massage.",
+        [("Open the bottle", "Order champagne through your hotel or bring your own, and toast to the evening."), ("Take your time", "Conversation, music, strawberries. There is no schedule."), ("A long sensual massage", "The massage is spread over the evening, with all the time you need.")],
+        ["Three hours in total.", "Champagne and snacks are ordered and paid by you.", "A hotel room with a seating area makes the evening complete."],
+        [("Is the champagne included?", "No. You order it through your hotel or bring it yourself, so you can choose exactly what you like."), ("Can I extend the evening?", "Yes, if your masseuse has time. Every extra hour is € 160.")]),
+    "couples-massage": ("Couples Massage Amsterdam | Erotic Massage for Two", "Sharing an erotic massage is a special experience for a couple. You both relax, you both enjoy, and you take that feeling home with you.",
+        [("Tell us your wishes", "One masseuse or two, and what you are both comfortable with."), ("We advise and confirm", "You hear which masseuses are open to couples and what the rate is."), ("Your massage", "At your hotel or at home, side by side or one after the other.")],
+        ["For couples.", "With one or two masseuses.", "Everything is discussed beforehand, so there are no surprises."],
+        [("Do you offer massages for couples?", "Yes. Tell us in the chat that you are booking as a couple, and we select masseuses who enjoy that."), ("Can we be massaged at the same time?", "With two masseuses, yes. With one masseuse you take turns, or she divides her attention between you.")]),
+    "massage-lesson": ("Sensual Massage Lesson for Couples Amsterdam", "A massage is over after an evening. Knowing how to give one lasts a lifetime. In this lesson you learn from an experienced masseuse how to massage each other.",
+        [("The basics", "How to use oil, pressure and rhythm, and how to make the other person feel at ease."), ("Practise on each other", "First one of you, then the other, with your masseuse guiding your hands."), ("Make it sensual", "The slow strokes and the build-up that turn a relaxing massage into a sensual one.")],
+        ["Two hours for two people.", "At your hotel or at home.", "A nice gift for an anniversary or a weekend in Amsterdam."],
+        [("Do we need experience?", "No. The lesson starts with the basics and adapts to your pace."), ("Is this also possible for one person?", "Yes. Tell us in the chat and we adapt the lesson.")]),
+    "birthday-surprise": ("Birthday Surprise Amsterdam | Erotic Massage as a Gift", "Looking for a gift he will not see coming? Any of our packages can be booked as a surprise, for a birthday, a bachelor weekend or a celebration.",
+        [("Choose a package", "From one hour of massage to a dinner date or a duo."), ("Give us the details", "The date, the hotel or address, and the name of the lucky one."), ("We arrange the rest", "Discreetly, and in consultation with you.")],
+        ["Any package can be given as a gift.", "Book in advance so we can plan the surprise.", "The rate depends on the package you choose."],
+        [("Can I pay for someone else?", "Yes. Tell us in the chat that it is a gift and we explain how it works."), ("Does the birthday boy have to know?", "It is up to you. For a home address we always check that the visit is welcome.")]),
+}
 
 
 def info_pages():
@@ -766,9 +923,14 @@ def info_pages():
              '<h2>Good to know</h2><ul class="ticks"><li>The rate is per masseuse. For a 4 hands massage with two masseuses, ask for the rate in the chat.</li>'
              '<li>For cities further away we work with a minimum number of hours, shown in the table.</li>'
              '<li>Is your city not listed? Ask us in the chat.</li></ul></div></section>' + cta("Ask for your rate in the chat. We confirm it before you book."))
-    urls.append(sub("/prices/", "Prices | Erotic Massage Amsterdam",
+    pr_html, pr_schema = faq_block([("How much is an erotic massage in Amsterdam?", "In Amsterdam, Schiphol, Haarlem and Hoofddorp the rate is € 160 for one hour. Every extra hour is € 160."),
+                                    ("Is a happy ending included in the price?", "Yes. A happy ending is part of our erotic massages and is included in the rate."),
+                                    ("Are there extra costs?", "No. The rate in the table is the rate for the visit of your masseuse at that location. For packages, things like dinner, drinks and tickets are paid by you."),
+                                    ("Why is the price higher outside Amsterdam?", "Your masseuse travels from Amsterdam to you. For cities further away the rate is higher or a minimum number of hours applies.")], "Questions about our prices")
+    inner = inner.replace(cta("Ask for your rate in the chat. We confirm it before you book."), pr_html + cta("Ask for your rate in the chat. We confirm it before you book.") + '<section class="sec"><div class="wrap">' + link_row("Popular packages", TOP_PKG).replace(' class="mt"', "") + "</div></section>")
+    urls.append(sub("/prices/", "Erotic Massage Amsterdam Prices | From € 160 per Hour",
                     "Prices for erotic massage at your hotel or home: € 160 in Amsterdam, Schiphol, Haarlem and Hoofddorp, € 160 per extra hour. Rates for all other cities.",
-                    "Prices", "Clear rates per location, confirmed before you book.", inner, []))
+                    "Prices", "Clear rates per location, confirmed before you book.", inner, [], [pr_schema]))
 
     groups = []
     for p in PACKAGES:
@@ -790,8 +952,32 @@ def info_pages():
     inner = (secs + '<section class="sec sec-c"><div class="wrap"><h2>Just a massage</h2><p class="intro">Prefer to keep it simple? Book by the hour and choose your massage on the day.</p>'
              f'<ul class="tiles">{tiles}</ul><p class="note">Rates for Amsterdam, Schiphol, Haarlem and Hoofddorp: € 160 for the first hour and € 160 for every extra hour. For other cities see the <a href="/prices/">prices</a> page.</p></div></section>'
              f'<section class="sec sec-alt sec-c"><div class="wrap narrow"><h2>Questions about our packages</h2><div class="faq">{fq}</div></div></section>' + cta("Tell us which package you would like. We confirm masseuse, time and rate before you book."))
+    for p in PACKAGES:
+        g, pid, name, dur, price, photo, d, inc = p
+        p_title, p_intro, flow, know, pq = PKG_MORE[pid]
+        pq = pq + [("What does this package cost?", (f"{name} is {price.lower()} ({dur.lower()}) in Amsterdam, Schiphol, Haarlem and Hoofddorp. " if "€" in price else f"The rate for {name} depends on your choices. ") + "Every extra hour is € 160, and we confirm your rate in the chat before you book."),
+                   ("How do I book?", "Open the chat, tell us which package you would like, your hotel or address, the date and time, and the masseuse you prefer. We confirm everything before it is final.")]
+        pf_html, pf_schema = faq_block(pq, f"Questions about {name}")
+        steps = "".join(f"<li><h3>{E(t)}</h3><p>{E(x)}</p></li>" for t, x in flow)
+        related = [x for x in PACKAGES if x[0] == g and x[1] != pid] + [x for x in PACKAGES if x[0] != g][:2]
+        rel = "".join(f'<li><a href="/packages/{x[1]}/">{E(x[2])}</a></li>' for x in related)
+        ml = "".join(f'<li><a href="/{s}/">{E(n)}</a></li>' for s, n, _ in MASSAGES)
+        inner = (f'<section class="sec"><div class="wrap split"><div class="split-img">{pic(photo, name, 600, 400, eager=True)}</div>'
+                 f'<div class="prose"><p class="pkg-m"><span>{E(dur)}</span><strong>{E(price)}</strong></p><h2>{E(name)}</h2><p>{E(d)}</p><p>{E(p_intro)}</p>'
+                 f'<p><a class="btn" href="/contact/" data-chat>Book this package</a> <a class="link" href="/packages/">All packages</a></p></div></div></section>'
+                 f'<section class="sec sec-alt sec-c"><div class="wrap"><h2>How it works</h2><ol class="steps">{steps}</ol></div></section>'
+                 f'<section class="sec"><div class="wrap narrow prose"><h2>What is included</h2><ul class="ticks">{"".join(f"<li>{E(x)}</li>" for x in inc)}</ul>'
+                 f'<h2>Good to know</h2><ul class="ticks">{"".join(f"<li>{E(x)}</li>" for x in know)}</ul>'
+                 f'<h2>Choose your massage</h2><p>Every package includes an erotic massage of your choice, with a happy ending. Read more about each massage:</p><ul class="chips">{ml}<li><a href="/happy-ending-massage/">Happy Ending Massage</a></li></ul></div></section>'
+                 f'{pf_html}{cta(f"Book {name} in the chat. We confirm masseuse, time and rate before you book.")}'
+                 f'<section class="sec"><div class="wrap"><h2>Choose your masseuse</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:10])}</ul><p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p>'
+                 f'<h2 class="mt">More packages</h2><ul class="chips">{rel}<li><a href="/packages/">All packages</a></li></ul></div></section>')
+        p_desc = (d[:150].rsplit(" ", 1)[0] + "…") if len(d) > 155 else d
+        svc = {"@context": "https://schema.org", "@type": "Service", "name": name, "serviceType": "Erotic massage package", "description": d,
+               "provider": {"@id": SITE + "/#org"}, "areaServed": {"@type": "City", "name": "Amsterdam"}, "url": f"{SITE}/packages/{pid}/"}
+        urls.append(sub(f"/packages/{pid}/", p_title, p_desc, name, f"{dur} · {price}", inner, [("Packages", "/packages/")], [svc, pf_schema]))
     cat = {"@context": "https://schema.org", "@type": "ItemList", "name": "Erotic massage packages in Amsterdam", "itemListElement": [
-        {"@type": "ListItem", "position": i + 1, "name": p[2], "url": f"{SITE}/packages/#{p[1]}"} for i, p in enumerate(PACKAGES)]}
+        {"@type": "ListItem", "position": i + 1, "name": p[2], "url": f"{SITE}/packages/{p[1]}/"} for i, p in enumerate(PACKAGES)]}
     fqs = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in pfaq]}
     urls.append(sub("/packages/", "Erotic Massage Packages Amsterdam | Dinner Date & Tour",
                     "Erotic massage packages in Amsterdam: dinner date, Amsterdam tour with happy ending, Schiphol stopover, duo, tantra ritual and couples massage. Booked by chat.",
@@ -805,9 +991,14 @@ def info_pages():
              '<li>If you are in a hotel, tell us your room number and make sure your masseuse can come up.</li><li>Put your phone on silent and enjoy.</li></ul>'
              '<h2>Changing or cancelling</h2><p>Plans change. If you need to move or cancel your booking, let us know in the chat as early as you can, so we can inform your masseuse.</p>'
              '<h2>Respect and discretion</h2><p>Our masseuses treat every guest with respect and expect the same in return. Your details are used only to arrange your appointment.</p></div></section>' + cta())
-    urls.append(sub("/bookings/", "Bookings | Erotic Massage Amsterdam",
+    bk_html, bk_schema = faq_block([("How quickly can a masseuse be with me?", "That depends on the time of day and on who is available. Tell us your location and preferred time in the chat and we answer straight away."),
+                                    ("Can I book for today?", "Often you can. For a specific masseuse or a longer package we recommend booking ahead."),
+                                    ("Which details do you need from me?", "Your hotel and room number or your address, the day and time, the number of hours, and the massage and masseuse you prefer."),
+                                    ("Is my booking discreet?", "Yes. Your details are used only to arrange your appointment and are not shared.")], "Questions about booking")
+    inner = inner.replace(cta(), bk_html + cta())
+    urls.append(sub("/bookings/", "Book an Erotic Massage in Amsterdam | Bookings",
                     "Book an erotic massage in Amsterdam by chat: live chat, WhatsApp or Telegram. Tell us your hotel, time and masseuse and we confirm before anything is final.",
-                    "Bookings", "Booking takes one message. Here is how it works.", inner, []))
+                    "Bookings", "Booking takes one message. Here is how it works.", inner, [], [bk_schema]))
 
     inner = ('<section class="sec"><div class="wrap narrow prose"><p>The fastest way to reach us is the chat. Choose live chat, WhatsApp or Telegram, and you are talking to us directly.</p>'
              '<p><a class="btn" href="/contact/" data-chat>Direct contact</a></p>'
