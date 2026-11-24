@@ -274,6 +274,7 @@ def home():
     cards = "".join(card(m) for m in MASSEUSES[:10])
     cities = "".join(f'<li><a href="/{s}/">Erotic massage {E(n)}</a></li>' for s, n in CITIES)
     faq = "".join(f"<details><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in FAQ)
+    pk = "".join(pkg_card(p) for p in PACKAGES if p[1] in ("dinner-date", "amsterdam-tour", "duo-deluxe"))
     body = f"""<section class="hero">
 <div class="wrap hero-grid">
 <div>
@@ -323,6 +324,15 @@ def home():
 <p class="intro">A selection of our masseuses. Open a profile to see photos and read more.</p>
 <ul class="cards">{cards}</ul>
 <p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p>
+</div>
+</section>
+
+<section class="sec sec-alt sec-c" aria-labelledby="h-pk">
+<div class="wrap">
+<h2 id="h-pk">Popular packages</h2>
+<p class="intro">Combine your erotic massage with a dinner, a tour of the city or a second masseuse.</p>
+<ul class="pkgs">{pk}</ul>
+<p class="center"><a class="btn btn-ghost" href="/packages/">View all {len(PACKAGES)} packages</a></p>
 </div>
 </section>
 
@@ -699,6 +709,57 @@ def masseuse_pages():
     return urls
 
 
+PACKAGES = [  # group, id, name, duration, price label, photo, description, includes
+    ("Discover Amsterdam", "amsterdam-tour", "Amsterdam Tour & Massage", "From 4 hours", "From € 640", "erotic-massage-at-your-hotel",
+     "See Amsterdam with charming company. Your masseuse joins you for a walk through the old centre or a cruise on the canals, and afterwards you go back to your hotel for an erotic massage with a happy ending.",
+     ["A walk or canal cruise together", "Erotic massage of your choice at your hotel", "Route and timing agreed with you in the chat"]),
+    ("Discover Amsterdam", "dinner-date", "Dinner Date & Erotic Massage", "From 3 hours", "From € 480", "dinner-date-erotic-massage",
+     "Start the evening at the table and end it in your room. You have dinner together at a restaurant of your choice, followed by an unhurried erotic massage at your hotel.",
+     ["Dinner together at your restaurant", "Erotic massage of your choice afterwards", "The perfect evening for one night in Amsterdam"]),
+    ("Discover Amsterdam", "amsterdam-by-night", "Amsterdam by Night", "From 2 hours", "From € 320", "amsterdam-by-night-massage",
+     "A drink together at your hotel bar or a cocktail bar in the city, and then upstairs for your massage. Shorter than a dinner date, with the same relaxed start.",
+     ["A drink together to break the ice", "Sensual or body 2 body massage", "Easy to book on the day itself"]),
+    ("For the business traveller", "schiphol-stopover", "Schiphol Stopover", "1 hour", "€ 160", "full-body-massage-amsterdam",
+     "A few hours between two flights, or one night at an airport hotel? Your masseuse comes to your hotel at Schiphol, Hoofddorp or Aalsmeer and makes the wait the best part of your trip.",
+     ["At your airport hotel", "Massage of your choice", "Timed around your flight"]),
+    ("For the business traveller", "jetlag-relief", "Jetlag Relief", "2 hours", "€ 320", "jetlag-relief-massage",
+     "Just landed and stiff from the flight? First a firm full body massage for your back, neck and legs, then a slow, sensual finish that helps you switch off completely.",
+     ["Full body massage to start", "Sensual finish", "Ideal on your day of arrival"]),
+    ("For the business traveller", "after-work", "After Work", "1 hour", "€ 160", "after-work-massage",
+     "The meeting ran late and the day was long. One message in the chat is enough: your masseuse comes to your hotel and you close the laptop for good.",
+     ["Late evening visits", "At your hotel or home", "Discreet from first message"]),
+    ("Something special", "duo-deluxe", "Duo Deluxe", "2 hours · two masseuses", "Rate on request", "duo-massage-two-masseuses",
+     "Two masseuses and four hands for two full hours. They work in rhythm, mirror each other and take turns, and you stop keeping track of whose hands are where.",
+     ["Two masseuses of your choice", "4 hands and body 2 body massage", "Mention both names when you book"]),
+    ("Something special", "tantra-ritual", "Tantra Ritual", "From 2 hours", "From € 320", "tantra-massage-amsterdam",
+     "A long tantra session without a clock. Breathing, slow touch and a gradual build-up of energy from the first minute to the last.",
+     ["Extended tantra massage", "No rush, no routine", "Best with two or three hours"]),
+    ("Something special", "bath-and-massage", "Bath & Massage", "2 hours", "€ 320", "bath-and-massage",
+     "Begin together in the bath or under the shower and move on to a body 2 body massage with warm oil. For rooms with a bathtub or a spacious shower.",
+     ["Bath or shower together", "Body 2 body massage", "For hotel rooms with a bath"]),
+    ("Something special", "champagne-evening", "Champagne Evening", "3 hours", "€ 480", "champagne-evening-massage",
+     "Champagne on ice, strawberries on the table and three hours ahead of you. An evening of conversation, laughter and a long sensual massage.",
+     ["Three hours together", "Sensual massage of your choice", "Order the champagne through your hotel"]),
+    ("For couples and gifts", "couples-massage", "Couples Massage", "From 1 hour", "Rate on request", "4-hands-massage-amsterdam",
+     "An erotic massage for the two of you, at your hotel or at home. Choose one masseuse who looks after you both, or two masseuses who massage you side by side.",
+     ["For couples", "One or two masseuses", "Tell us your wishes in the chat"]),
+    ("For couples and gifts", "massage-lesson", "Massage Lesson for Couples", "2 hours", "€ 320", "sensual-massage-amsterdam",
+     "Learn how to give each other a sensual massage. Your masseuse shows you the strokes, the rhythm and the use of oil, and you practise on each other while she guides you.",
+     ["Hands-on lesson for two", "Techniques you can use at home", "A gift that lasts longer than one evening"]),
+    ("For couples and gifts", "birthday-surprise", "Birthday Surprise", "Any package", "Rate on request", "body-2-body-massage-amsterdam",
+     "Surprise someone with an evening he will not forget. Choose any package as a gift, give us the date, the hotel and the name, and we arrange the rest discreetly.",
+     ["Any package as a gift", "Arranged in advance by chat", "For birthdays, bachelor weekends and celebrations"]),
+]
+
+
+def pkg_card(p, h="h3"):
+    g, pid, name, dur, price, photo, d, inc = p
+    lis = "".join(f"<li>{E(x)}</li>" for x in inc)
+    return (f'<li class="pkg" id="{pid}">{pic(photo, name, 600, 400)}<div class="pkg-b"><p class="pkg-m"><span>{E(dur)}</span><strong>{E(price)}</strong></p>'
+            f'<{h}>{E(name)}</{h}><p>{E(d)}</p><ul class="ticks">{lis}</ul>'
+            f'<p><a class="btn btn-sm" href="/contact/" data-chat>Book this package</a></p></div></li>')
+
+
 def info_pages():
     urls = []
     inner = (f'<section class="sec"><div class="wrap narrow prose"><p>Our rates depend on the location of your visit. The price is for one hour unless a minimum number of hours is shown. Every extra hour is € 160. Your rate is always confirmed in the chat before you book.</p>{price_table(PRICES)}'
@@ -709,17 +770,32 @@ def info_pages():
                     "Prices for erotic massage at your hotel or home: € 160 in Amsterdam, Schiphol, Haarlem and Hoofddorp, € 160 per extra hour. Rates for all other cities.",
                     "Prices", "Clear rates per location, confirmed before you book.", inner, []))
 
-    packs = [("One hour", "€ 160", "One massage of your choice with one masseuse. A good choice for a first visit."),
+    groups = []
+    for p in PACKAGES:
+        if p[0] not in groups:
+            groups.append(p[0])
+    secs = ""
+    for i, g in enumerate(groups):
+        cards = "".join(pkg_card(p) for p in PACKAGES if p[0] == g)
+        secs += f'<section class="sec{" sec-alt" if i % 2 else ""} sec-c"><div class="wrap"><h2>{E(g)}</h2><ul class="pkgs">{cards}</ul></div></section>'
+    hours = [("One hour", "€ 160", "One massage of your choice with one masseuse. A good choice for a first visit."),
              ("Two hours", "€ 320", "Time to combine two massages, for example a full body massage followed by a body 2 body massage."),
              ("Three hours", "€ 480", "A long, slow evening without looking at the clock. Ideal for a tantra massage.")]
-    tiles = "".join(f'<li><div class="tile"><h2>{E(n)}</h2><p class="price">{E(p)}</p><p>{E(d)}</p></div></li>' for n, p, d in packs)
-    inner = (f'<section class="sec"><div class="wrap"><ul class="tiles">{tiles}</ul>'
-             '<p class="note">Rates for Amsterdam, Schiphol, Haarlem and Hoofddorp: € 160 for the first hour and € 160 for every extra hour. For other cities see the <a href="/prices/">prices</a> page.</p></div></section>'
-             '<section class="sec sec-alt"><div class="wrap narrow prose"><h2>Make your own combination</h2>'
-             '<p>You are free to put together your own booking: choose the number of hours, the massage or massages and the masseuse. Would you like two masseuses for a 4 hands massage? Tell us in the chat and we give you the rate for your combination.</p></div></section>' + cta())
-    urls.append(sub("/packages/", "Packages | Erotic Massage Amsterdam",
-                    "Erotic massage packages in Amsterdam: one, two or three hours at your hotel or home. € 160 per hour, combine massages and choose your masseuse.",
-                    "Packages", "Book one hour, or take your time with two or three.", inner, []))
+    tiles = "".join(f'<li><div class="tile"><h3>{E(n)}</h3><p class="price">{E(p)}</p><p>{E(d)}</p></div></li>' for n, p, d in hours)
+    pfaq = [("Is a happy ending included in the packages?", "Every package ends with an erotic massage of your choice, and a happy ending is part of our erotic massages."),
+            ("What is included in the price?", "The price is for the time of your masseuse in Amsterdam, Schiphol, Haarlem or Hoofddorp. Restaurant bills, drinks, champagne and tickets for a cruise or museum are paid by you. For other cities see the prices page."),
+            ("Can I change a package?", "Yes. Every package is a starting point. Add an hour, choose another massage or combine two packages, and we confirm the rate in the chat before you book."),
+            ("How do I book a package?", "Open the chat, tell us which package you would like, your hotel or address, the date and time, and the masseuse you prefer. We confirm everything before it is final.")]
+    fq = "".join(f"<details><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in pfaq)
+    inner = (secs + '<section class="sec sec-c"><div class="wrap"><h2>Just a massage</h2><p class="intro">Prefer to keep it simple? Book by the hour and choose your massage on the day.</p>'
+             f'<ul class="tiles">{tiles}</ul><p class="note">Rates for Amsterdam, Schiphol, Haarlem and Hoofddorp: € 160 for the first hour and € 160 for every extra hour. For other cities see the <a href="/prices/">prices</a> page.</p></div></section>'
+             f'<section class="sec sec-alt sec-c"><div class="wrap narrow"><h2>Questions about our packages</h2><div class="faq">{fq}</div></div></section>' + cta("Tell us which package you would like. We confirm masseuse, time and rate before you book."))
+    cat = {"@context": "https://schema.org", "@type": "ItemList", "name": "Erotic massage packages in Amsterdam", "itemListElement": [
+        {"@type": "ListItem", "position": i + 1, "name": p[2], "url": f"{SITE}/packages/#{p[1]}"} for i, p in enumerate(PACKAGES)]}
+    fqs = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in pfaq]}
+    urls.append(sub("/packages/", "Erotic Massage Packages Amsterdam | Dinner Date & Tour",
+                    "Erotic massage packages in Amsterdam: dinner date, Amsterdam tour with happy ending, Schiphol stopover, duo, tantra ritual and couples massage. Booked by chat.",
+                    "Packages", "Thirteen ways to combine an erotic massage with a great day or night in Amsterdam.", inner, [], [cat, fqs]))
 
     inner = ('<section class="sec"><div class="wrap narrow prose"><h2>Booking in three steps</h2><ol class="steps steps-col">'
              '<li><h3>Open the chat</h3><p>Use the Direct contact button and choose live chat, WhatsApp or Telegram.</p></li>'
