@@ -129,6 +129,12 @@ FAQ = [
 ]
 
 E = html.escape
+
+
+def pic(name, alt, w, h, cls="", eager=False):
+    load = 'fetchpriority="high"' if eager else 'loading="lazy" decoding="async"'
+    c = f' class="{cls}"' if cls else ""
+    return f'<img src="/images/site/{name}.jpg" alt="{E(alt)}" width="{w}" height="{h}" {load}{c}>'
 LOGO_MARK = '<svg class="gem" viewBox="0 0 88 72" width="30" height="25" aria-hidden="true"><path d="M16 2h56l15 22-43 46L1 24z" fill="#d4d2da"/><path d="M1 24h86M16 2l12 22 16-22 16 22 12-22M28 24l16 46 16-46" fill="none" stroke="#17121a" stroke-width="3" stroke-linejoin="round"/></svg>'
 
 
@@ -259,27 +265,33 @@ def home():
     desc = ("Erotic massage in Amsterdam at your hotel or home. Sensual, tantra, body 2 body and 4 hands massage "
             "by selected masseuses. Discreet service, booked by chat.")
     massages = "".join(
-        f'<li><a class="tile" href="/{s}/"><h3>{E(n)}</h3><p>{E(d)}</p><span class="more">Read more</span></a></li>'
+        f'<li><a class="tile tile-img" href="/{s}/">{pic(s + "-amsterdam", n + " in Amsterdam", 600, 400)}<span class="tile-b"><h3>{E(n)}</h3><p>{E(d)}</p><span class="more">Read more</span></span></a></li>'
         for s, n, d in MASSAGES)
     cards = "".join(card(m) for m in MASSEUSES[:10])
     cities = "".join(f'<li><a href="/{s}/">Erotic massage {E(n)}</a></li>' for s, n in CITIES)
     faq = "".join(f"<details><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in FAQ)
     body = f"""<section class="hero">
-<div class="wrap">
+<div class="wrap hero-grid">
+<div>
 <p class="eyebrow">Outcall massage · Hotel &amp; home visits</p>
 <h1>Erotic Massage Amsterdam</h1>
 <p class="lead">A sensual massage where you are staying, given by a masseuse you choose yourself. Tell us your hotel, your time and your wishes in the chat, and we arrange the rest discreetly.</p>
 <p class="cta"><a class="btn" href="/contact/" data-chat>Direct contact</a> <a class="btn btn-ghost" href="/our-masseuses/">Meet our masseuses</a></p>
 <ul class="usp"><li>Hotel and home visits</li><li>You choose your masseuse</li><li>Discreet from first message</li></ul>
 </div>
+<div class="hero-img">{pic("erotic-massage-amsterdam-hero", "Erotic massage in Amsterdam at your hotel", 720, 900, eager=True)}</div>
+</div>
 </section>
 
 <section class="sec sec-alt" aria-labelledby="h-welcome">
-<div class="wrap narrow prose">
+<div class="wrap split">
+<div class="split-img">{pic("erotic-massage-at-your-hotel", "Relaxing erotic massage with warm oil", 500, 333)}</div>
+<div class="prose">
 <h2 id="h-welcome">Welcome</h2>
 <p>Amsterdam is a city of genuine passion, love and excitement. If you want to make sure that your time here in Amsterdam is going to be as enjoyable as it possibly can, then you should consider hiring an erotic massage therapist.</p>
 <p>An erotic massage can be the perfect way to get rid of all that stress that you are carrying on your shoulders, and make sure that you can walk around with a smile on your face for quite some time!</p>
 <p>A massage can be the perfect answer for anyone who wants to just chill out and remove some stress and strain from your life – if you are finding life to be more of a challenge at the moment than it should be, you should consider hiring one of our excellent masseuses to help you relieve all of that stress and tension!</p>
+</div>
 </div>
 </section>
 
@@ -304,6 +316,7 @@ def home():
 <section class="sec" aria-labelledby="h-about">
 <div class="wrap narrow prose">
 <h2 id="h-about">Erotic massage</h2>
+<div class="float-img">{pic("sensual-erotic-massage", "Sensual erotic massage in Amsterdam", 560, 840)}</div>
 <p>The city of Amsterdam sure is a busy place. It can actually feel a touch crowded and stressful if you are not used to spending time in this part of the world. One thing you will find with an erotic massage, though, is that going for one can be the ideal way to spend some time. With an erotic massage session in Amsterdam, you are meeting up with one of our girls. They will meet you at an agreed place, and you will both come together and do some very interesting things to one another.</p>
 <p>During an erotic massage, though, the single best thing that you can do is relax. With this kind of massage therapy, you are letting someone take you to places you have never been to before. It means allowing the massage to allow places that you would normally consider off-limits to be touched. You need to simply let your masseuse do the job that she has in mind. It will be helpful if you can relax, then, as it will allow the massage to feel as realistic and as enjoyable as is possible. Not only that, but you will find that the massage will generally give you some added self-confidence back. Why?</p>
 <p>Because you will be getting so much relief mentally and sexually. When you get to finally unearth all of that tension, you will soon start feeling pretty tremendous. On top of that, you will enjoy an erotic massage unlike any other. It will give you all of the help that you need to enjoy the session, and to sit back and feel it working its benefits. You will leave the massage room feeling happier, healthier, and like a brand new kind of man!</p>
@@ -479,7 +492,7 @@ def card(m, eager=False):  # overrides the first version: local photos
 
 
 def cta(text="Ready to book? Tell us your location, time and wishes in the chat.", label="Direct contact"):
-    return f'<section class="sec sec-alt"><div class="wrap narrow center-box"><p class="cta-t">{E(text)}</p><p><a class="btn" href="/contact/" data-chat>{E(label)}</a> <a class="link" href="/prices/">See prices</a></p></div></section>'
+    return f'<section class="sec band">{pic("massage-candles-stones", "", 1000, 400, cls="band-bg")}<div class="wrap narrow center-box"><p class="cta-t">{E(text)}</p><p><a class="btn" href="/contact/" data-chat>{E(label)}</a> <a class="link" href="/prices/">See prices</a></p></div></section>'
 
 
 def sub(path, title, desc, h1, lead, inner, trail, schema=None, og_image=None):
@@ -516,7 +529,7 @@ def massage_pages():
     for slug, name, short in MASSAGES:
         t = MASSAGE_TEXT[slug]
         others = "".join(f'<li><a href="/{s}/">{E(n)}</a></li>' for s, n, _ in MASSAGES if s != slug)
-        inner = (f'<section class="sec"><div class="wrap narrow prose">{prose(t["body"])}'
+        inner = (f'<section class="sec"><div class="wrap narrow prose"><figure class="fig">{pic(slug + "-amsterdam", name + " in Amsterdam", 600, 400, eager=True)}</figure>{prose(t["body"])}'
                  f'<h2>Price</h2><p>A {E(name.lower())} in Amsterdam, Schiphol, Haarlem or Hoofddorp is {PRICE_OF["Amsterdam"]}, and every extra hour is € 160. '
                  f'For other cities see our <a href="/prices/">prices</a>.</p></div></section>'
                  f'{cta(f"Book your {name.lower()} in the chat. We confirm masseuse, time and rate before anything is final.")}'
@@ -528,11 +541,11 @@ def massage_pages():
                "url": f"{SITE}/{slug}/"}
         urls.append(sub(f"/{slug}/", f"{name} Amsterdam | Erotic Massage Amsterdam", t["desc"], f"{name} Amsterdam", t["lead"], inner,
                         [("Services", "/services/")], [svc]))
-    tiles = "".join(f'<li><a class="tile" href="/{s}/"><h2>{E(n)}</h2><p>{E(d)}</p><span class="more">Read more</span></a></li>' for s, n, d in MASSAGES)
+    tiles = "".join(f'<li><a class="tile tile-img" href="/{s}/">{pic(s + "-amsterdam", n + " in Amsterdam", 600, 400)}<span class="tile-b"><h2>{E(n)}</h2><p>{E(d)}</p><span class="more">Read more</span></span></a></li>' for s, n, d in MASSAGES)
     inner = (f'<section class="sec"><div class="wrap"><ul class="tiles">{tiles}</ul></div></section>'
-             '<section class="sec sec-alt"><div class="wrap narrow prose"><h2>One service, your way</h2>'
+             '<section class="sec sec-alt"><div class="wrap split"><div class="split-img">' + pic("hot-stone-massage", "Massage with warm stones", 900, 600) + '</div><div class="prose"><h2>One service, your way</h2>'
              '<p>Every massage on this page is an outcall massage: your masseuse comes to your hotel or home. You choose the massage and the masseuse, and you can combine massages in a longer booking.</p>'
-             '<p>Not sure what suits you? Tell us in the chat what you enjoy, whether you prefer soft or firm, and how much time you have. We suggest a massage and a masseuse, and you decide.</p></div></section>'
+             '<p>Not sure what suits you? Tell us in the chat what you enjoy, whether you prefer soft or firm, and how much time you have. We suggest a massage and a masseuse, and you decide.</p></div></div></section>'
              f'{cta()}')
     urls.append(sub("/services/", "Erotic Massage Services | Erotic Massage Amsterdam",
                     "All erotic massage services in Amsterdam: sensual, tantra, body 2 body, 4 hands, Thai and full body massage at your hotel or home. Booked by chat.",
