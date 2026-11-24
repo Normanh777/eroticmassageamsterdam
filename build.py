@@ -113,6 +113,10 @@ CITIES = [
     ("erotic-massage-hilversum", "Hilversum"), ("erotic-massage-utrecht", "Utrecht"),
     ("erotic-massage-den-haag", "Den Haag"), ("erotic-massage-rotterdam", "Rotterdam"),
     ("erotic-massage-delft", "Delft"),
+    ("erotic-massage-amstelveen", "Amstelveen"), ("erotic-massage-diemen", "Diemen"), ("erotic-massage-zaandam", "Zaandam"),
+    ("erotic-massage-purmerend", "Purmerend"), ("erotic-massage-weesp", "Weesp"), ("erotic-massage-naarden", "Naarden"),
+    ("erotic-massage-bussum", "Bussum"), ("erotic-massage-huizen", "Huizen"), ("erotic-massage-laren", "Laren"),
+    ("erotic-massage-almere", "Almere"), ("erotic-massage-uithoorn", "Uithoorn"), ("erotic-massage-aalsmeer", "Aalsmeer"),
 ]
 
 FAQ = [
@@ -193,7 +197,7 @@ def footer():
 <p>Sensual outcall massage at your hotel or home in Amsterdam and beyond. Discreet, personal and arranged by chat.</p>
 <p><a class="btn btn-sm" href="/contact/" data-chat>Direct contact</a></p></div>
 {col("Massages", [(f"/{s}/", n) for s, n, _ in MASSAGES] + [("/services/", "All services")])}
-{col("Locations", [(f"/{s}/", f"Erotic massage {n}") for s, n in CITIES] + [("/other-cities/", "Other cities")])}
+{col("Locations", [(f"/{s}/", f"Erotic massage {n}") for s, n in CITIES[:9]] + [("/other-cities/", "All locations")])}
 {col("Information", [("/our-masseuses/", "Our masseuses"), ("/prices/", "Prices"), ("/packages/", "Packages"), ("/bookings/", "Bookings"), ("/our-partners/", "Our partners"), ("/contact/", "Contact")])}
 </div>
 <div class="wrap ftr-base"><p>© {date.today().year} {BRAND}</p><p>18+ · Adults only</p></div>
@@ -287,7 +291,7 @@ def home():
 <ul class="wrap">
 <li><strong>{len(MASSEUSES)}</strong><span>masseuses to choose from</span></li>
 <li><strong>{len(MASSAGES)}</strong><span>erotic massages</span></li>
-<li><strong>{len(PRICES)}</strong><span>cities we visit</span></li>
+<li><strong>{len(set(p[0] for p in PRICES) | set(n for _, n in CITIES))}</strong><span>cities and towns we visit</span></li>
 <li><strong>€ 160</strong><span>per hour in Amsterdam</span></li>
 </ul>
 </section>
@@ -357,7 +361,7 @@ def home():
 <section class="sec sec-c" aria-labelledby="h-areas">
 <div class="wrap">
 <h2 id="h-areas">Erotic massage in Amsterdam and beyond</h2>
-<p class="intro">Amsterdam is our home base. We also visit the airport area and other cities in the Randstad.</p>
+<p class="intro">Amsterdam is our home base. We also visit the airport area, the towns around Amsterdam, the Gooi region and other cities in the Randstad.</p>
 <ul class="chips">{cities}<li><a href="/other-cities/">Other cities</a></li></ul>
 </div>
 </section>
@@ -478,6 +482,30 @@ CITY_TEXT = {
                   "For Rotterdam we work with a minimum booking of two hours. That makes the trip worthwhile for your masseuse and gives you a long, relaxed session."),
     "Delft": ("Delft is a small historic university town between Den Haag and Rotterdam, famous for its canals and Delft Blue. It is a popular base for visitors who want to avoid the big cities.",
               "For Delft we work with a minimum booking of two hours. Your masseuse comes to your hotel, apartment or home."),
+    "Amstelveen": ("Amstelveen borders Amsterdam directly to the south, between the Amsterdamse Bos and the Zuidas business district. It is home to many international companies and residents, and to a good number of hotels.",
+                   "Because Amstelveen is so close to Amsterdam, a massage at your hotel or home here is easy to arrange. Tell us your address and the time you prefer in the chat."),
+    "Diemen": ("Diemen lies on the eastern edge of Amsterdam, next to the A1 and A10 and close to the Amsterdam Arena area. Several hotels here are popular with business travellers and concert visitors.",
+               "Your masseuse comes to your hotel room or home in Diemen. You choose the massage and the masseuse, and we take care of the planning."),
+    "Zaandam": ("Zaandam is just north-west of Amsterdam, known for its green wooden houses and the windmills of the nearby Zaanse Schans. Its hotels are a favourite with visitors who want to stay just outside the capital.",
+                "An erotic massage in Zaandam takes place where you are staying. One message in the chat with your hotel and preferred time is enough to get started."),
+    "Purmerend": ("Purmerend is a market town north of Amsterdam, in the middle of the Waterland polders. Whether you live here or are staying in the area, our masseuses come to you.",
+                  "The journey from Amsterdam is a little longer than within the city, so we recommend letting us know in good time when you would like your massage."),
+    "Weesp": ("Weesp is a small fortified town on the river Vecht, south-east of Amsterdam, and has been part of the municipality of Amsterdam since 2022. Its old centre with canals and windmills feels a world away from the busy city.",
+              "Your masseuse visits you at home or at your accommodation in Weesp. Tell us your address and the time you prefer, and we confirm who is available."),
+    "Naarden": ("Naarden is famous for its star-shaped fortress, one of the best preserved fortified towns in Europe. It lies in the Gooi region, between Amsterdam and Hilversum.",
+                "An erotic massage in Naarden is given at your home or hotel. Book ahead if you can, so that the masseuse of your choice is free at the time you prefer."),
+    "Bussum": ("Bussum lies next to Naarden in the green Gooi region, a leafy town of villas and quiet streets with a direct connection to Amsterdam.",
+               "Our masseuses visit private addresses and hotels in Bussum. You choose the massage and the masseuse, and your masseuse comes to you."),
+    "Huizen": ("Huizen is a former fishing village on the Gooimeer, on the northern edge of the Gooi region. Today it is a quiet residential town with a marina and a beach on the lake.",
+               "Would you like an erotic massage at home in Huizen? Let us know your address and preferred time in the chat, ideally a little in advance."),
+    "Laren": ("Laren is the artists' village of the Gooi region, known for its village green, galleries and elegant villas. It is one of the most exclusive addresses in the Netherlands.",
+              "Discretion matters to our guests in Laren, and it is where we start. Your masseuse visits you at home or at your hotel, at the time you agree with us."),
+    "Almere": ("Almere is the youngest city in the Netherlands, built on reclaimed land in Flevoland and known for its modern architecture. It lies east of Amsterdam, across the IJmeer.",
+               "Your masseuse travels from Amsterdam to your home or hotel in Almere. Book ahead if you can, so we can plan the journey and confirm the masseuse you prefer."),
+    "Uithoorn": ("Uithoorn lies on the river Amstel, south of Amsterdam and Amstelveen, with a waterfront full of terraces. It is a short drive from both Amsterdam and Schiphol.",
+                 "An erotic massage in Uithoorn is given at your home or accommodation. Tell us your address and the time you prefer, and we arrange the rest."),
+    "Aalsmeer": ("Aalsmeer is known worldwide for its flower auction and for the Westeinderplassen lakes. It sits right next to Schiphol, which makes it a convenient base for travellers.",
+                 "Staying in Aalsmeer for business or before a flight? Your masseuse comes to your hotel or home, and you choose the massage you like."),
 }
 
 
@@ -566,10 +594,13 @@ def city_pages():
     urls = []
     for slug, name in CITIES:
         a, b = CITY_TEXT[name]
-        price = PRICE_OF[name]
-        minimum = "2 hours" in price
-        price_line = (f"In {name} the rate is {price.replace('2 hours ', '')} for a minimum booking of two hours. " if minimum
-                      else f"In {name} the rate is {price}. ") + "Every extra hour is € 160. Your rate is always confirmed in the chat before you book."
+        price = PRICE_OF.get(name)
+        minimum = bool(price) and "2 hours" in price
+        if not price:
+            price_line = f"Ask us for the rate for {name} in the chat. It depends on the distance from Amsterdam, and we always confirm it before you book. Every extra hour is € 160."
+        else:
+            price_line = (f"In {name} the rate is {price.replace('2 hours ', '')} for a minimum booking of two hours. " if minimum
+                          else f"In {name} the rate is {price}. ") + "Every extra hour is € 160. Your rate is always confirmed in the chat before you book."
         others = "".join(f'<li><a href="/{s}/">Erotic massage {E(n)}</a></li>' for s, n in CITIES if s != slug)
         ml = "".join(f'<li><a href="/{s}/">{E(n)}</a></li>' for s, n, _ in MASSAGES)
         inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Erotic massage at your hotel or home in {E(name)}</h2><p>{E(a)}</p><p>{E(b)}</p>'
@@ -586,10 +617,10 @@ def city_pages():
                         f"Outcall erotic massage in {name}: your masseuse comes to your hotel or home.", inner, [("Locations", "/other-cities/")], [svc]))
     chips = "".join(f'<li><a href="/{s}/">Erotic massage {E(n)}</a></li>' for s, n in CITIES)
     inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Where we come</h2><p>Amsterdam is our home base, but our masseuses travel. Below you find every location we visit, with the rate for each one. For the cities with their own page you can read more by following the link.</p>{price_table(PRICES)}'
-             '<p>Is your city not listed? Ask us in the chat. For longer distances we work with a minimum number of hours.</p></div></section>'
+             '<p>We also visit ' + ', '.join(n for _, n in CITIES if n not in PRICE_OF) + '. Ask us for the rate for these places in the chat.</p><p>Is your city not listed? Ask us in the chat. For longer distances we work with a minimum number of hours.</p></div></section>'
              f'<section class="sec sec-alt"><div class="wrap"><h2>Locations with their own page</h2><ul class="chips"><li><a href="/">Erotic massage Amsterdam</a></li>{chips}</ul></div></section>{cta()}')
     urls.append(sub("/other-cities/", "Erotic Massage in Other Cities | Erotic Massage Amsterdam",
-                    "Erotic massage outside Amsterdam: Schiphol, Haarlem, Utrecht, Rotterdam, Den Haag, Leiden, Eindhoven and more. Hotel and home visits with rates per city.",
+                    "Erotic massage outside Amsterdam: Schiphol, Amstelveen, Haarlem, Almere, Utrecht, Rotterdam, Den Haag and more. Hotel and home visits, rates per city.",
                     "Other cities", "Erotic massage at your hotel or home, also outside Amsterdam.", inner, []))
     return urls
 
