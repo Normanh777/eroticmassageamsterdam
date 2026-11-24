@@ -727,7 +727,7 @@ def masseuse_pages():
         if langs:
             bits.append(f"She speaks {langs}.")
         bits.append(f"Hotel and home visits. Book {name} by chat." if len(langs) < 30 else f"Book {name} by chat.")
-        urls.append(sub(f"/dames/{slug}/", f"{name} – Erotic Masseuse | Erotic Massage Amsterdam", " ".join(bits), f"{name} – erotic masseuse in Amsterdam",
+        urls.append(sub(f"/dames/{slug}/", f"{name} ({age}) | Masseuse at Erotic Massage Amsterdam", " ".join(bits), name,
                         meta_line(m) + " · Hotel and home visits", inner, [("Our masseuses", "/our-masseuses/")], og_image=ogi))
     lst = {"@context": "https://schema.org", "@type": "ItemList", "name": "Masseuses of Erotic Massage Amsterdam", "itemListElement": [
         {"@type": "ListItem", "position": i + 1, "name": m[1], "url": f"{SITE}/dames/{m[0]}/"} for i, m in enumerate(MASSEUSES)]}
@@ -805,6 +805,15 @@ def link_row(title, items):
     return f'<h2 class="mt">{E(title)}</h2><ul class="chips">' + "".join(f'<li><a href="{u}">{E(t)}</a></li>' for u, t in items) + "</ul>"
 
 
+OWNER = {
+    "duo-deluxe": '<p>New to massages with two masseuses? Read what a <a href="/4-hands-massage/">4 hands massage in Amsterdam</a> is.</p>',
+    "tantra-ritual": '<p>Read more about what a <a href="/tantra-massage/">tantra massage in Amsterdam</a> is and how it works.</p>',
+    "schiphol-stopover": '<p>More about our visits to airport hotels: <a href="/erotic-massage-schiphol/">erotic massage Schiphol</a>.</p>',
+    "bath-and-massage": '<p>Read more about the <a href="/body-2-body-massage/">body to body massage in Amsterdam</a> that follows the bath.</p>',
+    "jetlag-relief": '<p>Read more about the <a href="/full-body-massage/">full body massage in Amsterdam</a> this package starts with.</p>',
+    "amsterdam-tour": '<p>Read more about our <a href="/happy-ending-massage/">happy ending massage in Amsterdam</a>.</p>',
+}
+
 TOP_PKG = [("/packages/dinner-date/", "Dinner Date & Erotic Massage"), ("/packages/amsterdam-tour/", "Amsterdam Tour & Massage"),
            ("/packages/duo-deluxe/", "Duo Deluxe"), ("/packages/schiphol-stopover/", "Schiphol Stopover"), ("/packages/", "All packages")]
 
@@ -862,11 +871,11 @@ HAPPY = {
 }
 
 PKG_MORE = {
-    "amsterdam-tour": ("Amsterdam Tour with Happy Ending | Tour & Erotic Massage", "Amsterdam is at its best when you see it with someone who knows the city. With this package you spend the first part of your time outside, and the second part in your hotel room.",
+    "amsterdam-tour": ("Amsterdam Tour & Massage Package | City Tour with Company", "Amsterdam is at its best when you see it with someone who knows the city. With this package you spend the first part of your time outside, and the second part in your hotel room.",
         [("Meet at your hotel", "Your masseuse meets you in the lobby or at a place you agree on in the chat."), ("Discover the city together", "Walk through the old centre and along the canals, or take a canal cruise. You decide the route and the pace."), ("Back to your room", "Afterwards you return to your hotel for the erotic massage of your choice, with a happy ending.")],
         ["Tickets for a cruise or museum and any drinks along the way are paid by you.", "Four hours is the minimum, so that neither the tour nor the massage feels rushed.", "Tell us in the chat what you would like to see, and we plan the timing with you."],
         [("Can I choose the route of the tour?", "Yes. Tell us what you would like to see, for example the canals, the Jordaan or the Red Light District, and we plan it with you."), ("Is the massage part of the four hours?", "Yes. The package is four hours in total. You decide how you divide the time between the tour and the massage.")]),
-    "dinner-date": ("Dinner Date & Erotic Massage Amsterdam | Evening Package", "Some evenings deserve more than an hour. A dinner date gives you time to talk, laugh and get to know each other before the massage begins, and that makes everything afterwards better.",
+    "dinner-date": ("Dinner Date Package Amsterdam | Dinner & Massage Evening", "Some evenings deserve more than an hour. A dinner date gives you time to talk, laugh and get to know each other before the massage begins, and that makes everything afterwards better.",
         [("Choose your restaurant", "Pick a restaurant in Amsterdam or have dinner at your hotel. Your masseuse meets you there, dressed for the occasion."), ("Enjoy dinner together", "Take your time. Good food and good conversation are the best start of the evening."), ("End the evening in your room", "After dinner you go to your hotel for an unhurried erotic massage of your choice.")],
         ["The restaurant bill is paid by you.", "Three hours is the minimum. With four hours you do not have to watch the clock at the table.", "Let us know the restaurant and time in advance, so your masseuse can dress appropriately."],
         [("Can you recommend a restaurant?", "We are happy to think along. Tell us in the chat where you are staying and what kind of food you like."), ("What will my masseuse wear to dinner?", "She dresses stylishly and appropriately for the restaurant you choose. If you have a preference, mention it in the chat.")]),
@@ -874,7 +883,7 @@ PKG_MORE = {
         [("Meet for a drink", "At your hotel bar or a cocktail bar nearby. You choose the place."), ("Relax and get acquainted", "One or two drinks, no programme, no pressure."), ("Your massage", "Then you go to your room for a sensual or body to body massage.")],
         ["Drinks are paid by you.", "Two hours is the minimum; add an hour if you like to take your time.", "Often possible on the day itself, depending on availability."],
         [("Can I book this for tonight?", "Often you can. Send us a message in the chat with your hotel and the time you have in mind, and we tell you who is available."), ("Do we have to go out for the drink?", "No. Many guests choose the bar of their own hotel, or simply a drink in the room.")]),
-    "schiphol-stopover": ("Schiphol Stopover Massage | Erotic Massage Airport Hotel", "A long layover or a night at an airport hotel does not have to be lost time. Your masseuse comes to your hotel at or near Schiphol, so you never have to go into the city.",
+    "schiphol-stopover": ("Schiphol Stopover Package | Massage Between Two Flights", "A long layover or a night at an airport hotel does not have to be lost time. Your masseuse comes to your hotel at or near Schiphol, so you never have to go into the city.",
         [("Send your flight times", "Tell us in the chat when you land and when you have to leave again."), ("Your masseuse comes to your hotel", "She visits hotels at Schiphol and in Hoofddorp and Aalsmeer."), ("Relax before you fly", "An hour of massage and you board your next flight a different person.")],
         ["Possible at hotels at Schiphol, in Hoofddorp and in Aalsmeer.", "Book as early as you can if your time window is short.", "Extra time is € 160 per hour."],
         [("Is one hour enough?", "Yes. One hour is enough for a complete sensual or full body massage. If you have more time, you can add an hour."), ("Can I book before I land?", "Yes, and we recommend it. Send us your hotel and arrival time, and your masseuse is planned around your flight.")]),
@@ -886,19 +895,19 @@ PKG_MORE = {
         [("One message in the chat", "Your hotel, the time and the massage you feel like."), ("We confirm", "You hear who is available and what the rate is."), ("Your masseuse arrives", "At your hotel or home. You only have to open the door.")],
         ["One hour, with the option to extend for € 160 per hour.", "At your hotel or at home.", "Discreet from first message to goodbye."],
         [("How late can I book?", "Tell us the time you have in mind. Availability in the late evening differs per day, and we answer in the chat straight away."), ("Can I pay for an extra hour on the spot?", "If your masseuse has time, you can extend. The extra hour rate is € 160.")]),
-    "duo-deluxe": ("Duo Massage Amsterdam | 4 Hands with Two Masseuses", "One masseuse is a treat. Two is an experience you will talk about for a long time, even if only to yourself. Duo Deluxe gives you two masseuses for two full hours.",
+    "duo-deluxe": ("Duo Deluxe Package | Two Masseuses for Two Hours", "One masseuse is a treat. Two is an experience you will talk about for a long time, even if only to yourself. Duo Deluxe gives you two masseuses for two full hours.",
         [("Choose two masseuses", "Pick your favourites from the profiles, or let us suggest a duo that works well together."), ("Four hands in rhythm", "They start with a 4 hands massage in which they mirror each other."), ("Body 2 body for two", "In the second part they take turns and work together, skin to skin.")],
         ["Two masseuses for two hours.", "The rate depends on the two masseuses you choose; ask for it in the chat.", "Book ahead, because both masseuses must be free at the same time."],
         [("Can I choose both masseuses myself?", "Yes. Mention both names in the chat. If one of them is not available, we suggest an alternative."), ("Is two hours necessary?", "It is what we recommend. With two masseuses there is a lot to experience, and one hour goes by very quickly.")]),
-    "tantra-ritual": ("Tantra Ritual Amsterdam | Extended Tantra Massage", "A tantra massage needs time. In this ritual nothing is hurried: every stage of the massage gets the attention it deserves.",
+    "tantra-ritual": ("Tantra Ritual Package | Two or Three Hour Session", "A tantra massage needs time. In this ritual nothing is hurried: every stage of the massage gets the attention it deserves.",
         [("Arrive in the moment", "The ritual starts with breathing and calm, grounding touch."), ("Slow build-up", "The whole body is massaged, with long strokes that become lighter and more sensual."), ("The finish", "Tension is built up, released and built up again, until the massage reaches its natural ending.")],
         ["From two hours; three hours is ideal.", "No experience with tantra is needed.", "A quiet room and a phone on silent make a real difference."],
         [("What makes this different from a regular tantra massage?", "The length. With two or three hours the build-up is much slower, and the experience is deeper."), ("Is a tantra ritual suitable for beginners?", "Yes. Your masseuse guides you, and you only have to follow your breathing.")]),
-    "bath-and-massage": ("Bath & Massage Amsterdam | Bath or Shower with Body 2 Body", "Warm water is the best start of any massage. It relaxes your muscles, clears your head and breaks the ice in the most natural way.",
+    "bath-and-massage": ("Bath & Massage Package | Start in the Bath or Shower", "Warm water is the best start of any massage. It relaxes your muscles, clears your head and breaks the ice in the most natural way.",
         [("Start in the water", "Together in the bath, or under a warm shower."), ("Dry off and lie down", "Towels on the bed, warm oil within reach."), ("Body 2 body massage", "Skin to skin, with slow gliding movements from head to toe.")],
         ["Two hours in total.", "You need a hotel room or home with a bathtub or a spacious shower.", "Have a few extra large towels ready."],
         [("My room only has a shower. Is that a problem?", "Not at all. A spacious shower works just as well as a bath."), ("Do I need to bring anything?", "Only towels. Ask your hotel for a few extra if needed.")]),
-    "champagne-evening": ("Champagne Evening Amsterdam | Champagne & Sensual Massage", "For a birthday, a closed deal, or no reason at all. Three hours with champagne, good company and a long sensual massage.",
+    "champagne-evening": ("Champagne Evening Package | Three Hours with Champagne", "For a birthday, a closed deal, or no reason at all. Three hours with champagne, good company and a long sensual massage.",
         [("Open the bottle", "Order champagne through your hotel or bring your own, and toast to the evening."), ("Take your time", "Conversation, music, strawberries. There is no schedule."), ("A long sensual massage", "The massage is spread over the evening, with all the time you need.")],
         ["Three hours in total.", "Champagne and snacks are ordered and paid by you.", "A hotel room with a seating area makes the evening complete."],
         [("Is the champagne included?", "No. You order it through your hotel or bring it yourself, so you can choose exactly what you like."), ("Can I extend the evening?", "Yes, if your masseuse has time. Every extra hour is € 160.")]),
@@ -906,7 +915,7 @@ PKG_MORE = {
         [("Tell us your wishes", "One masseuse or two, and what you are both comfortable with."), ("We advise and confirm", "You hear which masseuses are open to couples and what the rate is."), ("Your massage", "At your hotel or at home, side by side or one after the other.")],
         ["For couples.", "With one or two masseuses.", "Everything is discussed beforehand, so there are no surprises."],
         [("Do you offer massages for couples?", "Yes. Tell us in the chat that you are booking as a couple, and we select masseuses who enjoy that."), ("Can we be massaged at the same time?", "With two masseuses, yes. With one masseuse you take turns, or she divides her attention between you.")]),
-    "massage-lesson": ("Sensual Massage Lesson for Couples Amsterdam", "A massage is over after an evening. Knowing how to give one lasts a lifetime. In this lesson you learn from an experienced masseuse how to massage each other.",
+    "massage-lesson": ("Massage Lesson for Couples Amsterdam | Learn Together", "A massage is over after an evening. Knowing how to give one lasts a lifetime. In this lesson you learn from an experienced masseuse how to massage each other.",
         [("The basics", "How to use oil, pressure and rhythm, and how to make the other person feel at ease."), ("Practise on each other", "First one of you, then the other, with your masseuse guiding your hands."), ("Make it sensual", "The slow strokes and the build-up that turn a relaxing massage into a sensual one.")],
         ["Two hours for two people.", "At your hotel or at home.", "A nice gift for an anniversary or a weekend in Amsterdam."],
         [("Do we need experience?", "No. The lesson starts with the basics and adapts to your pace."), ("Is this also possible for one person?", "Yes. Tell us in the chat and we adapt the lesson.")]),
@@ -928,7 +937,7 @@ def info_pages():
                                     ("Are there extra costs?", "No. The rate in the table is the rate for the visit of your masseuse at that location. For packages, things like dinner, drinks and tickets are paid by you."),
                                     ("Why is the price higher outside Amsterdam?", "Your masseuse travels from Amsterdam to you. For cities further away the rate is higher or a minimum number of hours applies.")], "Questions about our prices")
     inner = inner.replace(cta("Ask for your rate in the chat. We confirm it before you book."), pr_html + cta("Ask for your rate in the chat. We confirm it before you book.") + '<section class="sec"><div class="wrap">' + link_row("Popular packages", TOP_PKG).replace(' class="mt"', "") + "</div></section>")
-    urls.append(sub("/prices/", "Erotic Massage Amsterdam Prices | From € 160 per Hour",
+    urls.append(sub("/prices/", "Prices & Rates | Erotic Massage Amsterdam",
                     "Prices for erotic massage at your hotel or home: € 160 in Amsterdam, Schiphol, Haarlem and Hoofddorp, € 160 per extra hour. Rates for all other cities.",
                     "Prices", "Clear rates per location, confirmed before you book.", inner, [], [pr_schema]))
 
@@ -968,7 +977,7 @@ def info_pages():
                  f'<section class="sec sec-alt sec-c"><div class="wrap"><h2>How it works</h2><ol class="steps">{steps}</ol></div></section>'
                  f'<section class="sec"><div class="wrap narrow prose"><h2>What is included</h2><ul class="ticks">{"".join(f"<li>{E(x)}</li>" for x in inc)}</ul>'
                  f'<h2>Good to know</h2><ul class="ticks">{"".join(f"<li>{E(x)}</li>" for x in know)}</ul>'
-                 f'<h2>Choose your massage</h2><p>Every package includes an erotic massage of your choice, with a happy ending. Read more about each massage:</p><ul class="chips">{ml}<li><a href="/happy-ending-massage/">Happy Ending Massage</a></li></ul></div></section>'
+                 f'{OWNER.get(pid, "")}<h2>Choose your massage</h2><p>Every package includes an erotic massage of your choice, with a happy ending. Read more about each massage:</p><ul class="chips">{ml}<li><a href="/happy-ending-massage/">Happy Ending Massage</a></li></ul></div></section>'
                  f'{pf_html}{cta(f"Book {name} in the chat. We confirm masseuse, time and rate before you book.")}'
                  f'<section class="sec"><div class="wrap"><h2>Choose your masseuse</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:10])}</ul><p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p>'
                  f'<h2 class="mt">More packages</h2><ul class="chips">{rel}<li><a href="/packages/">All packages</a></li></ul></div></section>')
@@ -979,8 +988,8 @@ def info_pages():
     cat = {"@context": "https://schema.org", "@type": "ItemList", "name": "Erotic massage packages in Amsterdam", "itemListElement": [
         {"@type": "ListItem", "position": i + 1, "name": p[2], "url": f"{SITE}/packages/{p[1]}/"} for i, p in enumerate(PACKAGES)]}
     fqs = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in pfaq]}
-    urls.append(sub("/packages/", "Erotic Massage Packages Amsterdam | Dinner Date & Tour",
-                    "Erotic massage packages in Amsterdam: dinner date, Amsterdam tour with happy ending, Schiphol stopover, duo, tantra ritual and couples massage. Booked by chat.",
+    urls.append(sub("/packages/", "Massage Packages Amsterdam | 13 Combinations",
+                    "Thirteen massage packages in Amsterdam: dinner date, city tour, airport stopover, duo, bath, champagne evening and couples massage. Booked by chat.",
                     "Packages", "Thirteen ways to combine an erotic massage with a great day or night in Amsterdam.", inner, [], [cat, fqs]))
 
     inner = ('<section class="sec"><div class="wrap narrow prose"><h2>Booking in three steps</h2><ol class="steps steps-col">'
