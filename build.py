@@ -17,20 +17,90 @@ LOCAL_PHOTOS = True  # photos live on the server in /images/masseuses/ (not in g
 P = "https://passionescorts.nl/hcgi/platform/api/files/escorts/"
 
 MASSEUSES = [
-    # slug, name, age, languages, remote portrait
-    ("vicky", "Vicky", 26, "English", P + "5zdh8dbzwmex0kw/passion-vicky-db68a2-portrait.jpg"),
-    ("bianca", "Bianca", 24, "English", P + "sdvztk16s5o6l0r/passion-bianca-f45a40-portrait.jpg"),
-    ("sophie", "Sophie", 31, "English, Italian, Spanish", P + "85awomlst4ejq3y/passion-sophie-a1b2c3-portrait.jpg"),
-    ("alexandra", "Alexandra", 41, "English", P + "tbhtbekky6tl8bx/passion-alexandra-2f3a4b-portrait.jpg"),
-    ("olga", "Olga", 24, "English", P + "cphrzxcuvf12746/passion-olga-775c70-portrait.webp"),
-    ("lavinia", "Lavinia", 24, "English", P + "ynbt57p03d9uyvm/passion-lavinia-96eb0b-portrait.webp"),
-    ("miki", "Miki", 23, "English", P + "3scycfdf9pr9vce/passion-miki-a5c6cc-portrait.jpg"),
-    ("alessia", "Alessia", 24, "English", P + "ey90r8h6zik1l2v/passion-alessia-0b1c2d-portrait.webp"),
-    ("brianna", "Brianna", 26, "English", P + "y62tw0wsgcgj12w/passion-brianna-7c9723-portrait.jpeg"),
+    # slug, name, age, languages, based in ('' = not stated)
+    ("bianca", "Bianca", 24, "English", ""),
+    ("olga", "Olga", 24, "English", ""),
+    ("vicky", "Vicky", 26, "English", ""),
+    ("adda", "Adda", 26, "English", ""),
+    ("alexandra", "Alexandra", 41, "English", ""),
+    ("amanda", "Amanda", 23, "English", ""),
+    ("anda", "Anda", 27, "English", ""),
+    ("cleopatra", "Cleopatra", 42, "English", ""),
+    ("denisa", "Denisa", 23, "English", ""),
+    ("katy", "Katy", 25, "Dutch, English", ""),
+    ("lavinia", "Lavinia", 24, "English", ""),
+    ("livana", "Livana", 27, "English", ""),
+    ("lora", "Lora", 27, "English", ""),
+    ("noor", "Noor", 28, "English", ""),
+    ("roxy", "Roxy", 29, "English", ""),
+    ("stephanie", "Stephanie", 23, "English", ""),
+    ("brianna", "Brianna", 26, "English", ""),
+    ("clarissa", "Clarissa", 26, "English", ""),
+    ("miki", "Miki", 23, "English", ""),
+    ("roanna", "Roanna", 21, "English", ""),
+    ("sophie", "Sophie", 31, "English, Italian, Spanish", ""),
+    ("alee", "Alee", 29, "English", ""),
+    ("alessia", "Alessia", 24, "English", ""),
+    ("anely", "Anely", 23, "English", ""),
+    ("angel", "Angel", 25, "English", ""),
+    ("annabel", "Annabel", 28, "English", ""),
+    ("ariel", "Ariel", 22, "English", ""),
+    ("celine", "Celine", 25, "English", ""),
+    ("cleo", "Cleo", 27, "English", ""),
+    ("dalya", "Dalya", 27, "English", ""),
+    ("denise", "Denise", 25, "English", ""),
+    ("ines", "Ines", 24, "English", ""),
+    ("ingrid", "Ingrid", 26, "English", ""),
+    ("jeniffer", "Jeniffer", 27, "English", ""),
+    ("jenn", "Jenn", 28, "English", ""),
+    ("joy", "Joy", 23, "English", ""),
+    ("kim", "Kim", 24, "English", ""),
+    ("kimberly", "Kimberly", 35, "English", ""),
+    ("lexi", "Lexi", 25, "English", ""),
+    ("lisa", "Lisa", 31, "English", ""),
+    ("mary", "Mary", 22, "English", ""),
+    ("megan", "Megan", 32, "English", ""),
+    ("michelle", "Michelle", 28, "English, Dutch", ""),
+    ("nicole", "Nicole", 24, "English", ""),
+    ("pandora", "Pandora", 25, "English", ""),
+    ("raisa", "Raisa", 22, "English", ""),
+    ("vanessa", "Vanessa", 24, "English", ""),
+    ("angella", "Angella", 31, "English, French, Spanish", ""),
+    ("bella", "Bella", 24, "English", ""),
+    ("catalina", "Catalina", 29, "English, Portuguese, Spanish", ""),
+    ("izabelle", "Izabelle", 35, "Dutch, French, Italian, Portuguese, English", ""),
+    ("lucy", "Lucy", 28, "English, Spanish", ""),
+    ("lunnie", "Lunnie", 25, "English", ""),
+    ("nina", "Nina", 42, "Dutch, English", ""),
+    ("rosalie", "Rosalie", 30, "English", ""),
+    ("adrianna", "Adrianna", 35, "", "Amsterdam"),
+    ("alicia", "Alicia", 21, "", "Amsterdam"),
+    ("anna", "Anna", 25, "", "Amsterdam"),
+    ("annays", "Annays", 21, "", "Amsterdam"),
+    ("arianna", "Arianna", 26, "", "Amsterdam"),
+    ("ashley", "Ashley", 29, "", "Rotterdam"),
+    ("eleni", "Eleni", 24, "", ""),
+    ("ella", "Ella", 21, "", "Amsterdam"),
+    ("ella-new", "Ella New", 38, "", "Amsterdam"),
+    ("isabella", "Isabella", 21, "", "Amsterdam"),
+    ("jasmine", "Jasmine", 24, "", "Brussels"),
+    ("jessy", "Jessy", 24, "", "Den Haag"),
+    ("julia", "Julia", 26, "", "Amsterdam"),
+    ("kim-den-haag", "Kim Den Haag", 24, "", "Den Haag"),
+    ("lisanne", "Lisanne", 26, "", "Amsterdam"),
+    ("lolita", "Lolita", 26, "", "Amsterdam"),
+    ("mihaela", "Mihaela", 25, "", "Amsterdam"),
+    ("mina", "Mina", 23, "", "Amsterdam"),
+    ("nikki", "Nikki", 24, "", "Amsterdam"),
+    ("sara", "Sara", 29, "", "Amsterdam"),
+    ("tania", "Tania", 29, "", "Amsterdam"),
+    ("viky", "Viky", 23, "", ""),
 ]
+MANIFEST = "bianca:4 viky:4 tania:4 sara:4 nikki:4 mina:4 mihaela:4 lolita:4 lisanne:4 kim-den-haag:4 julia:4 jessy:4 jasmine:4 isabella:4 ella-new:4 ella:4 eleni:2 ashley:3 arianna:3 annays:4 anna:4 alicia:4 adrianna:4 sophie:6 rosalie:4 roanna:6 nina:5 miki:3 lunnie:3 lucy:4 izabelle:3 clarissa:9 catalina:6 brianna:6 bella:2 angella:2 vanessa:4 stephanie:3 roxy:4 raisa:3 pandora:3 noor:3 nicole:3 michelle:4 megan:3 mary:3 lora:3 livana:3 lisa:3 lexi:4 lavinia:4 kimberly:3 kim:4 katy:4 joy:4 jenn:4 jeniffer:3 ingrid:4 ines:3 denise:4 denisa:4 dalya:4 cleopatra:3 cleo:4 celine:4 ariel:4 annabel:4 angel:3 anely:3 anda:4 amanda:3 alexandra:4 alessia:4 alee:4 adda:4 vicky:4 olga:5"  # slug:photo-count pairs written by tools/copy-profiles.php
+COUNTS = {k: int(v) for k, v in (p.split(':') for p in MANIFEST.split())}
 
 # Old profile URLs with no current masseuse -> 301 to the overview (see .htaccess)
-RETIRED = ["amanda", "pandora", "sara", "vanessa", "annabel", "roxy", "cristina", "ella", "kimberly", "yuki", "anna"]
+RETIRED = ["cristina", "yuki"]
 
 MASSAGES = [
     ("sensual-massage", "Sensual Massage", "Slow, flowing strokes with warm oil. Unhurried, attentive and deeply relaxing from the first touch."),
@@ -195,7 +265,7 @@ def home():
     massages = "".join(
         f'<li><a class="tile" href="/{s}/"><h3>{E(n)}</h3><p>{E(d)}</p><span class="more">Read more</span></a></li>'
         for s, n, d in MASSAGES)
-    cards = "".join(card(m) for m in MASSEUSES)
+    cards = "".join(card(m) for m in MASSEUSES[:10])
     cities = "".join(f'<li><a href="/{s}/">Erotic massage {E(n)}</a></li>' for s, n in CITIES)
     faq = "".join(f"<details><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in FAQ)
     body = f"""<section class="hero">
@@ -229,7 +299,7 @@ def home():
 <section class="sec sec-alt" aria-labelledby="h-masseuses">
 <div class="wrap">
 <h2 id="h-masseuses">Our masseuses in Amsterdam</h2>
-<p class="intro">A small and carefully selected team. Open a profile to read more about each masseuse.</p>
+<p class="intro">A selection of our masseuses. Open a profile to see photos and read more.</p>
 <ul class="cards">{cards}</ul>
 <p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p>
 </div>
@@ -393,18 +463,23 @@ CITY_TEXT = {
 }
 
 
+def meta_line(m):
+    return " · ".join(x for x in (f"{m[2]} years", m[3], m[4]) if x)
+
+
 def img(m, cls="", eager=False, sizes="(max-width:40rem) 45vw, 400px"):
     slug, name = m[0], m[1]
-    base = f"/images/masseuses/{slug}-erotic-massage-amsterdam"
+    base = f"/images/masseuses/{slug}-erotic-massage-amsterdam-card"
     load = 'fetchpriority="high"' if eager else 'loading="lazy" decoding="async"'
     return (f'<img src="{base}.jpg" srcset="{base}-400.jpg 400w, {base}.jpg 800w" sizes="{sizes}" '
-            f'alt="{E(name)}, erotic masseuse in Amsterdam" width="800" height="1000" {load}{" class=" + chr(34) + cls + chr(34) if cls else ""}>')
+            f'alt="{E(name)}, erotic masseuse in Amsterdam" width="800" height="1000" {load}>')
 
 
 def card(m, eager=False):  # overrides the first version: local photos
-    slug, name, age, langs, _ = m
+    slug, name, age, langs, city = m
+    sub_l = " · ".join(x for x in (str(age), langs or city) if x)
     return (f'<li class="card"><a href="/dames/{slug}/">{img(m, eager=eager)}'
-            f'<span class="card-b"><strong>{E(name)}</strong><span>{age} · {E(langs)}</span></span></a></li>')
+            f'<span class="card-b"><strong>{E(name)}</strong><span>{E(sub_l)}</span></span></a></li>')
 
 
 def cta(text="Ready to book? Tell us your location, time and wishes in the chat.", label="Direct contact"):
@@ -483,7 +558,7 @@ def city_pages():
                  f'<h2>Price in {E(name)}</h2><p>{E(price_line)} See all <a href="/prices/">prices</a>.</p>'
                  f'<h2>Which massages can I book in {E(name)}?</h2><p>All our massages are available in {E(name)}:</p><ul class="chips">{ml}</ul>'
                  f'<h2>How to book</h2><p>Open the chat, tell us your address or hotel in {E(name)}, the time you prefer and the masseuse you like. We confirm availability and rate, and your masseuse comes to you. Read more on the <a href="/bookings/">bookings</a> page.</p></div></section>'
-                 f'<section class="sec sec-alt"><div class="wrap"><h2>Our masseuses</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES)}</ul></div></section>'
+                 f'<section class="sec sec-alt"><div class="wrap"><h2>Our masseuses</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:8])}</ul><p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>'
                  f'{cta(f"Book your erotic massage in {name} in the chat.")}'
                  f'<section class="sec"><div class="wrap"><h2>Other locations</h2><ul class="chips"><li><a href="/">Erotic massage Amsterdam</a></li>{others}<li><a href="/other-cities/">Other cities</a></li></ul></div></section>')
         desc = f"Erotic massage in {name} at your hotel or home. Sensual, tantra and body 2 body massage by selected masseuses from Amsterdam. Discreet, booked by chat."
@@ -501,47 +576,77 @@ def city_pages():
     return urls
 
 
-def profile_text(m):
-    slug, name, age, langs, _ = m
+def profile_text(m, i):
+    slug, name, age, langs, city = m
     tags = TAGS.get(slug, [])
-    lang_list = langs.replace(", ", ", ").rsplit(", ", 1)
-    lang_s = " and ".join(lang_list) if len(lang_list) > 1 else langs
-    p1 = f"{name} is {age} years old and is one of the erotic masseuses of Erotic Massage Amsterdam. She speaks {lang_s}"
-    p1 += f". Her style is {' and '.join(tags)}." if tags else "."
-    p2 = (f"{name} visits you at your hotel or home in Amsterdam and the surrounding area. You can book her for every massage on our "
-          f"services page, from a sensual massage to a body 2 body massage.")
+    ll = langs.rsplit(", ", 1) if langs else []
+    lang_s = " and ".join(ll)
+    open_v = [f"{name} is {age} years old and is one of the erotic masseuses of Erotic Massage Amsterdam.",
+              f"Meet {name}, {age}, one of the masseuses you can book through Erotic Massage Amsterdam.",
+              f"{name} ({age}) is part of the team of Erotic Massage Amsterdam.",
+              f"At {age}, {name} is one of the masseuses of Erotic Massage Amsterdam."][i % 4]
+    p1 = open_v
+    if lang_s:
+        p1 += f" She speaks {lang_s}."
+    if city:
+        p1 += f" She is based in {city}."
+    if tags:
+        p1 += f" Her style is {' and '.join(tags)}."
+    visit_v = [f"{name} visits you at your hotel or home. You can book her for the massages on our services page, from a sensual massage to a body 2 body massage.",
+               f"Like all our masseuses, {name} comes to you: to your hotel room or your home address. Choose the massage you like on our services page.",
+               f"A massage with {name} takes place where you are staying, at your hotel or at home. On our services page you find the massages you can choose from."][i % 3]
     p3 = f"Would you like to book {name}? Mention her name in the chat, together with your location and the time you prefer. If she is not available, we suggest an alternative and you decide."
-    return [p1, p2, p3]
+    return [p1, visit_v, p3]
+
+
+def gallery(m):
+    slug, name = m[0], m[1]
+    n = COUNTS.get(slug, 0)
+    if n < 2:
+        return ""
+    base = f"/images/masseuses/{slug}-erotic-massage-amsterdam"
+    items = "".join(f'<li><a href="{base}-{i}.jpg"><img src="{base}-{i}-400.jpg" alt="{E(name)}, photo {i}" loading="lazy" decoding="async"></a></li>'
+                    for i in range(1, n + 1))
+    return f'<section class="sec"><div class="wrap"><h2>Photos of {E(name)}</h2><ul class="gal">{items}</ul></div></section>'
 
 
 def masseuse_pages():
     urls = []
-    for m in MASSEUSES:
-        slug, name, age, langs, _ = m
-        facts = {"Age": str(age), "Languages": langs, "Based in": "Amsterdam"}
+    for idx, m in enumerate(MASSEUSES):
+        slug, name, age, langs, city = m
+        facts = {"Age": str(age)}
+        if langs:
+            facts["Languages"] = langs
+        if city:
+            facts["Based in"] = city
         facts.update(EXTRA.get(slug, {}))
         dl = "".join(f"<div><dt>{E(k)}</dt><dd>{E(v)}</dd></div>" for k, v in facts.items())
         ml = "".join(f'<li><a href="/{s}/">{E(n)}</a></li>' for s, n, _ in MASSAGES)
-        rest = "".join(card(x) for x in MASSEUSES if x[0] != slug)
+        k = len(MASSEUSES)
+        rest = "".join(card(MASSEUSES[(idx + j) % k]) for j in range(1, 9))
         inner = (f'<section class="sec"><div class="wrap prof"><div class="prof-img">{img(m, eager=True, sizes="(max-width:48rem) 90vw, 420px")}</div>'
-                 f'<div class="prose"><h2>About {E(name)}</h2>{"".join(f"<p>{E(p)}</p>" for p in profile_text(m))}<dl class="facts">{dl}</dl>'
+                 f'<div class="prose"><h2>About {E(name)}</h2>{"".join(f"<p>{E(p)}</p>" for p in profile_text(m, idx))}<dl class="facts">{dl}</dl>'
                  f'<p><a class="btn" href="/contact/" data-chat>Book {E(name)}</a> <a class="link" href="/prices/">See prices</a></p>'
-                 f'<h2>Massages with {E(name)}</h2><ul class="chips">{ml}</ul></div></div></section>'
-                 f'<section class="sec sec-alt"><div class="wrap"><h2>More masseuses</h2><ul class="cards">{rest}</ul></div></section>')
-        ogi = f"{SITE}/images/masseuses/{slug}-erotic-massage-amsterdam.jpg"
-        desc = f"{name} ({age}) is an erotic masseuse in Amsterdam. She speaks {langs} and visits you at your hotel or home. Book {name} by chat."
-        urls.append(sub(f"/dames/{slug}/", f"{name} – Erotic Masseuse in Amsterdam", desc, f"{name} – erotic masseuse in Amsterdam",
-                        f"{age} years · {langs} · Hotel and home visits", inner, [("Our masseuses", "/our-masseuses/")], og_image=ogi))
+                 f'<h2>Massages with {E(name)}</h2><ul class="chips">{ml}</ul></div></div></section>{gallery(m)}'
+                 f'<section class="sec sec-alt"><div class="wrap"><h2>More masseuses</h2><ul class="cards">{rest}</ul>'
+                 f'<p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>')
+        ogi = f"{SITE}/images/masseuses/{slug}-erotic-massage-amsterdam-card.jpg"
+        bits = [f"{name} ({age}) is an erotic masseuse of Erotic Massage Amsterdam."]
+        if langs:
+            bits.append(f"She speaks {langs}.")
+        bits.append(f"Hotel and home visits. Book {name} by chat." if len(langs) < 30 else f"Book {name} by chat.")
+        urls.append(sub(f"/dames/{slug}/", f"{name} – Erotic Masseuse | Erotic Massage Amsterdam", " ".join(bits), f"{name} – erotic masseuse in Amsterdam",
+                        meta_line(m) + " · Hotel and home visits", inner, [("Our masseuses", "/our-masseuses/")], og_image=ogi))
     lst = {"@context": "https://schema.org", "@type": "ItemList", "name": "Masseuses of Erotic Massage Amsterdam", "itemListElement": [
         {"@type": "ListItem", "position": i + 1, "name": m[1], "url": f"{SITE}/dames/{m[0]}/"} for i, m in enumerate(MASSEUSES)]}
     inner = (f'<section class="sec"><div class="wrap"><ul class="cards cards-lg">{"".join(card(m, eager=i < 2) for i, m in enumerate(MASSEUSES))}</ul></div></section>'
              '<section class="sec sec-alt"><div class="wrap narrow prose"><h2>Choose the masseuse you like</h2>'
-             '<p>Our team is small on purpose, so that we know every masseuse we send to you.</p>'
+             '<p>Take your time to browse the profiles. Every masseuse has her own page with photos and details.</p>'
              '<p>Open a profile to read more, and mention her name in the chat when you book. If your first choice is not available at the time you want, we tell you straight away and suggest someone else.</p></div></section>'
              f'{cta()}')
     urls.append(sub("/our-masseuses/", "Our Masseuses | Erotic Massage Amsterdam",
-                    "Meet the masseuses of Erotic Massage Amsterdam. Real profiles, a small selected team, and you choose who visits you at your hotel or home.",
-                    "Our masseuses", "A small, selected team. You choose who comes to you.", inner, [], [lst]))
+                    "Meet the 77 masseuses of Erotic Massage Amsterdam. Browse the profiles and photos and choose who visits you at your hotel or home.",
+                    "Our masseuses", "Browse all profiles. You choose who comes to you.", inner, [], [lst]))
     return urls
 
 

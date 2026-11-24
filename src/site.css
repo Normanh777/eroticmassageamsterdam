@@ -145,3 +145,7 @@ td{color:var(--tx)}
 .note{color:var(--mut);margin-top:1.5rem;font-size:.95rem}
 .steps-col{grid-template-columns:1fr;margin:1rem 0 0}
 @media(max-width:30rem){th,td{padding:.7rem .55rem;font-size:.88rem}thead th{font-size:.66rem;letter-spacing:.04em}}
+.gal{display:grid;gap:.75rem;grid-template-columns:repeat(auto-fill,minmax(9rem,1fr))}
+.gal a{display:block;border-radius:.75rem;overflow:hidden;background:var(--card)}
+.gal img{width:100%;aspect-ratio:4/5;object-fit:cover;transition:transform .4s}
+.gal a:hover img{transform:scale(1.04)}
