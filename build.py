@@ -201,9 +201,9 @@ def footer():
 {col("Massages", [(f"/{s}/", n) for s, n, _ in MASSAGES] + [("/happy-ending-massage/", "Happy Ending Massage"), ("/nuru-massage/", "Nuru Massage"), ("/services/", "All services")])}
 {col("Locations", [(f"/{s}/", f"Erotic massage {n}") for s, n in CITIES[:9]] + [("/other-cities/", "All locations")])}
 {col("Packages", [("/packages/dinner-date/", "Dinner Date & Massage"), ("/packages/amsterdam-tour/", "Amsterdam Tour & Massage"), ("/packages/duo-deluxe/", "Duo Deluxe"), ("/packages/schiphol-stopover/", "Schiphol Stopover"), ("/packages/couples-massage/", "Couples Massage"), ("/packages/", "All packages")])}
-{col("Information", [("/our-masseuses/", "Our masseuses"), ("/prices/", "Prices"), ("/bookings/", "Bookings"), ("/our-partners/", "Our partners"), ("/contact/", "Contact")])}
+{col("Information", [("/about/", "About us"), ("/our-masseuses/", "Our masseuses"), ("/prices/", "Prices"), ("/bookings/", "Bookings"), ("/our-partners/", "Our partners"), ("/contact/", "Contact")])}
 </div>
-<div class="wrap ftr-base"><p>© {date.today().year} {BRAND}</p><p>18+ · Adults only</p></div>
+<div class="wrap ftr-base"><p>© {date.today().year} {BRAND} · Licence no. D18.000305</p><p><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · 18+ · Adults only</p></div>
 </footer>"""
 
 
@@ -265,7 +265,7 @@ def card(m, eager=False):
 
 
 ORG = {"@context": "https://schema.org", "@type": "Organization", "@id": SITE + "/#org", "name": BRAND,
-       "url": SITE + "/", "logo": SITE + "/logo.svg", "areaServed": [{"@type": "City", "name": "Amsterdam"}] + [{"@type": "City", "name": n} for _, n in CITIES]}
+       "url": SITE + "/", "logo": SITE + "/logo.svg", "identifier": "D18.000305", "areaServed": [{"@type": "City", "name": "Amsterdam"}] + [{"@type": "City", "name": n} for _, n in CITIES]}
 WEBSITE = {"@context": "https://schema.org", "@type": "WebSite", "@id": SITE + "/#website", "name": BRAND,
            "url": SITE + "/", "inLanguage": "en", "publisher": {"@id": SITE + "/#org"}}
 
@@ -1119,6 +1119,7 @@ def info_pages():
 
 exec(open(os.path.join(ROOT, "nl.py"), encoding="utf-8").read())
 exec(open(os.path.join(ROOT, "nl2.py"), encoding="utf-8").read())
+exec(open(os.path.join(ROOT, "nl3.py"), encoding="utf-8").read())
 
 
 def build():
@@ -1127,7 +1128,7 @@ def build():
     static = os.path.join(ROOT, "static")
     if os.path.isdir(static):
         shutil.copytree(static, DIST, dirs_exist_ok=True)
-    urls = [home()] + masseuse_pages() + massage_pages() + city_pages() + info_pages() + build_nl() + build_nl2() + nuru_pages()
+    urls = [home()] + masseuse_pages() + massage_pages() + city_pages() + info_pages() + build_nl() + build_nl2() + nuru_pages() + legal_pages()
     # pages without real content yet stay out of the index and the sitemap
     for thin in ("/our-partners/",):
         fp = os.path.join(DIST, thin.strip("/"), "index.html")

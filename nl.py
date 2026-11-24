@@ -70,9 +70,9 @@ def footer():
 <p><a class="btn btn-sm" href="/nl/contact/" data-chat>Direct contact</a></p></div>
 {col("Massages", [(P(f"/{s}/"), n) for s, n, _ in MASSAGES_NL] + [("/nl/happy-ending-massage/", "Happy ending massage"), ("/nl/nuru-massage/", "Nuru massage"), ("/nl/massages/", "Alle massages")])}
 {col("Locaties", [(P(f"/{s}/"), f"Erotische massage {n}") for s, n in CITIES[:9]] + [("/nl/locaties/", "Alle locaties")])}
-{col("Informatie", [("/nl/masseuses/", "Onze masseuses"), ("/nl/prijzen/", "Prijzen"), ("/nl/pakketten/", "Pakketten"), ("/nl/boeken/", "Boeken"), ("/nl/contact/", "Contact"), ("/", "English")])}
+{col("Informatie", [("/nl/over-ons/", "Over ons"), ("/nl/masseuses/", "Onze masseuses"), ("/nl/prijzen/", "Prijzen"), ("/nl/pakketten/", "Pakketten"), ("/nl/boeken/", "Boeken"), ("/nl/contact/", "Contact"), ("/", "English")])}
 </div>
-<div class="wrap ftr-base"><p>© {date.today().year} {BRAND}</p><p>18+ · Alleen voor volwassenen</p></div>
+<div class="wrap ftr-base"><p>© {date.today().year} {BRAND} · Licentienr. D18.000305</p><p><a href="/nl/privacy/">Privacy</a> · <a href="/nl/voorwaarden/">Voorwaarden</a> · 18+ · Alleen voor volwassenen</p></div>
 </footer>"""
 
 
