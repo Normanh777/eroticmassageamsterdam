@@ -274,13 +274,22 @@ def home():
 <div class="wrap hero-grid">
 <div>
 <p class="eyebrow">Outcall massage · Hotel &amp; home visits</p>
-<h1>Erotic Massage Amsterdam</h1>
+<h1>Erotic Massage <span class="g">Amsterdam</span></h1>
 <p class="lead">A sensual massage where you are staying, given by a masseuse you choose yourself. Tell us your hotel, your time and your wishes in the chat, and we arrange the rest discreetly.</p>
 <p class="cta"><a class="btn" href="/contact/" data-chat>Direct contact</a> <a class="btn btn-ghost" href="/our-masseuses/">Meet our masseuses</a></p>
 <ul class="usp"><li>Hotel and home visits</li><li>You choose your masseuse</li><li>Discreet from first message</li></ul>
 </div>
-<div class="hero-img">{pic("erotic-massage-amsterdam-hero", "Erotic massage in Amsterdam at your hotel", 720, 900, eager=True)}</div>
+<div class="hero-img">{pic("erotic-massage-amsterdam-hero", "Erotic massage in Amsterdam at your hotel", 720, 900, eager=True)}<p class="badge"><strong>€ 160</strong><span>per hour in Amsterdam</span></p></div>
 </div>
+</section>
+
+<section class="stats" aria-label="Erotic Massage Amsterdam in numbers">
+<ul class="wrap">
+<li><strong>{len(MASSEUSES)}</strong><span>masseuses to choose from</span></li>
+<li><strong>{len(MASSAGES)}</strong><span>erotic massages</span></li>
+<li><strong>{len(PRICES)}</strong><span>cities we visit</span></li>
+<li><strong>€ 160</strong><span>per hour in Amsterdam</span></li>
+</ul>
 </section>
 
 <section class="sec sec-alt" aria-labelledby="h-welcome">
@@ -295,7 +304,7 @@ def home():
 </div>
 </section>
 
-<section class="sec" aria-labelledby="h-massages">
+<section class="sec sec-c" aria-labelledby="h-massages">
 <div class="wrap">
 <h2 id="h-massages">Our erotic massages</h2>
 <p class="intro">Every massage is given one to one, at your pace. Not sure which one suits you? Describe what you like in the chat and we advise you.</p>
@@ -304,7 +313,7 @@ def home():
 </div>
 </section>
 
-<section class="sec sec-alt" aria-labelledby="h-masseuses">
+<section class="sec sec-wine sec-c" aria-labelledby="h-masseuses">
 <div class="wrap">
 <h2 id="h-masseuses">Our masseuses in Amsterdam</h2>
 <p class="intro">A selection of our masseuses. Open a profile to see photos and read more.</p>
@@ -333,7 +342,7 @@ def home():
 </div>
 </section>
 
-<section class="sec sec-alt" aria-labelledby="h-how">
+<section class="sec sec-alt sec-c" aria-labelledby="h-how">
 <div class="wrap">
 <h2 id="h-how">How booking works</h2>
 <ol class="steps">
@@ -345,7 +354,7 @@ def home():
 </div>
 </section>
 
-<section class="sec" aria-labelledby="h-areas">
+<section class="sec sec-c" aria-labelledby="h-areas">
 <div class="wrap">
 <h2 id="h-areas">Erotic massage in Amsterdam and beyond</h2>
 <p class="intro">Amsterdam is our home base. We also visit the airport area and other cities in the Randstad.</p>
@@ -353,7 +362,7 @@ def home():
 </div>
 </section>
 
-<section class="sec sec-alt" aria-labelledby="h-faq">
+<section class="sec sec-alt sec-c" aria-labelledby="h-faq">
 <div class="wrap narrow">
 <h2 id="h-faq">Frequently asked questions</h2>
 <div class="faq">{faq}</div>
