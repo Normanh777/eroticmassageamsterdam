@@ -531,12 +531,23 @@ def meta_line(m):
     return " · ".join(x for x in (f"{m[2]} years", m[3], m[4]) if x)
 
 
+KEEP_FIRST = set("olga anda cleopatra lavinia anely angel cleo dalya ines kimberly michelle angella catalina rosalie arianna eleni nikki".split())
+
+
+def cover(slug):
+    """Main photo on this site: the second gallery photo where it is suitable, so the cover differs from the other sites."""
+    base = f"/images/masseuses/{slug}-erotic-massage-amsterdam"
+    if slug in KEEP_FIRST or COUNTS.get(slug, 0) < 2:
+        return 1, base + "-card.jpg", base + "-card-400.jpg"
+    return 2, base + "-2.jpg", base + "-2-400.jpg"
+
+
 def img(m, cls="", eager=False, sizes="(max-width:40rem) 45vw, 400px"):
     slug, name = m[0], m[1]
-    base = f"/images/masseuses/{slug}-erotic-massage-amsterdam-card"
+    _, big, small = cover(slug)
     load = 'fetchpriority="high"' if eager else 'loading="lazy" decoding="async"'
-    return (f'<img src="{base}.jpg" srcset="{base}-400.jpg 400w, {base}.jpg 800w" sizes="{sizes}" '
-            f'alt="{E(name)}, erotic masseuse in Amsterdam" width="800" height="1000" {load}>')
+    return (f'<img src="{big}" srcset="{small} 400w, {big} 800w" sizes="{sizes}" '
+            f'alt="{E(name)}, erotic masseuse in Amsterdam" {load}>')
 
 
 def card(m, eager=False):  # overrides the first version: local photos
@@ -809,7 +820,7 @@ def masseuse_pages():
                  f'<h2>Packages with {E(name)}</h2><ul class="chips">{"".join(f"<li><a href=" + chr(34) + u + chr(34) + f">{E(t)}</a></li>" for u, t in TOP_PKG)}</ul></div></div></section>'
                  f'<section class="sec sec-alt"><div class="wrap"><h2>More masseuses</h2><ul class="cards">{rest}</ul>'
                  f'<p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>')
-        ogi = f"{SITE}/images/masseuses/{slug}-erotic-massage-amsterdam-card.jpg"
+        ogi = SITE + cover(slug)[1]
         bits = [f"{name} ({age}) is a masseuse at Erotic Massage Amsterdam."]
         if langs:
             bits.append(f"She speaks {langs}.")

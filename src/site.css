@@ -289,3 +289,5 @@ td:nth-child(2){color:var(--gold2);font-weight:600}
 @media(min-width:48.01rem){.prof-img{position:sticky;top:5.5rem}}
 .prof>*{min-width:0}
 @media(max-width:48rem){.prof{grid-template-columns:minmax(0,1fr)}}
+
+.card img{object-position:50% 18%}

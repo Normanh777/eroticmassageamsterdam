@@ -219,7 +219,7 @@ def build_nl2():
         bits.append(f"Hotel- en thuisbezoek. Boek {name} via de chat.")
         lead = " · ".join(x for x in (f"{age} jaar", nlang, city) if x) + " · Hotel- en thuisbezoek"
         urls.append(sub(f"/nl/dames/{slug}/", f"{name} ({age}) | Masseuse bij Erotic Massage Amsterdam", " ".join(bits), name, lead, inner,
-                        [("Onze masseuses", "/nl/masseuses/")], og_image=f"{SITE}{base}-card.jpg"))
+                        [("Onze masseuses", "/nl/masseuses/")], og_image=SITE + cover(slug)[1]))
 
     # package pages
     for p in PACKAGES:
@@ -256,15 +256,17 @@ def viewer(m):
     n = max(COUNTS.get(slug, 0), 1)
     base = f"/images/masseuses/{slug}-erotic-massage-amsterdam"
     word = "erotische masseuse in Amsterdam" if nl else "erotic masseuse in Amsterdam"
+    first = cover(slug)[0]
+    order = [first] + [i for i in range(1, n + 1) if i != first]
     slides = "".join(
-        f'<img src="{base}-{i}.jpg" alt="{E(name)}, {word}{"" if i == 1 else (" – foto " if nl else " – photo ") + str(i)}" '
-        f'{"fetchpriority=" + chr(34) + "high" + chr(34) if i == 1 else "loading=" + chr(34) + "lazy" + chr(34) + " decoding=" + chr(34) + "async" + chr(34)}>'
-        for i in range(1, n + 1))
+        f'<img src="{base}-{i}.jpg" alt="{E(name)}, {word}{"" if i == first else (" – foto " if nl else " – photo ") + str(i)}" '
+        f'{"fetchpriority=" + chr(34) + "high" + chr(34) if i == first else "loading=" + chr(34) + "lazy" + chr(34) + " decoding=" + chr(34) + "async" + chr(34)}>'
+        for i in order)
     if n == 1:
         return f'<div class="pv"><div class="pv-main">{slides}</div></div>'
     thumbs = "".join(
-        f'<li><button type="button" data-pv="{i - 1}"{" class=" + chr(34) + "on" + chr(34) if i == 1 else ""} aria-label="{"Foto" if nl else "Photo"} {i}">'
-        f'<img src="{base}-{i}-400.jpg" alt="" loading="lazy" decoding="async"></button></li>' for i in range(1, n + 1))
+        f'<li><button type="button" data-pv="{k}"{" class=" + chr(34) + "on" + chr(34) if k == 0 else ""} aria-label="{"Foto" if nl else "Photo"} {k + 1}">'
+        f'<img src="{base}-{i}-400.jpg" alt="" loading="lazy" decoding="async"></button></li>' for k, i in enumerate(order))
     return (f'<div class="pv" data-pv-root><div class="pv-main" tabindex="0" aria-label="{"Foto" + chr(39) + "s van" if nl else "Photos of"} {E(name)}">{slides}</div>'
             f'<button type="button" class="pv-nav pv-prev" data-pv-step="-1" aria-label="{"Vorige foto" if nl else "Previous photo"}">‹</button>'
             f'<button type="button" class="pv-nav pv-next" data-pv-step="1" aria-label="{"Volgende foto" if nl else "Next photo"}">›</button>'
