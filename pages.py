@@ -5,7 +5,7 @@ PRICES = [  # location, price label, extra hour
     ("Hoofddorp", "€ 160", "€ 160"), ("Leiden", "€ 200", "€ 160"), ("Utrecht", "€ 200", "€ 160"),
     ("Vianen", "€ 200", "€ 160"), ("Rotterdam", "2 hours € 350", "€ 160"), ("Den Haag", "2 hours € 350", "€ 160"),
     ("Eindhoven", "3 hours € 600", "€ 160"), ("Delft", "2 hours € 350", "€ 160"), ("Zandvoort", "€ 180", "€ 160"),
-    ("Hilversum", "€ 180", "€ 160"), ("Heemskerk", "€ 180", "€ 160"), ("Maastricht", "€ 1000", "€ 160"),
+    ("Hilversum", "€ 180", "€ 160"), ("Heemskerk", "€ 180", "€ 160"), ("Maastricht", "6 hours € 1200", "€ 160"),
 ]
 PRICE_OF = {p[0]: p[1] for p in PRICES}
 CITY_SLUG = {n: s for s, n in CITIES}
@@ -255,7 +255,7 @@ def info_pages():
     urls = []
     inner = (f'<section class="sec"><div class="wrap narrow prose"><p>Our rates depend on the location of your visit. The price is for one hour unless a minimum number of hours is shown. Every extra hour is € 160. Your rate is always confirmed in the chat before you book.</p>{price_table(PRICES)}'
              '<h2>Good to know</h2><ul class="ticks"><li>The rate is per masseuse. For a 4 hands massage with two masseuses, ask for the rate in the chat.</li>'
-             '<li>For cities further away we work with a minimum booking of two or three hours.</li>'
+             '<li>For cities further away we work with a minimum number of hours, shown in the table.</li>'
              '<li>Is your city not listed? Ask us in the chat.</li></ul></div></section>' + cta("Ask for your rate in the chat. We confirm it before you book."))
     urls.append(sub("/prices/", "Prices | Erotic Massage Amsterdam",
                     "Prices for erotic massage at your hotel or home: € 160 in Amsterdam, Schiphol, Haarlem and Hoofddorp, € 160 per extra hour. Rates for all other cities.",
