@@ -970,21 +970,21 @@ def info_pages():
         steps = "".join(f"<li><h3>{E(t)}</h3><p>{E(x)}</p></li>" for t, x in flow)
         related = [x for x in PACKAGES if x[0] == g and x[1] != pid] + [x for x in PACKAGES if x[0] != g][:2]
         rel = "".join(f'<li><a href="/packages/{x[1]}/">{E(x[2])}</a></li>' for x in related)
-        ml = "".join(f'<li><a href="/{s}/">{E(n)}</a></li>' for s, n, _ in MASSAGES)
-        inner = (f'<section class="sec"><div class="wrap split"><div class="split-img">{pic(photo, name, 600, 400, eager=True)}</div>'
+        p_ml = "".join(f'<li><a href="/{s}/">{E(n)}</a></li>' for s, n, _ in MASSAGES)
+        p_inner = (f'<section class="sec"><div class="wrap split"><div class="split-img">{pic(photo, name, 600, 400, eager=True)}</div>'
                  f'<div class="prose"><p class="pkg-m"><span>{E(dur)}</span><strong>{E(price)}</strong></p><h2>{E(name)}</h2><p>{E(d)}</p><p>{E(p_intro)}</p>'
                  f'<p><a class="btn" href="/contact/" data-chat>Book this package</a> <a class="link" href="/packages/">All packages</a></p></div></div></section>'
                  f'<section class="sec sec-alt sec-c"><div class="wrap"><h2>How it works</h2><ol class="steps">{steps}</ol></div></section>'
                  f'<section class="sec"><div class="wrap narrow prose"><h2>What is included</h2><ul class="ticks">{"".join(f"<li>{E(x)}</li>" for x in inc)}</ul>'
                  f'<h2>Good to know</h2><ul class="ticks">{"".join(f"<li>{E(x)}</li>" for x in know)}</ul>'
-                 f'{OWNER.get(pid, "")}<h2>Choose your massage</h2><p>Every package includes an erotic massage of your choice, with a happy ending. Read more about each massage:</p><ul class="chips">{ml}<li><a href="/happy-ending-massage/">Happy Ending Massage</a></li></ul></div></section>'
+                 f'{OWNER.get(pid, "")}<h2>Choose your massage</h2><p>Every package includes an erotic massage of your choice, with a happy ending. Read more about each massage:</p><ul class="chips">{p_ml}<li><a href="/happy-ending-massage/">Happy Ending Massage</a></li></ul></div></section>'
                  f'{pf_html}{cta(f"Book {name} in the chat. We confirm masseuse, time and rate before you book.")}'
                  f'<section class="sec"><div class="wrap"><h2>Choose your masseuse</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:10])}</ul><p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p>'
                  f'<h2 class="mt">More packages</h2><ul class="chips">{rel}<li><a href="/packages/">All packages</a></li></ul></div></section>')
         p_desc = (d[:150].rsplit(" ", 1)[0] + "…") if len(d) > 155 else d
-        svc = {"@context": "https://schema.org", "@type": "Service", "name": name, "serviceType": "Erotic massage package", "description": d,
+        p_svc = {"@context": "https://schema.org", "@type": "Service", "name": name, "serviceType": "Erotic massage package", "description": d,
                "provider": {"@id": SITE + "/#org"}, "areaServed": {"@type": "City", "name": "Amsterdam"}, "url": f"{SITE}/packages/{pid}/"}
-        urls.append(sub(f"/packages/{pid}/", p_title, p_desc, name, f"{dur} · {price}", inner, [("Packages", "/packages/")], [svc, pf_schema]))
+        urls.append(sub(f"/packages/{pid}/", p_title, p_desc, name, f"{dur} · {price}", p_inner, [("Packages", "/packages/")], [p_svc, pf_schema]))
     cat = {"@context": "https://schema.org", "@type": "ItemList", "name": "Erotic massage packages in Amsterdam", "itemListElement": [
         {"@type": "ListItem", "position": i + 1, "name": p[2], "url": f"{SITE}/packages/{p[1]}/"} for i, p in enumerate(PACKAGES)]}
     fqs = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in pfaq]}
