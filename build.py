@@ -78,15 +78,11 @@ MASSEUSES = [
     ("anna", "Anna", 25, "", "Amsterdam"),
     ("annays", "Annays", 21, "", "Amsterdam"),
     ("arianna", "Arianna", 26, "", "Amsterdam"),
-    ("ashley", "Ashley", 29, "", "Rotterdam"),
     ("eleni", "Eleni", 24, "", ""),
     ("ella", "Ella", 21, "", "Amsterdam"),
     ("ella-new", "Ella New", 38, "", "Amsterdam"),
     ("isabella", "Isabella", 21, "", "Amsterdam"),
-    ("jasmine", "Jasmine", 24, "", "Brussels"),
-    ("jessy", "Jessy", 24, "", "Den Haag"),
     ("julia", "Julia", 26, "", "Amsterdam"),
-    ("kim-den-haag", "Kim Den Haag", 24, "", "Den Haag"),
     ("lisanne", "Lisanne", 26, "", "Amsterdam"),
     ("lolita", "Lolita", 26, "", "Amsterdam"),
     ("mihaela", "Mihaela", 25, "", "Amsterdam"),
@@ -645,7 +641,7 @@ def masseuse_pages():
              '<p>Open a profile to read more, and mention her name in the chat when you book. If your first choice is not available at the time you want, we tell you straight away and suggest someone else.</p></div></section>'
              f'{cta()}')
     urls.append(sub("/our-masseuses/", "Our Masseuses | Erotic Massage Amsterdam",
-                    "Meet the 77 masseuses of Erotic Massage Amsterdam. Browse the profiles and photos and choose who visits you at your hotel or home.",
+                    "Meet the 73 masseuses of Erotic Massage Amsterdam. Browse the profiles and photos and choose who visits you at your hotel or home.",
                     "Our masseuses", "Browse all profiles. You choose who comes to you.", inner, [], [lst]))
     return urls
 
