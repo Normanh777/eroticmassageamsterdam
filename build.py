@@ -667,6 +667,83 @@ def city_pages():
     return urls
 
 
+LOOK = {
+"bianca": ("Blonde", "Bianca is a blonde with a soft, sun-kissed look, photographed in royal blue lace in a classic room with a white fireplace.", "Her photos have something dreamy and affectionate about them, the kind of masseuse who takes her time and never loses eye contact."),
+"olga": ("Blonde", "Olga wears her blonde hair long and prefers an elegant style: a sheer black blouse, bright light and not a detail too many.", "She comes across as calm and self-assured, which fits the tags natural and passionate that describe her."),
+"vicky": ("Dark brunette", "Vicky has long, dark hair that falls over her shoulders and a slim, toned figure, shown in ivory lace lingerie.", "Her pictures are mysterious and a little teasing: she shows a lot, and still keeps something back for when you meet."),
+"adda": ("Blonde", "Adda has waist-long blonde hair and a golden tan, and she likes to be photographed from behind in warm evening light.", "Her style is relaxed and sun-loving, more beach holiday than studio."),
+"alexandra": ("Brunette", "Alexandra is a brunette with soft waves, photographed by the window in black lingerie and stockings as the sun goes down.", "At 41 she has the calm confidence of a woman who knows exactly what she is doing, and it shows in every picture."),
+"amanda": ("Blonde", "Amanda has long platinum curls and a classic pin-up figure, wearing striped lingerie against vintage wallpaper.", "There is a touch of old Hollywood glamour in her photos, playful and elegant at the same time."),
+"anda": ("Platinum blonde", "Anda is a platinum blonde with a short, tousled haircut, dressed in white lace.", "Her photos are light, soft and a little angelic, with a mischievous smile underneath."),
+"cleopatra": ("Brunette", "Cleopatra has long chestnut hair worn in a ponytail and generous curves, shown in black lingerie and striped stockings.", "She has the warm, self-assured look of a woman of 42 who enjoys being admired."),
+"denisa": ("Dark brunette", "Denisa combines dark hair with red lingerie and fishnet stockings, seated on a white fur in a loft with wooden walls.", "Her style is bold and a little daring, with the confidence to match."),
+"katy": ("Dark brunette", "Katy has shoulder-length dark hair and a curvy figure, photographed in front of a tall mirror in dark blue lingerie.", "She speaks Dutch and English, and her pictures have a relaxed, girl-next-door charm."),
+"lavinia": ("Dark brunette", "Lavinia has long, straight dark hair and soft curves, kneeling on white sheets in black lace.", "Her look is natural and unforced, exactly as her profile describes her."),
+"livana": ("Dark brunette", "Livana has dark hair and a slender figure, posing in black lingerie in a colourful room full of flowers.", "Her photos are cheerful and full of life, a little exotic and never dull."),
+"lora": ("Black", "Lora has long, jet-black hair and long legs, stretched out in red lingerie and high heels.", "She looks straight into the camera: direct, lively and sure of herself."),
+"noor": ("Black", "Noor has a mane of long black waves and a toned, athletic body, photographed in black lingerie against a plain wall.", "Her pictures are pure and powerful, with nothing to distract from the lines of her figure."),
+"roxy": ("Dark brunette", "Roxy has long dark hair and wears a red lace bodysuit, standing in a doorway with her back half turned.", "Red is clearly her colour, and her photos have a seductive, slightly secretive mood."),
+"stephanie": ("Dark brunette", "Stephanie has long dark hair and a playful taste in lingerie: black with white lace trim.", "A finger on her lips and a twinkle in her eye, her photos are cheeky and good-humoured."),
+"brianna": ("Dark curls", "Brianna has a head full of dark curls, striking brows and warm brown eyes, shown in a natural close-up.", "Hers is one of the few portraits that shows a face, open and direct, and it says a lot about her confidence."),
+"clarissa": ("Black", "Clarissa has long black hair and a slim, sporty figure, kneeling on a white sofa in red lingerie and black heels.", "With nine photos in her gallery she is not shy, and her poses are playful and athletic."),
+"miki": ("Dark brunette", "Miki has dark hair and a petite figure, photographed lying by a large mirror in black lingerie and stockings.", "Her photos are intimate and a little dreamy, like a quiet moment you happen to walk in on."),
+"roanna": ("Blonde", "Roanna has wavy blonde hair and a slender, toned body, wearing sheer black lingerie in a classic interior.", "At 21 she is among the youngest of the team, with a fresh and confident look."),
+"sophie": ("Light brown", "Sophie has light brown hair with blonde highlights, photographed in a loose white shirt and soft pink stockings.", "She speaks English, Italian and Spanish, and her style is feminine and a little romantic."),
+"alee": ("Dark brunette", "Alee has dark, wavy hair and full curves, shown in black lace lingerie and a garter belt.", "Her photos are warm and sensual, with rich colours and soft light."),
+"alessia": ("Dark brunette", "Alessia has long dark hair and a slim figure, kneeling on a bed in a black bra in a stylish hotel room.", "Her look is modern and casual, as if she has just come home and is taking her time."),
+"anely": ("Dark brunette", "Anely has dark hair and soft curves, lying on a bed in black lingerie and hold-up stockings.", "She likes a lazy, languid pose, and her photos invite you to slow down."),
+"angel": ("Dark brunette", "Angel has dark hair and wears red lace, stretched out on a white bed.", "Her pictures are soft and sleepy in the best sense, a Sunday morning that lasts all day."),
+"annabel": ("Black", "Annabel has long black hair and a sporty figure, posing in a white top and faded jeans.", "She is the casual one of the team: little make-up, no fuss, and a natural confidence."),
+"ariel": ("Black", "Ariel has long black waves and striking make-up, dressed in leopard print lingerie and black stockings.", "Glamorous and bold, she is clearly not afraid to stand out."),
+"celine": ("Dark brunette", "Celine wears her dark hair up and has long legs, photographed standing in a black lace body and stockings.", "Tall, composed and elegant, with the posture of a model."),
+"cleo": ("Black", "Cleo has a sleek black bob and a taste for playful outfits with knee-high socks.", "Her photos are cheeky and full of humour, and she obviously enjoys a bit of theatre."),
+"dalya": ("Dark brunette", "Dalya has dark hair, wears glasses and prefers jeans to lace in her photos.", "The glasses give her a smart, teasing look that many guests remember."),
+"denise": ("Dark brunette", "Denise has dark hair and soft curves, lying back in black lace against a deep red background.", "Her photos are moody and sensual, with the warm colours of a late evening."),
+"ines": ("Black", "Ines has long black hair and wears black lingerie with a pearl choker, photographed in front of a patterned curtain.", "A classic, feminine look with a hint of the burlesque."),
+"ingrid": ("Dark brunette", "Ingrid has dark hair and a dancer's figure, posing in black lingerie and stockings with a sheer veil above her head.", "There is movement in every picture, light-hearted and graceful."),
+"jeniffer": ("Dark brunette", "Jeniffer has long dark hair and a tanned, sporty body, seated in a black two-piece.", "Her style is relaxed and summery, with an easy smile."),
+"jenn": ("Dark brunette", "Jenn has dark hair and long legs, photographed from behind in a white lace body in a room full of colour.", "White suits her, and her photos have a fresh and elegant feel."),
+"joy": ("Dark brunette", "Joy wears her dark hair in a high ponytail and has an athletic figure, posing in a red top.", "Sporty, energetic and true to her name."),
+"kim": ("Dark brunette", "Kim has dark hair, full curves and a preference for red: a sheer red top in most of her photos.", "Her look is bold and confident, with a soft smile that takes the edge off."),
+"kimberly": ("Black", "Kimberly has long, straight black hair down to her waist and wears soft pink lace.", "At 35 she has a calm, graceful presence, and her photos are among the most elegant on the site."),
+"lexi": ("Blonde", "Lexi has long blonde hair and wears a black lace catsuit, photographed from behind beside a red armchair.", "A rock chic style, daring and self-assured."),
+"lisa": ("Blonde curls", "Lisa has a cloud of blonde curls and a bright smile, dressed in a black babydoll with red details.", "Her photos are sunny and open, and her curls make her instantly recognisable."),
+"mary": ("Auburn", "Mary has auburn hair and a slender figure, photographed against a red curtain in nude-coloured lingerie.", "A little theatrical, with the warm tones of a cabaret."),
+"megan": ("Blonde", "Megan is a blonde who prefers a chic, casual look: an orange jumper on a blue velvet sofa.", "Her photos feel like an afternoon at home, stylish and at ease."),
+"michelle": ("Black", "Michelle has black hair and loves a dramatic outfit: a black corset, fishnet stockings and a cape.", "She speaks English and Dutch, and her style is confident and theatrical."),
+"nicole": ("Dark brunette", "Nicole has long dark hair and a slim figure, seated on a white sofa in a black body and heels.", "Sleek and modern, a look that would not be out of place in a design hotel."),
+"pandora": ("Brunette with highlights", "Pandora has brown hair with blonde highlights and wears a black halter body with a deep neckline.", "Her gaze into the camera is warm and direct, and she looks comfortable in her own skin."),
+"raisa": ("Dark brunette", "Raisa has short dark hair and wears red lace, lying on white sheets with a smile.", "Her photos are playful and inviting, bright and uncomplicated."),
+"vanessa": ("Blonde", "Vanessa has blonde hair and long legs, lying on a bed in black lingerie and high heels.", "Elegant with a rebellious streak, as the purple heels suggest."),
+"angella": ("Dark curls", "Angella has dark, curly hair and wears black lace, lying back on a bed of roses.", "She speaks English, French and Spanish, and her photos are romantic and soft."),
+"bella": ("Brunette", "Bella has a long brown ponytail and a slim figure, shown in a black lace top and skirt against a white background.", "Her style is neat and feminine, with a preference for lace."),
+"catalina": ("Blonde", "Catalina has blonde hair and generous curves, dressed in bright red lingerie.", "She speaks English, Portuguese and Spanish, and her photos have a lively, sunny energy."),
+"izabelle": ("Dark brunette", "Izabelle has very long dark hair and is photographed as a silhouette against the light of a window.", "She speaks five languages, and her pictures keep an air of mystery that suits her."),
+"lucy": ("Dark blonde", "Lucy is photographed lying on a hotel bed in lilac lingerie, relaxed and unhurried.", "She speaks English and Spanish, and her style is soft and easy-going."),
+"lunnie": ("Long braids", "Lunnie wears her hair in long braids tied up high and has a slender figure, posing in a floral summer dress and heels.", "Her look is fresh and fashionable, more city stroll than boudoir."),
+"nina": ("Light brown", "Nina has long, light brown waves and is photographed in soft backlight wearing a black bra.", "At 42 she has a warm, natural beauty, and she speaks both Dutch and English."),
+"rosalie": ("Blonde", "Rosalie wears her blonde hair up and has an athletic figure, shown from behind in black lingerie and heels.", "Sporty and elegant, with the posture of someone who spends time in the gym."),
+"adrianna": ("Blonde", "Adrianna has blonde hair worn up and combines lingerie with a short grey jacket.", "At 35 she has a confident, grown-up style with a touch of rock and roll."),
+"alicia": ("Blonde", "Alicia has golden blonde hair and a playful sense of style, photographed in a white blouse.", "Her photos are light-hearted and teasing, and she clearly has a sense of humour."),
+"anna": ("Blonde", "Anna has long blonde hair and appears with bunny ears and black lace on a pink sofa.", "Playful and flirtatious, she does not take herself too seriously."),
+"annays": ("Dark brunette", "Annays wears her dark hair up and is photographed from behind in a black fishnet dress.", "Her pictures are daring and confident, with an eye for detail."),
+"arianna": ("Dark brunette", "Arianna is photographed lying down in a black corset, in a room with warm light and deep red tones.", "Her style is sultry and unhurried, made for a slow evening."),
+"eleni": ("Black", "Eleni has a black bob with a straight fringe and wears black lace and stockings.", "A retro look with a hint of the 1920s, elegant and distinctive."),
+"ella": ("Blonde", "Ella has blonde hair and bright eyes, leaning back in a black lace body.", "Her smile is open and inviting, and her photos have a spontaneous feel."),
+"ella-new": ("Blonde", "Ella New has long blonde hair and soft curves, kneeling in black lace by a large window.", "At 38 she has a mature, feminine charm and a calm way of posing."),
+"isabella": ("Blonde", "Isabella wears her blonde hair up and has a slim figure, photographed in a simple black bra.", "A fresh face and a direct gaze, with a natural, uncomplicated style."),
+"julia": ("Dark brunette", "Julia has long dark hair, striking make-up and a preference for black lace with long sleeves.", "Her photos are glamorous and a little gothic, with a strong presence."),
+"lisanne": ("Dark brunette", "Lisanne has dark hair and wears black lingerie with over-the-knee boots.", "Bold and stylish, with the confidence to carry it off."),
+"lolita": ("Dark curls", "She has dark, curly hair and long legs, photographed from behind in black lingerie and stockings against a white wall.", "Her pictures are graphic and elegant, all about line and posture."),
+"mihaela": ("Dark brunette", "Mihaela has dark hair and full curves, posing in light blue lingerie against a white brick wall.", "The soft blue gives her photos a fresh, summery mood."),
+"mina": ("Brunette", "Mina has brown hair and wears red lingerie, standing next to a hammock in a room with dark walls.", "Relaxed and a little bohemian, at home in an informal setting."),
+"nikki": ("Black", "Nikki has long black hair and a tall, slim figure, dressed in a red lace body.", "Standing straight and looking into the lens, her photos are confident and striking."),
+"sara": ("Black", "Sara has black hair and prefers an evening look: a short bronze dress and high heels.", "She is the most dressed-up of the team, elegant enough for any hotel bar."),
+"tania": ("Blonde", "Tania has blonde hair and a tanned figure, kneeling on a sofa in black lingerie.", "Her photos are warm and sunny, with a relaxed smile."),
+"viky": ("Black", "Viky has long black hair and is photographed seated on a chair in black lingerie and stockings.", "A classic boudoir style, composed and seductive."),
+}
+
+
 def profile_text(m, i):
     slug, name, age, langs, city = m
     tags = TAGS.get(slug, [])
@@ -686,6 +763,9 @@ def profile_text(m, i):
     visit_v = [f"{name} visits you at your hotel or home. You can book her for the massages on our services page, from a sensual massage to a body 2 body massage.",
                f"Like all our masseuses, {name} comes to you: to your hotel room or your home address. Choose the massage you like on our services page.",
                f"A massage with {name} takes place where you are staying, at your hotel or at home. On our services page you find the massages you can choose from."][i % 3]
+    look = LOOK.get(slug)
+    if look:
+        return [p1, look[1], look[2], visit_v, f"Would you like to book {name}? Mention her name in the chat, together with your location and the time you prefer. If she is not available, we suggest an alternative and you decide."]
     p3 = f"Would you like to book {name}? Mention her name in the chat, together with your location and the time you prefer. If she is not available, we suggest an alternative and you decide."
     return [p1, visit_v, p3]
 
@@ -710,7 +790,9 @@ def masseuse_pages():
             facts["Languages"] = langs
         if city:
             facts["Based in"] = city
-        facts.update(EXTRA.get(slug, {}))
+        if slug in LOOK:
+            facts["Hair"] = LOOK[slug][0]
+        facts.update({k: v for k, v in EXTRA.get(slug, {}).items() if k != "Hair"})
         dl = "".join(f"<div><dt>{E(k)}</dt><dd>{E(v)}</dd></div>" for k, v in facts.items())
         ml = "".join(f'<li><a href="/{s}/">{E(n)}</a></li>' for s, n, _ in MASSAGES)
         k = len(MASSEUSES)
@@ -723,7 +805,7 @@ def masseuse_pages():
                  f'<section class="sec sec-alt"><div class="wrap"><h2>More masseuses</h2><ul class="cards">{rest}</ul>'
                  f'<p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>')
         ogi = f"{SITE}/images/masseuses/{slug}-erotic-massage-amsterdam-card.jpg"
-        bits = [f"{name} ({age}) is an erotic masseuse of Erotic Massage Amsterdam."]
+        bits = [f"{name} ({age}) is a masseuse at Erotic Massage Amsterdam."]
         if langs:
             bits.append(f"She speaks {langs}.")
         bits.append(f"Hotel and home visits. Book {name} by chat." if len(langs) < 30 else f"Book {name} by chat.")
