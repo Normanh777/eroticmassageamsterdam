@@ -9,6 +9,7 @@ RewriteEngine On
 # RewriteRule ^ https://www.eroticmassageamsterdam.com%{REQUEST_URI} [R=301,L]
 RewriteRule ^index\.html$ / [R=301,L]
 RedirectMatch 404 /\.git
+RedirectMatch 404 ^/_tools
 # Old profiles without a current masseuse
 RewriteRule ^dames/amanda/?$ /our-masseuses/ [R=301,L]
 RewriteRule ^dames/pandora/?$ /our-masseuses/ [R=301,L]
