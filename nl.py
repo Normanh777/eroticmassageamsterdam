@@ -70,7 +70,7 @@ def footer():
 <p>Dagelijks open van 16:00 tot 05:00 uur, vrijdag en zaterdag tot 06:00 uur.</p>
 <p><a class="btn btn-sm" href="/nl/contact/" data-chat>Direct contact</a></p></div>
 {col("Massages", [(P(f"/{s}/"), n) for s, n, _ in MASSAGES_NL] + [("/nl/happy-ending-massage/", "Happy ending massage"), ("/nl/nuru-massage/", "Nuru massage"), ("/nl/massages/", "Alle massages")])}
-{col("Locaties", [(P(f"/{s}/"), f"Erotische massage {n}") for s, n in CITIES[:9]] + [("/nl/locaties/", "Alle locaties")])}
+{col("Locaties", [("/nl/", "Amsterdam")] + [(P(f"/{s}/"), n) for s, n in FOOT_CITIES] + [("/nl/locaties/", "Alle locaties")])}
 {col("Informatie", [("/nl/over-ons/", "Over ons"), ("/nl/masseuses/", "Onze masseuses"), ("/nl/prijzen/", "Prijzen"), ("/nl/pakketten/", "Pakketten"), ("/nl/pakketten/couples-massage/", "Massage voor koppels"), ("/nl/erotische-massage-voor-vrouwen/", "Massage voor vrouwen"), ("/nl/boeken/", "Boeken"), ("/nl/contact/", "Contact"), ("/", "English")])}
 </div>
 <div class="wrap ftr-base"><p>© {date.today().year} {BRAND} · Licentienr. D18.000305</p><p><a href="/nl/privacy/">Privacy</a> · <a href="/nl/voorwaarden/">Voorwaarden</a> · 18+ · Alleen voor volwassenen</p></div>
@@ -418,7 +418,7 @@ def build_nl():
                  f'Voor andere steden zie onze <a href="/nl/prijzen/">prijzen</a>.</p></div></section>'
                  f'{cta(f"Boek uw {name.lower()} in de chat. Wij bevestigen masseuse, tijd en tarief voordat iets definitief is.")}{fh}'
                  f'<section class="sec"><div class="wrap"><h2>Andere massages</h2><ul class="chips">{others}<li><a href="/nl/happy-ending-massage/">Happy ending massage</a></li><li><a href="/nl/nuru-massage/">Nuru massage</a></li><li><a href="/nl/massages/">Alle massages</a></li></ul>'
-                 f'<h2 class="mt">Waar wij komen</h2><ul class="chips">{cchips()}</ul>'
+                 f'<h2 class="mt">Waar wij komen</h2><ul class="chips"><li><a href="/nl/">Amsterdam</a></li>{"".join(f"<li><a href=" + chr(34) + NLMAP[f"/{cs}/"] + chr(34) + f">{E(cn)}</a></li>" for cs, cn in FOOT_CITIES)}<li><a href="/nl/locaties/">Alle locaties</a></li></ul>'
                  f'<h2 class="mt">Kies uw masseuse</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:10])}</ul>'
                  f'<p class="center"><a class="link" href="/nl/masseuses/">Bekijk alle masseuses</a></p></div></section>')
         path = NLMAP[f"/{slug}/"]
@@ -432,7 +432,7 @@ def build_nl():
     inner = (f'<section class="sec"><div class="wrap"><ul class="tiles">{"".join(tile(s, n, d, "h2") for s, n, d in MASSAGES_NL)}</ul></div></section>'
              '<section class="sec sec-alt"><div class="wrap split"><div class="split-img">' + pic("hot-stone-massage", "Massage met warme stenen", 900, 600) + '</div><div class="prose"><h2>Eén service, op uw manier</h2>'
              '<p>Elke massage op deze pagina is een massage aan huis: uw masseuse komt naar uw hotel of naar u thuis. U kiest de massage en de masseuse, en u kunt massages combineren in een langere boeking.</p>'
-             '<p>Zoekt u een <a href="/nl/happy-ending-massage/">happy ending massage</a>? Die hoort bij al onze erotische massages.</p>'
+             '<p>Zoekt u een <a href="/nl/happy-ending-massage/">happy ending massage</a>? Die hoort bij al onze erotische massages.</p><p>Ook vrouwen en koppels kunnen bij ons boeken: lees meer over <a href="/nl/erotische-massage-voor-vrouwen/">erotische massage voor vrouwen</a> en onze <a href="/nl/pakketten/couples-massage/">massage voor koppels</a>. Elke massage is een <a href="/nl/erotische-massage-aan-huis/">erotische massage aan huis</a>: uw masseuse komt naar u toe.</p>'
              '<p>Weet u niet wat bij u past? Vertel ons in de chat wat u prettig vindt, of u zacht of stevig wilt en hoeveel tijd u heeft. Wij stellen een massage en een masseuse voor, en u beslist.</p></div></div></section>' + cta())
     urls.append(sub("/nl/massages/", "Erotische Massages | Alle Massages van Erotic Massage Amsterdam",
                     "Alle erotische massages in Amsterdam: sensuele, tantra, body to body, 4 hands, Thaise en full body massage bij u in het hotel of thuis.",
@@ -454,14 +454,14 @@ def build_nl():
                (f"Tot hoe laat kan ik boeken in {name}?", HOURS_NL + f" Geef in de chat door hoe laat u uw masseuse in {name} wilt ontvangen."),
                (f"Welke massages kan ik boeken in {name}?", "Al onze erotische massages: sensuele, tantra, body to body, 4 hands, Thaise en full body massage, elk met een happy ending.")]
         fh, fs = faq_block(faq, f"Vragen over erotische massage in {name}")
-        inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Erotische massage aan huis of in uw hotel in {E(name)}</h2><p>{E(a)}</p><p>{E(b)}</p>'
+        inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Erotische massage aan huis of in uw hotel in {E(name)}</h2><p>{E(a)}</p><p>{E(b)}</p>{city_more(name, True)}'
                  f'<h2>Prijs in {E(name)}</h2><p>{E(pl)} Bekijk alle <a href="/nl/prijzen/">prijzen</a>.</p>'
                  f'<h2>Welke massages kunt u boeken in {E(name)}?</h2><p>Al onze massages zijn beschikbaar in {E(name)}:</p><ul class="chips">{mchips}</ul>'
                  f'<h2>Hoe snel kan uw masseuse in {E(name)} zijn?</h2><p>{E(arr)}</p>{near_html}'
                  f'<h2>Zo boekt u</h2><p>Open de chat, vertel ons uw adres of hotel in {E(name)}, het gewenste tijdstip en de masseuse die u aanspreekt. Wij bevestigen beschikbaarheid en tarief, en uw masseuse komt naar u toe. {HOURS_NL} Lees meer op de pagina <a href="/nl/boeken/">boeken</a>.</p></div></section>'
-                 f'<section class="sec sec-wine sec-c"><div class="wrap"><h2>Onze masseuses</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:10])}</ul><p class="center"><a class="link" href="/nl/masseuses/">Bekijk alle masseuses</a></p></div></section>'
+                 f'<section class="sec sec-wine sec-c"><div class="wrap"><h2>Onze masseuses</h2><ul class="cards">{"".join(card(m) for m in city_girls(name, 10))}</ul><p class="center"><a class="link" href="/nl/masseuses/">Bekijk alle masseuses</a></p></div></section>'
                  f'{cta(f"Boek uw erotische massage in {name} via de chat.")}{fh}'
-                 f'<section class="sec"><div class="wrap"><h2>Andere locaties</h2><ul class="chips">{cchips(name)}</ul></div></section>')
+                 f'<section class="sec"><div class="wrap"><h2>Meer locaties</h2><ul class="chips"><li><a href="/nl/">Erotische massage Amsterdam</a></li>{"".join(f"<li><a href=" + chr(34) + NLMAP["/" + CITY_SLUG[x] + "/"] + chr(34) + f">Erotische massage {E(x)}</a></li>" for x in near)}<li><a href="/nl/locaties/">Alle locaties</a></li><li><a href="/nl/prijzen/">Prijzen per locatie</a></li></ul></div></section>')
         d = f"Erotische massage in {name} bij u in het hotel of thuis. Sensuele, tantra en body to body massage door masseuses uit Amsterdam. Discreet, boeken via de chat."
         svc = {"@context": "https://schema.org", "@type": "Service", "name": f"Erotische massage {name}", "serviceType": "Erotische massage", "provider": {"@id": SITE + "/#org"},
                "areaServed": {"@type": "City", "name": name}, "url": SITE + path}

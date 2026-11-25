@@ -26,6 +26,7 @@ def join_links(items, last):
     return items[0] if len(items) == 1 else ", ".join(items[:-1]) + f" {last} " + items[-1]
 
 
+FOOT_CITIES = [("erotic-massage-schiphol", "Schiphol"), ("erotic-massage-amstelveen", "Amstelveen"), ("erotic-massage-haarlem", "Haarlem"), ("erotic-massage-hoofddorp", "Hoofddorp")]
 NUM_EN = {"2": "two", "3": "three", "6": "six"}
 NUM_NL = {"2": "twee", "3": "drie", "6": "zes"}
 GLEAP_KEY = "UiBVsUqQcbHiHGp6Di9dlgUtnbhhW54f"  # same Gleap project as passionescorts.nl
@@ -137,6 +138,7 @@ CITIES = [
     ("erotic-massage-bussum", "Bussum"), ("erotic-massage-huizen", "Huizen"), ("erotic-massage-laren", "Laren"),
     ("erotic-massage-almere", "Almere"), ("erotic-massage-uithoorn", "Uithoorn"), ("erotic-massage-aalsmeer", "Aalsmeer"),
     ("erotic-massage-eindhoven", "Eindhoven"), ("erotic-massage-maastricht", "Maastricht"),
+    ("erotic-massage-leiden", "Leiden"), ("erotic-massage-heemskerk", "Heemskerk"), ("erotic-massage-vianen", "Vianen"),
 ]
 
 FAQ = [
@@ -224,7 +226,7 @@ def footer():
 <p>Open daily 16:00 to 05:00, Friday and Saturday until 06:00.</p>
 <p><a class="btn btn-sm" href="/contact/" data-chat>Direct contact</a></p></div>
 {col("Massages", [(f"/{s}/", n) for s, n, _ in MASSAGES] + [("/happy-ending-massage/", "Happy Ending Massage"), ("/nuru-massage/", "Nuru Massage"), ("/services/", "All services")])}
-{col("Locations", [(f"/{s}/", f"Erotic massage {n}") for s, n in CITIES[:9]] + [("/other-cities/", "All locations")])}
+{col("Locations", [("/", "Amsterdam")] + [(f"/{s}/", n) for s, n in FOOT_CITIES] + [("/other-cities/", "All locations")])}
 {col("Packages", [("/packages/dinner-date/", "Dinner Date & Massage"), ("/packages/amsterdam-tour/", "Amsterdam Tour & Massage"), ("/packages/duo-deluxe/", "Duo Deluxe"), ("/packages/schiphol-stopover/", "Schiphol Stopover"), ("/packages/couples-massage/", "Couples Massage"), ("/erotic-massage-for-women/", "Massage for Women"), ("/packages/", "All packages")])}
 {col("Information", [("/about/", "About us"), ("/our-masseuses/", "Our masseuses"), ("/prices/", "Prices"), ("/bookings/", "Bookings"), ("/our-partners/", "Our partners"), ("/contact/", "Contact")])}
 </div>
@@ -630,7 +632,7 @@ def massage_pages():
                  f'{cta(f"Book your {name.lower()} in the chat. We confirm masseuse, time and rate before anything is final.")}'
                  '<!--faq-->'
                  f'<section class="sec"><div class="wrap"><h2>Other massages</h2><ul class="chips">{others}<li><a href="/happy-ending-massage/">Happy Ending Massage</a></li><li><a href="/nuru-massage/">Nuru Massage</a></li><li><a href="/services/">All services</a></li></ul>'
-                 f'{link_row("Popular packages", TOP_PKG)}{link_row("Where we come", [("/", "Amsterdam")] + [(f"/{cs}/", cn) for cs, cn in CITIES[:11]] + [("/other-cities/", "All locations")])}'
+                 f'{link_row("Popular packages", TOP_PKG)}{link_row("Where we come", [("/", "Amsterdam")] + [(f"/{cs}/", cn) for cs, cn in FOOT_CITIES] + [("/other-cities/", "All locations")])}'
                  f'<h2 class="mt">Choose your masseuse</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:6])}</ul>'
                  f'<p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>')
         svc = {"@context": "https://schema.org", "@type": "Service", "name": f"{name} Amsterdam", "serviceType": name,
@@ -655,7 +657,7 @@ def massage_pages():
     inner = (f'<section class="sec"><div class="wrap"><ul class="tiles">{tiles}</ul></div></section>'
              '<section class="sec sec-alt"><div class="wrap split"><div class="split-img">' + pic("hot-stone-massage", "Massage with warm stones", 900, 600) + '</div><div class="prose"><h2>One service, your way</h2>'
              '<p>Every massage on this page is an outcall massage: your masseuse comes to your hotel or home. You choose the massage and the masseuse, and you can combine massages in a longer booking.</p>'
-             '<p>Looking for a <a href="/happy-ending-massage/">happy ending massage</a>? It is part of all our erotic massages. We also offer a <a href="/nuru-massage/">nuru massage</a> with gel.</p><p>Not sure what suits you? Tell us in the chat what you enjoy, whether you prefer soft or firm, and how much time you have. We suggest a massage and a masseuse, and you decide.</p></div></div></section>'
+             '<p>Looking for a <a href="/happy-ending-massage/">happy ending massage</a>? It is part of all our erotic massages. We also offer a <a href="/nuru-massage/">nuru massage</a> with gel.</p><p>We also welcome bookings by women and couples: read more about <a href="/erotic-massage-for-women/">erotic massage for women</a> and our <a href="/packages/couples-massage/">couples massage</a>. Every massage is an <a href="/outcall-massage-amsterdam/">outcall massage</a>: your masseuse comes to you.</p><p>Not sure what suits you? Tell us in the chat what you enjoy, whether you prefer soft or firm, and how much time you have. We suggest a massage and a masseuse, and you decide.</p></div></div></section>'
              f'{cta()}')
     urls.append(sub("/services/", "Erotic Massage Services | Erotic Massage Amsterdam",
                     "All erotic massage services in Amsterdam: sensual, tantra, body 2 body, 4 hands, Thai and full body massage at your hotel or home. Booked by chat.",
@@ -696,15 +698,15 @@ def city_pages():
                  (f"Until what time can I book in {name}?", HOURS_EN + f" Tell us in the chat when you would like your masseuse to arrive in {name}."),
                  (f"Which massages can I book in {name}?", f"All our erotic massages: sensual, tantra, body to body, 4 hands, Thai and full body massage, each with a happy ending.")]
         cf_html, cf_schema = faq_block(c_faq, f"Questions about erotic massage in {name}")
-        inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Erotic massage at your hotel or home in {E(name)}</h2><p>{E(a)}</p><p>{E(b)}</p>'
+        inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Erotic massage at your hotel or home in {E(name)}</h2><p>{E(a)}</p><p>{E(b)}</p>{city_more(name)}'
                  f'<h2>Price in {E(name)}</h2><p>{E(price_line)} See all <a href="/prices/">prices</a>.</p>'
                  f'<h2>Which massages can I book in {E(name)}?</h2><p>All our massages are available in {E(name)}:</p><ul class="chips">{ml}</ul>'
                  f'<h2>How quickly can your masseuse be in {E(name)}?</h2><p>{E(arr)}</p>{near_html}'
                  f'<h2>How to book</h2><p>Open the chat, tell us your address or hotel in {E(name)}, the time you prefer and the masseuse you like. We confirm availability and rate, and your masseuse comes to you. {HOURS_EN} Read more on the <a href="/bookings/">bookings</a> page.</p></div></section>'
-                 f'<section class="sec sec-alt"><div class="wrap"><h2>Our masseuses</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:8])}</ul><p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>'
+                 f'<section class="sec sec-alt"><div class="wrap"><h2>Our masseuses</h2><ul class="cards">{"".join(card(m) for m in city_girls(name, 8))}</ul><p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>'
                  f'{cta(f"Book your erotic massage in {name} in the chat.")}'
                  f'{cf_html}'
-                 f'<section class="sec"><div class="wrap"><h2>Other locations</h2><ul class="chips"><li><a href="/">Erotic massage Amsterdam</a></li>{others}<li><a href="/other-cities/">Other cities</a></li></ul>{link_row("Popular packages", TOP_PKG)}</div></section>')
+                 f'<section class="sec"><div class="wrap"><h2>More locations</h2><ul class="chips"><li><a href="/">Erotic massage Amsterdam</a></li>{"".join(f"<li><a href=" + chr(34) + "/" + CITY_SLUG[x] + "/" + chr(34) + f">Erotic massage {E(x)}</a></li>" for x in near)}<li><a href="/other-cities/">All locations</a></li><li><a href="/prices/">Prices per location</a></li></ul></div></section>')
         desc = f"Erotic massage in {name} at your hotel or home. Sensual, tantra and body 2 body massage by selected masseuses from Amsterdam. Discreet, booked by chat."
         svc = {"@context": "https://schema.org", "@type": "Service", "name": f"Erotic massage {name}", "serviceType": "Erotic massage",
                "provider": {"@id": SITE + "/#org"}, "areaServed": {"@type": "City", "name": name}, "url": f"{SITE}/{slug}/"}
@@ -1169,6 +1171,7 @@ exec(open(os.path.join(ROOT, "nl.py"), encoding="utf-8").read())
 exec(open(os.path.join(ROOT, "nl2.py"), encoding="utf-8").read())
 exec(open(os.path.join(ROOT, "nl3.py"), encoding="utf-8").read())
 exec(open(os.path.join(ROOT, "nl4.py"), encoding="utf-8").read())
+exec(open(os.path.join(ROOT, "nl5.py"), encoding="utf-8").read())
 
 
 def build():
