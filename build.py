@@ -436,7 +436,7 @@ PRICES = [  # location, price label, extra hour
     ("Eindhoven", "3 hours € 600", "€ 160"), ("Delft", "2 hours € 350", "€ 160"), ("Zandvoort", "€ 180", "€ 160"),
     ("Hilversum", "€ 180", "€ 160"), ("Heemskerk", "€ 180", "€ 160"), ("Maastricht", "6 hours € 1200", "€ 160"),
     ("Amstelveen", "€ 160", "€ 160"), ("Diemen", "€ 160", "€ 160"), ("Zaandam", "€ 160", "€ 160"), ("Weesp", "€ 160", "€ 160"), ("Aalsmeer", "€ 160", "€ 160"),
-    ("Purmerend", "€ 180", "€ 160"), ("Naarden", "€ 180", "€ 160"), ("Bussum", "€ 180", "€ 160"), ("Laren", "€ 180", "€ 160"), ("Uithoorn", "€ 180", "€ 160"), ("Almere", "€ 200", "€ 160"),
+    ("Purmerend", "€ 180", "€ 160"), ("Naarden", "€ 180", "€ 160"), ("Bussum", "€ 180", "€ 160"), ("Laren", "€ 180", "€ 160"), ("Uithoorn", "€ 180", "€ 160"), ("Almere", "€ 200", "€ 160"), ("Huizen", "€ 200", "€ 160"),
 ]
 PRICE_OF = {p[0]: p[1] for p in PRICES}
 CITY_SLUG = {n: s for s, n in CITIES}
