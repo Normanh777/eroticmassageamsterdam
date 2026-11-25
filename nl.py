@@ -141,6 +141,7 @@ def sub_nl(path, title, desc, h1, lead, inner, trail, schema=None, og_image=None
 NL_FAQ_HOME = [
     ("Wat is een erotische massage?", "Een erotische massage is een massage van het hele lichaam met warme olie, waarbij ontspanning en sensuele aanraking samengaan. Het begint als een klassieke massage van rug, schouders en benen en wordt gaandeweg trager en intiemer, met een happy ending als afsluiting."),
     ("Wat zijn jullie openingstijden?", HOURS_NL),
+    ("Hoe snel kan een masseuse bij mijn hotel zijn?", "In Amsterdam kan uw masseuse binnen 45 minuten bij u zijn. Buiten Amsterdam binnen een uur. Voor Eindhoven en Maastricht spreken wij de tijd in overleg met u af in de chat."),
     ("Hoe boek ik een erotische massage in Amsterdam?", "Open de chat op deze website en kies live chat, WhatsApp of Telegram. Vertel ons waar u verblijft, welk tijdstip u prettig vindt en welke massage of masseuse u in gedachten heeft. Wij bevestigen alles voordat het definitief is."),
     ("Komt de masseuse naar mijn hotel?", "Ja. Onze masseuses bezoeken hotels en privéadressen in Amsterdam en omgeving, waaronder Schiphol, Hoofddorp en Haarlem. Andere steden vindt u op de prijzenpagina."),
     ("Kan ik zelf een masseuse kiezen?", "Ja. Bekijk de profielen, kies de masseuse die u aanspreekt en noem haar naam in de chat. Is zij niet beschikbaar, dan stellen wij een alternatief voor en beslist u."),
@@ -440,17 +441,23 @@ def build_nl():
     # ---- cities
     for slug, name in CITIES:
         a, b = NL_CITY[name]
+        arr = (f"Voor {name} spreken wij de aankomsttijd in overleg met u af in de chat, vanwege de afstand vanaf Amsterdam." if name in FAR
+               else f"Uw masseuse reist vanuit Amsterdam en kan binnen een uur bij u in {name} zijn. In Amsterdam zelf is dat binnen 45 minuten.")
+        near = NEAR[name]
+        near_html = (f'<h2>In de buurt van {E(name)}</h2><p>Verblijft u net buiten {E(name)}? Wij komen ook in ' + join_links([f'<a href="{NLMAP[f"/{CITY_SLUG[x]}/"]}">{E(x)}</a>' for x in near], "en") + '.</p>') if near else ""
         path = NLMAP[f"/{slug}/"]
         pl = nl_city_price(name)
         faq = [(f"Wat kost een erotische massage in {name}?", pl),
                (f"Komen jullie naar hotels en privéadressen in {name}?", f"Ja. Uw masseuse komt naar uw hotel, appartement of huis in {name}. Geef het adres en de gewenste tijd door in de chat."),
                (f"Hoe ver van tevoren moet ik boeken in {name}?", f"Hoe eerder hoe beter, want uw masseuse reist naar {name} en uw favoriet kan al geboekt zijn. Boeken op dezelfde dag is vaak mogelijk; vraag het in de chat."),
+               (f"Hoe snel kan een masseuse in {name} zijn?", arr),
                (f"Tot hoe laat kan ik boeken in {name}?", HOURS_NL + f" Geef in de chat door hoe laat u uw masseuse in {name} wilt ontvangen."),
                (f"Welke massages kan ik boeken in {name}?", "Al onze erotische massages: sensuele, tantra, body to body, 4 hands, Thaise en full body massage, elk met een happy ending.")]
         fh, fs = faq_block(faq, f"Vragen over erotische massage in {name}")
         inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Erotische massage aan huis of in uw hotel in {E(name)}</h2><p>{E(a)}</p><p>{E(b)}</p>'
                  f'<h2>Prijs in {E(name)}</h2><p>{E(pl)} Bekijk alle <a href="/nl/prijzen/">prijzen</a>.</p>'
                  f'<h2>Welke massages kunt u boeken in {E(name)}?</h2><p>Al onze massages zijn beschikbaar in {E(name)}:</p><ul class="chips">{mchips}</ul>'
+                 f'<h2>Hoe snel kan uw masseuse in {E(name)} zijn?</h2><p>{E(arr)}</p>{near_html}'
                  f'<h2>Zo boekt u</h2><p>Open de chat, vertel ons uw adres of hotel in {E(name)}, het gewenste tijdstip en de masseuse die u aanspreekt. Wij bevestigen beschikbaarheid en tarief, en uw masseuse komt naar u toe. {HOURS_NL} Lees meer op de pagina <a href="/nl/boeken/">boeken</a>.</p></div></section>'
                  f'<section class="sec sec-wine sec-c"><div class="wrap"><h2>Onze masseuses</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:10])}</ul><p class="center"><a class="link" href="/nl/masseuses/">Bekijk alle masseuses</a></p></div></section>'
                  f'{cta(f"Boek uw erotische massage in {name} via de chat.")}{fh}'

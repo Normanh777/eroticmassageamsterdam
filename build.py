@@ -12,6 +12,20 @@ SITE = "https://www.eroticmassageamsterdam.com"
 BRAND = "Erotic Massage Amsterdam"
 HOURS_EN = "We are open every day from 16:00 to 05:00, and on Friday and Saturday until 06:00."
 HOURS_NL = "Wij zijn elke dag open van 16:00 tot 05:00 uur, en op vrijdag en zaterdag tot 06:00 uur."
+NEAR = {"Schiphol": ["Hoofddorp", "Amstelveen", "Aalsmeer"], "Hoofddorp": ["Schiphol", "Haarlem", "Aalsmeer"], "Haarlem": ["Zandvoort", "Hoofddorp", "Schiphol"],
+        "Zandvoort": ["Haarlem", "Hoofddorp"], "Hilversum": ["Bussum", "Laren", "Naarden"], "Utrecht": ["Hilversum"], "Den Haag": ["Delft", "Rotterdam"],
+        "Rotterdam": ["Delft", "Den Haag"], "Delft": ["Den Haag", "Rotterdam"], "Amstelveen": ["Schiphol", "Uithoorn", "Aalsmeer", "Diemen"],
+        "Diemen": ["Weesp", "Amstelveen"], "Zaandam": ["Purmerend"], "Purmerend": ["Zaandam"], "Weesp": ["Diemen", "Naarden", "Almere"],
+        "Naarden": ["Bussum", "Huizen", "Weesp"], "Bussum": ["Naarden", "Hilversum", "Laren"], "Huizen": ["Naarden", "Laren", "Bussum"],
+        "Laren": ["Hilversum", "Huizen", "Bussum"], "Almere": ["Weesp", "Naarden"], "Uithoorn": ["Amstelveen", "Aalsmeer"],
+        "Aalsmeer": ["Uithoorn", "Amstelveen", "Schiphol"], "Eindhoven": [], "Maastricht": []}
+FAR = ("Eindhoven", "Maastricht")
+
+
+def join_links(items, last):
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + f" {last} " + items[-1]
+
+
 NUM_EN = {"2": "two", "3": "three", "6": "six"}
 NUM_NL = {"2": "twee", "3": "drie", "6": "zes"}
 GLEAP_KEY = "UiBVsUqQcbHiHGp6Di9dlgUtnbhhW54f"  # same Gleap project as passionescorts.nl
@@ -129,6 +143,7 @@ FAQ = [
     ("What is an erotic massage?",
      "An erotic massage is a full body massage with warm oil in which relaxation and sensual touch go together. It starts like a classic massage for back, shoulders and legs and becomes slower and more intimate, ending with a happy ending."),
     ("What are your opening hours?", HOURS_EN),
+    ("How quickly can a masseuse be at my hotel?", "In Amsterdam your masseuse can be with you within 45 minutes. Outside Amsterdam within an hour. For Eindhoven and Maastricht we agree the time with you in the chat."),
     ("How do I book an erotic massage in Amsterdam?",
      "Open the chat on this website and choose live chat, WhatsApp or Telegram. Tell us where you are staying, the time you prefer and which massage or masseuse you have in mind. We confirm the details with you before anything is final."),
     ("Do you come to my hotel?",
@@ -652,6 +667,10 @@ def city_pages():
     urls = []
     for slug, name in CITIES:
         a, b = CITY_TEXT[name]
+        arr = (f"For {name} we agree the arrival time with you in the chat, because of the distance from Amsterdam." if name in FAR
+               else f"Your masseuse travels from Amsterdam and can be with you in {name} within an hour. In Amsterdam itself that is within 45 minutes.")
+        near = NEAR[name]
+        near_html = (f'<h2>Near {E(name)}</h2><p>Are you staying just outside {E(name)}? We also visit ' + join_links([f'<a href="/{CITY_SLUG[x]}/">{E(x)}</a>' for x in near], "and") + '.</p>') if near else ""
         price = PRICE_OF.get(name)
         mm = re.match(r"(\d) hours (.*)", price or "")
         minimum = bool(mm)
@@ -673,12 +692,14 @@ def city_pages():
         c_faq = [(f"What does an erotic massage in {name} cost?", price_line),
                  (f"Do you visit hotels and private addresses in {name}?", f"Yes. Your masseuse comes to your hotel, apartment or home in {name}. Tell us the address and the time you prefer in the chat."),
                  (f"How far in advance should I book in {name}?", f"The earlier the better, because your masseuse travels to {name} and your favourite may be booked. Same day bookings are often possible; ask us in the chat."),
+                 (f"How quickly can a masseuse be in {name}?", arr),
                  (f"Until what time can I book in {name}?", HOURS_EN + f" Tell us in the chat when you would like your masseuse to arrive in {name}."),
                  (f"Which massages can I book in {name}?", f"All our erotic massages: sensual, tantra, body to body, 4 hands, Thai and full body massage, each with a happy ending.")]
         cf_html, cf_schema = faq_block(c_faq, f"Questions about erotic massage in {name}")
         inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Erotic massage at your hotel or home in {E(name)}</h2><p>{E(a)}</p><p>{E(b)}</p>'
                  f'<h2>Price in {E(name)}</h2><p>{E(price_line)} See all <a href="/prices/">prices</a>.</p>'
                  f'<h2>Which massages can I book in {E(name)}?</h2><p>All our massages are available in {E(name)}:</p><ul class="chips">{ml}</ul>'
+                 f'<h2>How quickly can your masseuse be in {E(name)}?</h2><p>{E(arr)}</p>{near_html}'
                  f'<h2>How to book</h2><p>Open the chat, tell us your address or hotel in {E(name)}, the time you prefer and the masseuse you like. We confirm availability and rate, and your masseuse comes to you. {HOURS_EN} Read more on the <a href="/bookings/">bookings</a> page.</p></div></section>'
                  f'<section class="sec sec-alt"><div class="wrap"><h2>Our masseuses</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:8])}</ul><p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>'
                  f'{cta(f"Book your erotic massage in {name} in the chat.")}'
