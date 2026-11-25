@@ -1,3 +1,4 @@
+import re
 #!/usr/bin/env python3
 """Static site generator for eroticmassageamsterdam.com.
 Every old URL keeps its exact path (trailing slash). Output: ./dist
@@ -9,6 +10,10 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 DIST = os.path.join(ROOT, "dist")
 SITE = "https://www.eroticmassageamsterdam.com"
 BRAND = "Erotic Massage Amsterdam"
+HOURS_EN = "We are open every day from 16:00 to 05:00, and on Friday and Saturday until 06:00."
+HOURS_NL = "Wij zijn elke dag open van 16:00 tot 05:00 uur, en op vrijdag en zaterdag tot 06:00 uur."
+NUM_EN = {"2": "two", "3": "three", "6": "six"}
+NUM_NL = {"2": "twee", "3": "drie", "6": "zes"}
 GLEAP_KEY = "UiBVsUqQcbHiHGp6Di9dlgUtnbhhW54f"  # same Gleap project as passionescorts.nl
 TODAY = date.today().isoformat()
 
@@ -117,9 +122,13 @@ CITIES = [
     ("erotic-massage-purmerend", "Purmerend"), ("erotic-massage-weesp", "Weesp"), ("erotic-massage-naarden", "Naarden"),
     ("erotic-massage-bussum", "Bussum"), ("erotic-massage-huizen", "Huizen"), ("erotic-massage-laren", "Laren"),
     ("erotic-massage-almere", "Almere"), ("erotic-massage-uithoorn", "Uithoorn"), ("erotic-massage-aalsmeer", "Aalsmeer"),
+    ("erotic-massage-eindhoven", "Eindhoven"), ("erotic-massage-maastricht", "Maastricht"),
 ]
 
 FAQ = [
+    ("What is an erotic massage?",
+     "An erotic massage is a full body massage with warm oil in which relaxation and sensual touch go together. It starts like a classic massage for back, shoulders and legs and becomes slower and more intimate, ending with a happy ending."),
+    ("What are your opening hours?", HOURS_EN),
     ("How do I book an erotic massage in Amsterdam?",
      "Open the chat on this website and choose live chat, WhatsApp or Telegram. Tell us where you are staying, the time you prefer and which massage or masseuse you have in mind. We confirm the details with you before anything is final."),
     ("Do you come to my hotel?",
@@ -196,11 +205,12 @@ def footer():
     return f"""<footer class="ftr">
 <div class="wrap ftr-grid">
 <div><p class="logo">{LOGO_MARK}<span class="logo-t"><span>Erotic Massage</span><small>Amsterdam</small></span></p>
-<p>Sensual outcall massage at your hotel or home in Amsterdam and beyond. Discreet, personal and arranged by chat.</p>
+<p>Sensual <a href="/outcall-massage-amsterdam/">outcall massage</a> at your hotel or home in Amsterdam and beyond. Discreet, personal and arranged by chat.</p>
+<p>Open daily 16:00 to 05:00, Friday and Saturday until 06:00.</p>
 <p><a class="btn btn-sm" href="/contact/" data-chat>Direct contact</a></p></div>
 {col("Massages", [(f"/{s}/", n) for s, n, _ in MASSAGES] + [("/happy-ending-massage/", "Happy Ending Massage"), ("/nuru-massage/", "Nuru Massage"), ("/services/", "All services")])}
 {col("Locations", [(f"/{s}/", f"Erotic massage {n}") for s, n in CITIES[:9]] + [("/other-cities/", "All locations")])}
-{col("Packages", [("/packages/dinner-date/", "Dinner Date & Massage"), ("/packages/amsterdam-tour/", "Amsterdam Tour & Massage"), ("/packages/duo-deluxe/", "Duo Deluxe"), ("/packages/schiphol-stopover/", "Schiphol Stopover"), ("/packages/couples-massage/", "Couples Massage"), ("/packages/", "All packages")])}
+{col("Packages", [("/packages/dinner-date/", "Dinner Date & Massage"), ("/packages/amsterdam-tour/", "Amsterdam Tour & Massage"), ("/packages/duo-deluxe/", "Duo Deluxe"), ("/packages/schiphol-stopover/", "Schiphol Stopover"), ("/packages/couples-massage/", "Couples Massage"), ("/erotic-massage-for-women/", "Massage for Women"), ("/packages/", "All packages")])}
 {col("Information", [("/about/", "About us"), ("/our-masseuses/", "Our masseuses"), ("/prices/", "Prices"), ("/bookings/", "Bookings"), ("/our-partners/", "Our partners"), ("/contact/", "Contact")])}
 </div>
 <div class="wrap ftr-base"><p>© {date.today().year} {BRAND} · Licence no. D18.000305</p><p><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · 18+ · Adults only</p></div>
@@ -482,6 +492,10 @@ MASSAGE_TEXT = {
 }
 
 CITY_TEXT = {
+    "Eindhoven": ("Eindhoven is the city of technology and design in the south of the Netherlands, and a place where many people stay for work. Our masseuses travel from Amsterdam to your hotel or home in Eindhoven.",
+                  "Because of the distance, a booking in Eindhoven is for at least three hours. That gives you time for a long massage without watching the clock, or for one of our packages. Book ahead, so your masseuse can plan the journey."),
+    "Maastricht": ("Maastricht lies in the far south of the Netherlands, close to the Belgian and German borders. It is the longest journey our masseuses make from Amsterdam, and they come to your hotel or home in the city.",
+                   "Because of the distance, a booking in Maastricht is for at least six hours. That makes it an evening together rather than a single massage: think of a dinner date followed by a long massage. Book well ahead, so your masseuse can plan the journey."),
     "Schiphol": ("Staying at an airport hotel before an early flight, or just landed after a long one? Our masseuses visit the hotels around Schiphol Airport. The airport lies just outside Amsterdam, so the journey is short.",
                  "An erotic massage is one of the best ways to shake off a flight. An hour of warm oil and slow hands does more for stiff shoulders and a busy head than another evening in the hotel bar."),
     "Hoofddorp": ("Hoofddorp sits right next to Schiphol and is full of business hotels. If you are staying here for work, a conference or a stopover, a massage is a good way to end the day.",
@@ -639,18 +653,19 @@ def city_pages():
     for slug, name in CITIES:
         a, b = CITY_TEXT[name]
         price = PRICE_OF.get(name)
-        minimum = bool(price) and "2 hours" in price
+        mm = re.match(r"(\d) hours (.*)", price or "")
+        minimum = bool(mm)
         if not price:
             price_line = f"Ask us for the rate for {name} in the chat. It depends on the distance from Amsterdam, and we always confirm it before you book. Every extra hour is € 160."
         else:
-            price_line = (f"In {name} the rate is {price.replace('2 hours ', '')} for a minimum booking of two hours. " if minimum
+            price_line = (f"In {name} the rate is {mm.group(2)} for a minimum booking of {NUM_EN[mm.group(1)]} hours. " if minimum
                           else f"In {name} the rate is {price}. ") + "Every extra hour is € 160. Your rate is always confirmed in the chat before you book."
         others = "".join(f'<li><a href="/{s}/">Erotic massage {E(n)}</a></li>' for s, n in CITIES if s != slug)
         ml = "".join(f'<li><a href="/{s}/">{E(n)}</a></li>' for s, n, _ in MASSAGES)
         if not price:
             nl_price = f"Vraag het tarief voor {name} in de chat."
         elif minimum:
-            nl_price = f"Het tarief in {name} is {price.replace('2 hours ', '')} voor minimaal 2 uur; elk extra uur is € 160."
+            nl_price = f"Het tarief in {name} is {mm.group(2)} voor minimaal {mm.group(1)} uur; elk extra uur is € 160."
         else:
             nl_price = f"Het tarief in {name} is {price} per uur; elk extra uur is € 160."
         nl = (f'<h2 lang="nl">Erotische massage {E(name)}</h2><p lang="nl">Zoekt u een erotische massage in {E(name)}? Onze masseuses komen naar uw hotel of bij u thuis in {E(name)}. '
@@ -658,12 +673,13 @@ def city_pages():
         c_faq = [(f"What does an erotic massage in {name} cost?", price_line),
                  (f"Do you visit hotels and private addresses in {name}?", f"Yes. Your masseuse comes to your hotel, apartment or home in {name}. Tell us the address and the time you prefer in the chat."),
                  (f"How far in advance should I book in {name}?", f"The earlier the better, because your masseuse travels to {name} and your favourite may be booked. Same day bookings are often possible; ask us in the chat."),
+                 (f"Until what time can I book in {name}?", HOURS_EN + f" Tell us in the chat when you would like your masseuse to arrive in {name}."),
                  (f"Which massages can I book in {name}?", f"All our erotic massages: sensual, tantra, body to body, 4 hands, Thai and full body massage, each with a happy ending.")]
         cf_html, cf_schema = faq_block(c_faq, f"Questions about erotic massage in {name}")
         inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Erotic massage at your hotel or home in {E(name)}</h2><p>{E(a)}</p><p>{E(b)}</p>'
                  f'<h2>Price in {E(name)}</h2><p>{E(price_line)} See all <a href="/prices/">prices</a>.</p>'
                  f'<h2>Which massages can I book in {E(name)}?</h2><p>All our massages are available in {E(name)}:</p><ul class="chips">{ml}</ul>'
-                 f'<h2>How to book</h2><p>Open the chat, tell us your address or hotel in {E(name)}, the time you prefer and the masseuse you like. We confirm availability and rate, and your masseuse comes to you. Read more on the <a href="/bookings/">bookings</a> page.</p></div></section>'
+                 f'<h2>How to book</h2><p>Open the chat, tell us your address or hotel in {E(name)}, the time you prefer and the masseuse you like. We confirm availability and rate, and your masseuse comes to you. {HOURS_EN} Read more on the <a href="/bookings/">bookings</a> page.</p></div></section>'
                  f'<section class="sec sec-alt"><div class="wrap"><h2>Our masseuses</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:8])}</ul><p class="center"><a class="link" href="/our-masseuses/">View all masseuses</a></p></div></section>'
                  f'{cta(f"Book your erotic massage in {name} in the chat.")}'
                  f'{cf_html}'
@@ -1131,6 +1147,7 @@ def info_pages():
 exec(open(os.path.join(ROOT, "nl.py"), encoding="utf-8").read())
 exec(open(os.path.join(ROOT, "nl2.py"), encoding="utf-8").read())
 exec(open(os.path.join(ROOT, "nl3.py"), encoding="utf-8").read())
+exec(open(os.path.join(ROOT, "nl4.py"), encoding="utf-8").read())
 
 
 def build():
@@ -1139,7 +1156,7 @@ def build():
     static = os.path.join(ROOT, "static")
     if os.path.isdir(static):
         shutil.copytree(static, DIST, dirs_exist_ok=True)
-    urls = [home()] + masseuse_pages() + massage_pages() + city_pages() + info_pages() + build_nl() + build_nl2() + nuru_pages() + legal_pages()
+    urls = [home()] + masseuse_pages() + massage_pages() + city_pages() + info_pages() + build_nl() + build_nl2() + nuru_pages() + legal_pages() + extra_pages()
     # pages without real content yet stay out of the index and the sitemap
     for thin in ("/our-partners/",):
         fp = os.path.join(DIST, thin.strip("/"), "index.html")

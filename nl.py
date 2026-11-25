@@ -66,11 +66,12 @@ def footer():
     return f"""<footer class="ftr">
 <div class="wrap ftr-grid">
 <div><p class="logo">{LOGO_MARK}<span class="logo-t"><span>Erotic Massage</span><small>Amsterdam</small></span></p>
-<p>Erotische massage bij u in het hotel of thuis, in Amsterdam en omgeving. Discreet, persoonlijk en geregeld via de chat.</p>
+<p><a href="/nl/erotische-massage-aan-huis/">Erotische massage aan huis</a> of in uw hotel, in Amsterdam en omgeving. Discreet, persoonlijk en geregeld via de chat.</p>
+<p>Dagelijks open van 16:00 tot 05:00 uur, vrijdag en zaterdag tot 06:00 uur.</p>
 <p><a class="btn btn-sm" href="/nl/contact/" data-chat>Direct contact</a></p></div>
 {col("Massages", [(P(f"/{s}/"), n) for s, n, _ in MASSAGES_NL] + [("/nl/happy-ending-massage/", "Happy ending massage"), ("/nl/nuru-massage/", "Nuru massage"), ("/nl/massages/", "Alle massages")])}
 {col("Locaties", [(P(f"/{s}/"), f"Erotische massage {n}") for s, n in CITIES[:9]] + [("/nl/locaties/", "Alle locaties")])}
-{col("Informatie", [("/nl/over-ons/", "Over ons"), ("/nl/masseuses/", "Onze masseuses"), ("/nl/prijzen/", "Prijzen"), ("/nl/pakketten/", "Pakketten"), ("/nl/boeken/", "Boeken"), ("/nl/contact/", "Contact"), ("/", "English")])}
+{col("Informatie", [("/nl/over-ons/", "Over ons"), ("/nl/masseuses/", "Onze masseuses"), ("/nl/prijzen/", "Prijzen"), ("/nl/pakketten/", "Pakketten"), ("/nl/pakketten/couples-massage/", "Massage voor koppels"), ("/nl/erotische-massage-voor-vrouwen/", "Massage voor vrouwen"), ("/nl/boeken/", "Boeken"), ("/nl/contact/", "Contact"), ("/", "English")])}
 </div>
 <div class="wrap ftr-base"><p>© {date.today().year} {BRAND} · Licentienr. D18.000305</p><p><a href="/nl/privacy/">Privacy</a> · <a href="/nl/voorwaarden/">Voorwaarden</a> · 18+ · Alleen voor volwassenen</p></div>
 </footer>"""
@@ -138,6 +139,8 @@ def sub_nl(path, title, desc, h1, lead, inner, trail, schema=None, og_image=None
 
 # ------------------------------------------------------------------ content
 NL_FAQ_HOME = [
+    ("Wat is een erotische massage?", "Een erotische massage is een massage van het hele lichaam met warme olie, waarbij ontspanning en sensuele aanraking samengaan. Het begint als een klassieke massage van rug, schouders en benen en wordt gaandeweg trager en intiemer, met een happy ending als afsluiting."),
+    ("Wat zijn jullie openingstijden?", HOURS_NL),
     ("Hoe boek ik een erotische massage in Amsterdam?", "Open de chat op deze website en kies live chat, WhatsApp of Telegram. Vertel ons waar u verblijft, welk tijdstip u prettig vindt en welke massage of masseuse u in gedachten heeft. Wij bevestigen alles voordat het definitief is."),
     ("Komt de masseuse naar mijn hotel?", "Ja. Onze masseuses bezoeken hotels en privéadressen in Amsterdam en omgeving, waaronder Schiphol, Hoofddorp en Haarlem. Andere steden vindt u op de prijzenpagina."),
     ("Kan ik zelf een masseuse kiezen?", "Ja. Bekijk de profielen, kies de masseuse die u aanspreekt en noem haar naam in de chat. Is zij niet beschikbaar, dan stellen wij een alternatief voor en beslist u."),
@@ -230,6 +233,8 @@ NL_HAPPY = ("Happy Ending Massage Amsterdam | Bij u in Hotel of Thuis", "Happy e
      ("Hoe boek ik een happy ending massage in Amsterdam?", "Open de chat, kies live chat, WhatsApp of Telegram en vertel ons uw locatie, het gewenste tijdstip en de masseuse van uw keuze. Wij bevestigen alles voordat het definitief is.")])
 
 NL_CITY = {
+    "Eindhoven": ("Eindhoven is de stad van technologie en design in het zuiden van Nederland, en een plek waar veel mensen voor hun werk verblijven. Onze masseuses reizen vanuit Amsterdam naar uw hotel of huisadres in Eindhoven.", "Vanwege de afstand geldt in Eindhoven een boeking van minimaal drie uur. Zo heeft u de tijd voor een lange massage zonder op de klok te kijken, of voor een van onze pakketten. Boek op tijd, zodat uw masseuse de reis kan plannen."),
+    "Maastricht": ("Maastricht ligt in het uiterste zuiden van Nederland, dicht bij de Belgische en Duitse grens. Het is de langste reis die onze masseuses vanuit Amsterdam maken, en zij komen naar uw hotel of huisadres in de stad.", "Vanwege de afstand geldt in Maastricht een boeking van minimaal zes uur. Dat maakt het eerder een avond samen dan een losse massage: denk aan een dinner date met daarna een lange massage. Boek ruim van tevoren, zodat uw masseuse de reis kan plannen."),
     "Schiphol": ("Verblijft u in een luchthavenhotel voor een vroege vlucht, of bent u net geland na een lange reis? Onze masseuses bezoeken de hotels rond Schiphol. De luchthaven ligt vlak buiten Amsterdam, dus de reistijd is kort.", "Een erotische massage is een van de beste manieren om een vlucht van u af te schudden. Een uur warme olie en rustige handen doet meer voor stijve schouders en een vol hoofd dan nog een avond in de hotelbar."),
     "Hoofddorp": ("Hoofddorp ligt direct naast Schiphol en telt veel zakenhotels. Bent u hier voor werk, een congres of een tussenstop, dan is een massage een goede afsluiting van de dag.", "Uw masseuse komt naar uw hotelkamer of huisadres in Hoofddorp. U kiest de massage en de masseuse, wij regelen de planning."),
     "Haarlem": ("Haarlem is een historische stad net ten westen van Amsterdam, bekend om het oude centrum en de Grote Markt. Of u hier woont of in een van de hotels verblijft, onze masseuses komen naar u toe.", "Na een dag in de stad, of gewoon thuis op een rustige avond: een erotische massage in Haarlem is eenvoudig geregeld. Eén bericht in de chat is genoeg."),
@@ -274,8 +279,9 @@ def nl_city_price(name):
     price = PRICE_OF.get(name)
     if not price:
         return f"Vraag het tarief voor {name} in de chat. Het hangt af van de afstand vanaf Amsterdam en wij bevestigen het altijd voordat u boekt. Elk extra uur is € 160."
-    if "2 hours" in price:
-        return f"In {name} is het tarief {price.replace('2 hours ', '')} voor een minimale boeking van twee uur. Elk extra uur is € 160. Uw tarief wordt altijd in de chat bevestigd voordat u boekt."
+    mm = re.match(r"(\d) hours (.*)", price)
+    if mm:
+        return f"In {name} is het tarief {mm.group(2)} voor een minimale boeking van {NUM_NL[mm.group(1)]} uur. Elk extra uur is € 160. Uw tarief wordt altijd in de chat bevestigd voordat u boekt."
     return f"In {name} is het tarief {price} per uur. Elk extra uur is € 160. Uw tarief wordt altijd in de chat bevestigd voordat u boekt."
 
 
@@ -439,12 +445,13 @@ def build_nl():
         faq = [(f"Wat kost een erotische massage in {name}?", pl),
                (f"Komen jullie naar hotels en privéadressen in {name}?", f"Ja. Uw masseuse komt naar uw hotel, appartement of huis in {name}. Geef het adres en de gewenste tijd door in de chat."),
                (f"Hoe ver van tevoren moet ik boeken in {name}?", f"Hoe eerder hoe beter, want uw masseuse reist naar {name} en uw favoriet kan al geboekt zijn. Boeken op dezelfde dag is vaak mogelijk; vraag het in de chat."),
+               (f"Tot hoe laat kan ik boeken in {name}?", HOURS_NL + f" Geef in de chat door hoe laat u uw masseuse in {name} wilt ontvangen."),
                (f"Welke massages kan ik boeken in {name}?", "Al onze erotische massages: sensuele, tantra, body to body, 4 hands, Thaise en full body massage, elk met een happy ending.")]
         fh, fs = faq_block(faq, f"Vragen over erotische massage in {name}")
         inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Erotische massage aan huis of in uw hotel in {E(name)}</h2><p>{E(a)}</p><p>{E(b)}</p>'
                  f'<h2>Prijs in {E(name)}</h2><p>{E(pl)} Bekijk alle <a href="/nl/prijzen/">prijzen</a>.</p>'
                  f'<h2>Welke massages kunt u boeken in {E(name)}?</h2><p>Al onze massages zijn beschikbaar in {E(name)}:</p><ul class="chips">{mchips}</ul>'
-                 f'<h2>Zo boekt u</h2><p>Open de chat, vertel ons uw adres of hotel in {E(name)}, het gewenste tijdstip en de masseuse die u aanspreekt. Wij bevestigen beschikbaarheid en tarief, en uw masseuse komt naar u toe. Lees meer op de pagina <a href="/nl/boeken/">boeken</a>.</p></div></section>'
+                 f'<h2>Zo boekt u</h2><p>Open de chat, vertel ons uw adres of hotel in {E(name)}, het gewenste tijdstip en de masseuse die u aanspreekt. Wij bevestigen beschikbaarheid en tarief, en uw masseuse komt naar u toe. {HOURS_NL} Lees meer op de pagina <a href="/nl/boeken/">boeken</a>.</p></div></section>'
                  f'<section class="sec sec-wine sec-c"><div class="wrap"><h2>Onze masseuses</h2><ul class="cards">{"".join(card(m) for m in MASSEUSES[:10])}</ul><p class="center"><a class="link" href="/nl/masseuses/">Bekijk alle masseuses</a></p></div></section>'
                  f'{cta(f"Boek uw erotische massage in {name} via de chat.")}{fh}'
                  f'<section class="sec"><div class="wrap"><h2>Andere locaties</h2><ul class="chips">{cchips(name)}</ul></div></section>')
