@@ -35,7 +35,11 @@ def header():
     flag_nl = '<svg class="flag" viewBox="0 0 9 6" aria-hidden="true"><path fill="#AE1C28" d="M0 0h9v2H0z"/><path fill="#fff" d="M0 2h9v2H0z"/><path fill="#21468B" d="M0 4h9v2H0z"/></svg>'
     flag_en = ('<svg class="flag" viewBox="0 0 60 40" aria-hidden="true"><path fill="#012169" d="M0 0h60v40H0z"/><path stroke="#fff" stroke-width="8" d="M0 0l60 40M60 0L0 40"/>'
                '<path stroke="#C8102E" stroke-width="3" d="M0 0l60 40M60 0L0 40"/><path stroke="#fff" stroke-width="12" d="M30 0v40M0 20h60"/><path stroke="#C8102E" stroke-width="7" d="M30 0v40M0 20h60"/></svg>')
-    sw = f'<a class="lang" href="{other}" hreflang="{"en" if nl else "nl"}" lang="{"en" if nl else "nl"}">{flag_en if nl else flag_nl}{"English" if nl else "Nederlands"}</a>'
+    def opt(code, flag, word):
+        if (code == "nl") == nl:
+            return f'<span class="on" aria-current="true" lang="{code}">{flag}<b>{code.upper()}</b><span class="vh"> {word}</span></span>'
+        return f'<a href="{other}" hreflang="{code}" lang="{code}">{flag}<b>{code.upper()}</b><span class="vh"> {word}</span></a>'
+    sw = f'<div class="langsw" role="group" aria-label="{"Taal" if nl else "Language"}">{opt("en", flag_en, "English")}{opt("nl", flag_nl, "Nederlands")}</div>'
     return f"""<a class="skip" href="#main">{"Naar de inhoud" if nl else "Skip to content"}</a>
 <header class="hdr">
 <div class="wrap hdr-in">
@@ -53,6 +57,7 @@ def header():
 <li class="lang-li">{sw}</li>
 </ul>
 </nav>
+<div class="lang-bar">{sw}</div>
 <a class="btn btn-sm hdr-cta" href="{P("/contact/")}" data-chat>Direct contact</a>
 </div>
 </header>"""
