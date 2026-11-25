@@ -261,14 +261,14 @@ def viewer(m):
     first = cover(slug)[0]
     order = [first] + [i for i in range(1, n + 1) if i != first]
     slides = "".join(
-        f'<img src="{base}-{i}.jpg" alt="{E(name)}, {word}{"" if i == first else (" – foto " if nl else " – photo ") + str(i)}" '
-        f'{"fetchpriority=" + chr(34) + "high" + chr(34) if i == first else "loading=" + chr(34) + "lazy" + chr(34) + " decoding=" + chr(34) + "async" + chr(34)}>'
+        f'<picture><source type="image/webp" srcset="{base}-{i}.webp"><img src="{base}-{i}.jpg" alt="{E(name)}, {word}{"" if i == first else (" – foto " if nl else " – photo ") + str(i)}" '
+        f'{"fetchpriority=" + chr(34) + "high" + chr(34) if i == first else "loading=" + chr(34) + "lazy" + chr(34) + " decoding=" + chr(34) + "async" + chr(34)}></picture>'
         for i in order)
     if n == 1:
         return f'<div class="pv"><div class="pv-main">{slides}</div></div>'
     thumbs = "".join(
         f'<li><button type="button" data-pv="{k}"{" class=" + chr(34) + "on" + chr(34) if k == 0 else ""} aria-label="{"Foto" if nl else "Photo"} {k + 1}">'
-        f'<img src="{base}-{i}-400.jpg" alt="" loading="lazy" decoding="async"></button></li>' for k, i in enumerate(order))
+        f'<picture><source type="image/webp" srcset="{base}-{i}-400.webp"><img src="{base}-{i}-400.jpg" alt="" loading="lazy" decoding="async"></picture></button></li>' for k, i in enumerate(order))
     return (f'<div class="pv" data-pv-root><div class="pv-main" tabindex="0" aria-label="{"Foto" + chr(39) + "s van" if nl else "Photos of"} {E(name)}">{slides}</div>'
             f'<button type="button" class="pv-nav pv-prev" data-pv-step="-1" aria-label="{"Vorige foto" if nl else "Previous photo"}">‹</button>'
             f'<button type="button" class="pv-nav pv-next" data-pv-step="1" aria-label="{"Volgende foto" if nl else "Next photo"}">›</button>'

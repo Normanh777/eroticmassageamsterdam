@@ -575,12 +575,18 @@ def cover(slug):
     return 2, base + "-2.jpg", base + "-2-400.jpg"
 
 
+def W(jpg):
+    """WebP twin of a profile photo."""
+    return jpg[:-4] + ".webp"
+
+
 def img(m, cls="", eager=False, sizes="(max-width:40rem) 45vw, 400px"):
     slug, name = m[0], m[1]
     _, big, small = cover(slug)
     load = 'fetchpriority="high"' if eager else 'loading="lazy" decoding="async"'
-    return (f'<img src="{big}" srcset="{small} 400w, {big} 800w" sizes="{sizes}" '
-            f'alt="{E(name)}, erotic masseuse in Amsterdam" {load}>')
+    return (f'<picture><source type="image/webp" srcset="{W(small)} 400w, {W(big)} 800w" sizes="{sizes}">'
+            f'<img src="{big}" srcset="{small} 400w, {big} 800w" sizes="{sizes}" '
+            f'alt="{E(name)}, erotic masseuse in Amsterdam" {load}></picture>')
 
 
 def card(m, eager=False):  # overrides the first version: local photos
