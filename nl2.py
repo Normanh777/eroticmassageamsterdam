@@ -162,7 +162,7 @@ def build_nl2():
     global L
     L = "nl"
     urls = []
-    mchips = "".join(f'<li><a href="{NLMAP[f"/{s}/"]}">{E(n)}</a></li>' for s, n, _ in MASSAGES_NL) + '<li><a href="/nl/happy-ending-massage/">Happy ending massage</a></li><li><a href="/nl/nuru-massage/">Nuru massage</a></li>'
+    mchips = "".join(f'<li><a href="{NLMAP[f"/{s}/"]}">{E(n)}</a></li>' for s, n, _ in MASSAGES_NL) + '<li><a href="/nl/happy-ending-massage/">Happy ending massage</a></li><li><a href="/nl/nuru-massage/">Nuru massage</a></li><li><a href="/nl/lingam-massage/">Lingam massage</a></li>'
     top = [("/nl/pakketten/dinner-date/", "Dinner Date & Erotische Massage"), ("/nl/pakketten/amsterdam-tour/", "Amsterdam Tour & Massage"), ("/nl/pakketten/duo-deluxe/", "Duo Deluxe"),
            ("/nl/pakketten/schiphol-stopover/", "Schiphol Stopover"), ("/nl/pakketten/", "Alle pakketten")]
     topchips = "".join(f'<li><a href="{u}">{E(t)}</a></li>' for u, t in top)
@@ -176,7 +176,7 @@ def build_nl2():
               f"{name} ({age}) hoort bij het team van Erotic Massage Amsterdam.",
               f"{name}, {age} jaar, is een van de masseuses van Erotic Massage Amsterdam."][idx % 4]
         if ll:
-            p1 += f" Ze spreekt {' en '.join(ll)}."
+            p1 += "" if "spreekt" in " ".join(LOOK_NL.get(slug, ("", ""))) else f" Ze spreekt {' en '.join(ll)}."
         if city:
             p1 += f" Haar standplaats is {city}."
         tags = [TAGS_NL.get(t, t) for t in TAGS.get(slug, [])]

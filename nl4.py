@@ -1,10 +1,41 @@
 # Extra landing pages (EN + NL): massage for women, outcall / aan huis. Executed inside build.py's namespace.
 NLMAP["/erotic-massage-for-women/"] = "/nl/erotische-massage-voor-vrouwen/"
 NLMAP["/outcall-massage-amsterdam/"] = "/nl/erotische-massage-aan-huis/"
+NLMAP["/lingam-massage/"] = "/nl/lingam-massage/"
 ENMAP = {v: k for k, v in NLMAP.items()}
 
 # key: (en, nl); each = (title, h1, lead, description, blocks, faq, faq title, cta text, service type, photo)
 EXTRA_PAGES = {
+    "/lingam-massage/": (
+        ("Lingam Massage Amsterdam | Tantric Massage at Your Hotel", "Lingam Massage Amsterdam",
+         "A slow tantric massage for men, given at your hotel or home in Amsterdam.",
+         "Lingam massage in Amsterdam at your hotel or home. A slow tantric massage for men by a masseuse you choose, with full attention and without hurry. Booked by chat.",
+         [("What is a lingam massage?", ["Lingam is the Sanskrit word for the male sex organ, and in the tantra tradition it is treated with attention and respect. A lingam massage is a slow, deliberate massage of the lingam and the area around it, as part of a massage of the whole body.",
+                                        "The goal is not to reach a climax as quickly as possible. It is the opposite: your masseuse builds the tension slowly, lets it ebb and builds it again, so that the feeling spreads through your whole body."]),
+          ("How does it go?", ["Your masseuse comes to your hotel or home. After a warm shower the massage starts with your back, legs and shoulders, with warm oil and long strokes, so your body can let go of the day.",
+                               "Only when you are fully relaxed does she turn to the lingam massage itself: slow, varied and attentive, with pauses in which you simply breathe. The massage ends with a happy ending, at a moment that you both feel is right."]),
+          ("Lingam, tantra or happy ending?", ["A tantra massage is a ritual for the whole body, in which breathing and energy are central. A lingam massage comes from the same tradition, but gives the lingam the leading role. A happy ending is the release at the end of any of our erotic massages. If you want the longest and slowest build-up, a lingam massage is the one to choose."]),
+          ("For whom?", ["For men who want more than a quick release, and who are curious what happens when there is no hurry. It is also a good choice if you find it hard to switch off: the slow pace does that for you. Book at least an hour, and preferably longer."])],
+         [("What does lingam mean?", "Lingam is the Sanskrit word for the male sex organ. In tantra it is approached with attention and respect."),
+          ("What is the difference between a lingam massage and a happy ending?", "A happy ending is the release at the end of a massage. In a lingam massage the slow build-up is the massage itself, and the release comes at the very end."),
+          ("How long does a lingam massage take?", "Book at least one hour. With ninety minutes or two hours there is more time for the full body massage beforehand and for a slower build-up."),
+          ("How much is a lingam massage in Amsterdam?", "In Amsterdam the rate is € 160 per hour and every extra hour is € 160. For other locations see the prices page.")],
+         "Questions about lingam massage", "Book your lingam massage in the chat. We confirm masseuse, time and rate before anything is final.", "Lingam massage", "tantra-massage-amsterdam"),
+        ("Lingam Massage Amsterdam | Tantrische Massage in uw Hotel", "Lingam massage Amsterdam",
+         "Een trage tantrische massage voor mannen, bij u in het hotel of thuis in Amsterdam.",
+         "Lingam massage in Amsterdam, in uw hotel of thuis. Een trage tantrische massage voor mannen door een masseuse naar keuze, met volle aandacht en zonder haast.",
+         [("Wat is een lingam massage?", ["Lingam is het Sanskriet voor het mannelijk geslachtsdeel, en in de tantratraditie wordt het met aandacht en respect benaderd. Een lingam massage is een trage, bewuste massage van de lingam en het gebied eromheen, als onderdeel van een massage van het hele lichaam.",
+                                         "Het doel is niet om zo snel mogelijk een hoogtepunt te bereiken. Het is juist andersom: uw masseuse bouwt de spanning langzaam op, laat haar zakken en bouwt haar opnieuw op, zodat het gevoel zich door uw hele lichaam verspreidt."]),
+          ("Hoe verloopt het?", ["Uw masseuse komt naar uw hotel of naar u thuis. Na een warme douche begint de massage bij uw rug, benen en schouders, met warme olie en lange strijkingen, zodat uw lichaam de dag kan loslaten.",
+                                 "Pas als u volledig ontspannen bent, gaat zij over op de lingam massage zelf: traag, afwisselend en aandachtig, met pauzes waarin u alleen maar ademt. De massage eindigt met een happy ending, op een moment dat voor u beiden goed voelt."]),
+          ("Lingam, tantra of happy ending?", ["Een tantra massage is een ritueel voor het hele lichaam, waarin ademhaling en energie centraal staan. Een lingam massage komt uit dezelfde traditie, maar geeft de lingam de hoofdrol. Een happy ending is de ontlading aan het einde van elk van onze erotische massages. Wilt u de langste en traagste opbouw, kies dan voor een lingam massage."]),
+          ("Voor wie?", ["Voor mannen die meer willen dan een snelle ontlading en die benieuwd zijn wat er gebeurt als er geen haast is. Het is ook een goede keuze als u moeilijk kunt afschakelen: het trage tempo doet dat voor u. Boek minimaal een uur, en liever langer."])],
+         [("Wat betekent lingam?", "Lingam is het Sanskriet voor het mannelijk geslachtsdeel. In tantra wordt het met aandacht en respect benaderd."),
+          ("Wat is het verschil tussen een lingam massage en een happy ending?", "Een happy ending is de ontlading aan het einde van een massage. Bij een lingam massage is de trage opbouw de massage zelf, en komt de ontlading helemaal aan het eind."),
+          ("Hoe lang duurt een lingam massage?", "Boek minimaal een uur. Met anderhalf of twee uur is er meer tijd voor de massage van het hele lichaam vooraf en voor een tragere opbouw."),
+          ("Wat kost een lingam massage in Amsterdam?", "In Amsterdam is het tarief € 160 per uur en elk extra uur is € 160. Voor andere locaties zie de prijzenpagina.")],
+         "Vragen over lingam massage", "Boek uw lingam massage in de chat. Wij bevestigen masseuse, tijd en tarief voordat iets definitief is.", "Lingam massage", "tantra-massage-amsterdam"),
+    ),
     "/erotic-massage-for-women/": (
         ("Erotic Massage for Women Amsterdam | At Your Hotel or Home", "Erotic Massage for Women in Amsterdam",
          "A sensual massage for women, by a masseuse who comes to your hotel or home.",
@@ -77,7 +108,7 @@ def extra_pages():
             fh, fs = faq_block(faq, ftitle)
             ms = MASSAGES_NL if nl else MASSAGES
             ml = "".join(f'<li><a href="{P(f"/{s}/")}">{E(n)}</a></li>' for s, n, _ in ms) + (
-                f'<li><a href="{P("/happy-ending-massage/")}">Happy ending massage</a></li><li><a href="{P("/nuru-massage/")}">Nuru massage</a></li>')
+                f'<li><a href="{P("/happy-ending-massage/")}">Happy ending massage</a></li><li><a href="{P("/nuru-massage/")}">Nuru massage</a></li><li><a href="{P("/lingam-massage/")}">Lingam massage</a></li>')
             more = [(P("/prices/"), "Prijzen" if nl else "Prices"), (P("/other-cities/"), "Locaties" if nl else "Locations"),
                     (P("/bookings/"), "Boeken" if nl else "Bookings"),
                     ("/nl/pakketten/couples-massage/" if nl else "/packages/couples-massage/", "Massage voor koppels" if nl else "Couples massage")]
