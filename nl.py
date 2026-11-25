@@ -128,9 +128,12 @@ def nl_price(label):
 def price_table_nl(rows):
     def loc(n):
         return f'<a href="{NLMAP[f"/{CITY_SLUG[n]}/"]}">{E(n)}</a>' if n in CITY_SLUG else E(n)
+    def show(p):
+        m = re.match(r"(\d) hours (.*)", p)
+        return f'{E(m.group(2))} <small>minimaal {m.group(1)} uur</small>' if m else f'{E(p)} <small>per uur</small>'
     return ('<div class="tbl"><table><caption class="vh">Tarieven per locatie</caption><thead><tr><th scope="col">Locatie</th>'
-            '<th scope="col">Prijs</th><th scope="col">Extra uur</th></tr></thead><tbody>' + "".join(
-                f'<tr><th scope="row">{loc(n)}</th><td>{E(nl_price(p))}</td><td>{E(x)}</td></tr>' for n, p, x in rows) + "</tbody></table></div>")
+            '<th scope="col">Prijs</th></tr></thead><tbody>' + "".join(
+                f'<tr><th scope="row">{loc(n)}</th><td>{show(p)}</td></tr>' for n, p, x in price_sort(rows)) + "</tbody></table></div>")
 
 
 def sub_nl(path, title, desc, h1, lead, inner, trail, schema=None, og_image=None):
@@ -313,7 +316,7 @@ def build_nl():
     body = f"""<section class="hero">
 <div class="wrap hero-grid">
 <div>
-<p class="eyebrow">Massage aan huis · Hotel- &amp; thuisbezoek</p>
+<p class="eyebrow">Uw masseuse komt naar uw hotel of naar u thuis</p>
 <h1>Erotische Massage <span class="g">Amsterdam</span></h1>
 <p class="lead">Een sensuele massage op de plek waar u verblijft, door een masseuse die u zelf kiest. Vertel ons in de chat uw hotel, uw tijd en uw wensen, en wij regelen de rest discreet.</p>
 <p class="cta"><a class="btn" href="/nl/contact/" data-chat>Direct contact</a> <a class="btn btn-ghost" href="/nl/masseuses/">Bekijk onze masseuses</a></p>
@@ -328,7 +331,7 @@ def build_nl():
 <li><strong>{len(MASSEUSES)}</strong><span>masseuses om uit te kiezen</span></li>
 <li><strong>{len(MASSAGES) + 2}</strong><span>erotische massages</span></li>
 <li><strong>{ncity}</strong><span>steden en dorpen</span></li>
-<li><strong>€ 160</strong><span>per uur in Amsterdam</span></li>
+<li><strong>16–05</strong><span>dagelijks open, vr en za tot 06:00</span></li>
 </ul>
 </section>
 
@@ -444,6 +447,11 @@ def build_nl():
         arr = (f"Voor {name} spreken wij de aankomsttijd in overleg met u af in de chat, vanwege de afstand vanaf Amsterdam." if name in FAR
                else f"Uw masseuse reist vanuit Amsterdam en kan binnen een uur bij u in {name} zijn. In Amsterdam zelf is dat binnen 45 minuten.")
         near = NEAR[name]
+        _p = PRICE_OF.get(name, "")
+        _pm = re.match(r"(\d) hours (.*)", _p)
+        quick = {"Tarief": (f"{_pm.group(2)}, minimaal {_pm.group(1)} uur" if _pm else f"{_p} per uur"), "Extra uur": "€ 160",
+                 "Aankomst": "In overleg" if name in FAR else "Binnen een uur", "Open": "Dagelijks vanaf 16:00"}
+        quick_html = '<dl class="facts quick">' + "".join(f"<div><dt>{E(k)}</dt><dd>{E(v)}</dd></div>" for k, v in quick.items()) + "</dl>"
         near_html = (f'<h2>In de buurt van {E(name)}</h2><p>Verblijft u net buiten {E(name)}? Wij komen ook in ' + join_links([f'<a href="{NLMAP[f"/{CITY_SLUG[x]}/"]}">{E(x)}</a>' for x in near], "en") + '.</p>') if near else ""
         path = NLMAP[f"/{slug}/"]
         pl = nl_city_price(name)
@@ -454,7 +462,7 @@ def build_nl():
                (f"Tot hoe laat kan ik boeken in {name}?", HOURS_NL + f" Geef in de chat door hoe laat u uw masseuse in {name} wilt ontvangen."),
                (f"Welke massages kan ik boeken in {name}?", "Al onze erotische massages: sensuele, tantra, body to body, 4 hands, Thaise en full body massage, elk met een happy ending.")]
         fh, fs = faq_block(faq, f"Vragen over erotische massage in {name}")
-        inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Erotische massage aan huis of in uw hotel in {E(name)}</h2><p>{E(a)}</p><p>{E(b)}</p>{city_more(name, True)}'
+        inner = (f'<section class="sec"><div class="wrap narrow prose">{quick_html}<h2>Erotische massage aan huis of in uw hotel in {E(name)}</h2><p>{E(a)}</p><p>{E(b)}</p>{city_more(name, True)}'
                  f'<h2>Prijs in {E(name)}</h2><p>{E(pl)} Bekijk alle <a href="/nl/prijzen/">prijzen</a>.</p>'
                  f'<h2>Welke massages kunt u boeken in {E(name)}?</h2><p>Al onze massages zijn beschikbaar in {E(name)}:</p><ul class="chips">{mchips}</ul>'
                  f'<h2>Hoe snel kan uw masseuse in {E(name)} zijn?</h2><p>{E(arr)}</p>{near_html}'

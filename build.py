@@ -257,6 +257,7 @@ def page(path, title, desc, body, schema, og_image=None):
 <meta property="og:locale" content="en_GB">
 {og}
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="/fonts/display.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192">
@@ -311,7 +312,7 @@ def home():
     body = f"""<section class="hero">
 <div class="wrap hero-grid">
 <div>
-<p class="eyebrow">Outcall massage · Hotel &amp; home visits</p>
+<p class="eyebrow">Your masseuse comes to your hotel or home</p>
 <h1>Erotic Massage <span class="g">Amsterdam</span></h1>
 <p class="lead">A sensual massage where you are staying, given by a masseuse you choose yourself. Tell us your hotel, your time and your wishes in the chat, and we arrange the rest discreetly.</p>
 <p class="cta"><a class="btn" href="/contact/" data-chat>Direct contact</a> <a class="btn btn-ghost" href="/our-masseuses/">Meet our masseuses</a></p>
@@ -326,7 +327,7 @@ def home():
 <li><strong>{len(MASSEUSES)}</strong><span>masseuses to choose from</span></li>
 <li><strong>{len(MASSAGES) + 2}</strong><span>erotic massages</span></li>
 <li><strong>{len(set(p[0] for p in PRICES) | set(n for _, n in CITIES))}</strong><span>cities and towns we visit</span></li>
-<li><strong>€ 160</strong><span>per hour in Amsterdam</span></li>
+<li><strong>16–05</strong><span>open daily, Fri and Sat until 06:00</span></li>
 </ul>
 </section>
 
@@ -613,12 +614,24 @@ def prose(blocks):
     return out
 
 
+def price_sort(rows):
+    """Amsterdam first, then by price, then by name."""
+    def key(r):
+        m = re.match(r"(\d) hours € ?(\d+)", r[1])
+        amount = int(m.group(2)) if m else int(re.sub(r"\D", "", r[1]) or 0)
+        return (r[0] != "Amsterdam", int(m.group(1)) if m else 1, amount, r[0])
+    return sorted(rows, key=key)
+
+
 def price_table(rows):
     def loc(n):
         return f'<a href="/{CITY_SLUG[n]}/">{E(n)}</a>' if n in CITY_SLUG else E(n)
+    def show(p):
+        m = re.match(r"(\d) hours (.*)", p)
+        return f'{E(m.group(2))} <small>minimum {m.group(1)} hours</small>' if m else f'{E(p)} <small>per hour</small>'
     return ('<div class="tbl"><table><caption class="vh">Rates per location</caption><thead><tr><th scope="col">Location</th>'
-            '<th scope="col">Price</th><th scope="col">Extra hour</th></tr></thead><tbody>' + "".join(
-                f'<tr><th scope="row">{loc(n)}</th><td>{E(p)}</td><td>{E(x)}</td></tr>' for n, p, x in rows) + "</tbody></table></div>")
+            '<th scope="col">Price</th></tr></thead><tbody>' + "".join(
+                f'<tr><th scope="row">{loc(n)}</th><td>{show(p)}</td></tr>' for n, p, x in price_sort(rows)) + "</tbody></table></div>")
 
 
 def massage_pages():
@@ -674,6 +687,10 @@ def city_pages():
         near = NEAR[name]
         near_html = (f'<h2>Near {E(name)}</h2><p>Are you staying just outside {E(name)}? We also visit ' + join_links([f'<a href="/{CITY_SLUG[x]}/">{E(x)}</a>' for x in near], "and") + '.</p>') if near else ""
         price = PRICE_OF.get(name)
+        _pm = re.match(r"(\d) hours (.*)", price or "")
+        quick = {"Rate": (f"{_pm.group(2)}, minimum {_pm.group(1)} hours" if _pm else f"{price} per hour"), "Extra hour": "€ 160",
+                 "Arrival": "By arrangement" if name in FAR else "Within an hour", "Open": "Daily from 16:00"}
+        quick_html = '<dl class="facts quick">' + "".join(f"<div><dt>{E(k)}</dt><dd>{E(v)}</dd></div>" for k, v in quick.items()) + "</dl>"
         mm = re.match(r"(\d) hours (.*)", price or "")
         minimum = bool(mm)
         if not price:
@@ -698,7 +715,7 @@ def city_pages():
                  (f"Until what time can I book in {name}?", HOURS_EN + f" Tell us in the chat when you would like your masseuse to arrive in {name}."),
                  (f"Which massages can I book in {name}?", f"All our erotic massages: sensual, tantra, body to body, 4 hands, Thai and full body massage, each with a happy ending.")]
         cf_html, cf_schema = faq_block(c_faq, f"Questions about erotic massage in {name}")
-        inner = (f'<section class="sec"><div class="wrap narrow prose"><h2>Erotic massage at your hotel or home in {E(name)}</h2><p>{E(a)}</p><p>{E(b)}</p>{city_more(name)}'
+        inner = (f'<section class="sec"><div class="wrap narrow prose">{quick_html}<h2>Erotic massage at your hotel or home in {E(name)}</h2><p>{E(a)}</p><p>{E(b)}</p>{city_more(name)}'
                  f'<h2>Price in {E(name)}</h2><p>{E(price_line)} See all <a href="/prices/">prices</a>.</p>'
                  f'<h2>Which massages can I book in {E(name)}?</h2><p>All our massages are available in {E(name)}:</p><ul class="chips">{ml}</ul>'
                  f'<h2>How quickly can your masseuse be in {E(name)}?</h2><p>{E(arr)}</p>{near_html}'
