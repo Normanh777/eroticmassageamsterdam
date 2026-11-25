@@ -197,7 +197,9 @@ def build_nl2():
             if kx == "Height":
                 facts["Lengte"] = vx
             elif kx == "Eyes":
-                facts["Ogen"] = "Bruin" if vx == "Brown" else vx
+                facts["Ogen"] = EYES_NL.get(vx, vx)
+            elif kx == "Build":
+                facts["Postuur"] = BUILD_NL.get(vx, vx)
         dl = "".join(f"<div><dt>{E(a)}</dt><dd>{E(b)}</dd></div>" for a, b in facts.items())
         n = COUNTS.get(slug, 0)
         base = f"/images/masseuses/{slug}-erotic-massage-amsterdam"
@@ -208,7 +210,7 @@ def build_nl2():
         rest = "".join(card(MASSEUSES[(idx + j) % k]) for j in range(1, 9))
         im = img(m, eager=True, sizes="(max-width:48rem) 90vw, 420px").replace("erotic masseuse in Amsterdam", "erotische masseuse in Amsterdam")
         inner = (f'<section class="sec"><div class="wrap prof"><div class="prof-img">{viewer(m)}</div>'
-                 f'<div class="prose"><h2>Over {E(name)}</h2>{"".join(f"<p>{E(x)}</p>" for x in (p1, look[0], look[1], visit, book))}<dl class="facts">{dl}</dl>'
+                 f'<div class="prose"><h2>Over {E(name)}</h2>{"".join(f"<p>{E(x)}</p>" for x in (p1, look[0], fact_line(slug, name, idx, True), look[1], visit, book) if x)}<dl class="facts">{dl}</dl>'
                  f'<p><a class="btn" href="/nl/contact/" data-chat>Boek {E(name)}</a> <a class="link" href="/nl/prijzen/">Bekijk prijzen</a></p>'
                  f'<h2>Massages met {E(name)}</h2><ul class="chips">{mchips}</ul><h2>Pakketten met {E(name)}</h2><ul class="chips">{topchips}</ul></div></div></section>'
                  f'<section class="sec sec-alt"><div class="wrap"><h2>Meer masseuses</h2><ul class="cards">{rest}</ul>'

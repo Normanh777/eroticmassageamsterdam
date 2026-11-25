@@ -820,7 +820,7 @@ def profile_text(m, i):
                f"A massage with {name} takes place where you are staying, at your hotel or at home. On our services page you find the massages you can choose from."][i % 3]
     look = LOOK.get(slug)
     if look:
-        return [p1, look[1], look[2], visit_v, f"Would you like to book {name}? Mention her name in the chat, together with your location and the time you prefer. If she is not available, we suggest an alternative and you decide."]
+        return [x for x in (p1, look[1], fact_line(slug, name, i), look[2], visit_v) if x] + [f"Would you like to book {name}? Mention her name in the chat, together with your location and the time you prefer. If she is not available, we suggest an alternative and you decide."]
     p3 = f"Would you like to book {name}? Mention her name in the chat, together with your location and the time you prefer. If she is not available, we suggest an alternative and you decide."
     return [p1, visit_v, p3]
 
@@ -1172,6 +1172,7 @@ exec(open(os.path.join(ROOT, "nl2.py"), encoding="utf-8").read())
 exec(open(os.path.join(ROOT, "nl3.py"), encoding="utf-8").read())
 exec(open(os.path.join(ROOT, "nl4.py"), encoding="utf-8").read())
 exec(open(os.path.join(ROOT, "nl5.py"), encoding="utf-8").read())
+exec(open(os.path.join(ROOT, "nl6.py"), encoding="utf-8").read())
 
 
 def build():
