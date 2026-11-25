@@ -307,3 +307,5 @@ h1,h2,h3{font-optical-sizing:auto;letter-spacing:-.005em}
 .prose .facts.quick+h2{margin-top:0}
 @media(max-width:40rem){.facts.quick{grid-template-columns:repeat(2,1fr)}}
 @media(prefers-reduced-motion:reduce){.tile-img img{transition:none}}
+.lang{display:inline-flex!important;align-items:center;gap:.45rem}
+.flag{width:1.15rem;height:.77rem;border-radius:2px;flex:none;box-shadow:0 0 0 1px rgba(255,255,255,.25)}

@@ -32,7 +32,10 @@ def header():
     massages = "".join(f'<li><a href="{P(f"/{s}/")}">{E(n)}</a></li>' for s, n, _ in ms)
     lab = ["Masseuses", "Massages", "Prijzen", "Pakketten", "Locaties", "Boeken"] if nl else ["Masseuses", "Massages", "Prices", "Packages", "Locations", "Bookings"]
     other = (ENMAP if nl else NLMAP).get(CUR_PATH, "/" if nl else "/nl/")
-    sw = f'<a class="lang" href="{other}" hreflang="{"en" if nl else "nl"}" lang="{"en" if nl else "nl"}">{"English" if nl else "Nederlands"}</a>'
+    flag_nl = '<svg class="flag" viewBox="0 0 9 6" aria-hidden="true"><path fill="#AE1C28" d="M0 0h9v2H0z"/><path fill="#fff" d="M0 2h9v2H0z"/><path fill="#21468B" d="M0 4h9v2H0z"/></svg>'
+    flag_en = ('<svg class="flag" viewBox="0 0 60 40" aria-hidden="true"><path fill="#012169" d="M0 0h60v40H0z"/><path stroke="#fff" stroke-width="8" d="M0 0l60 40M60 0L0 40"/>'
+               '<path stroke="#C8102E" stroke-width="3" d="M0 0l60 40M60 0L0 40"/><path stroke="#fff" stroke-width="12" d="M30 0v40M0 20h60"/><path stroke="#C8102E" stroke-width="7" d="M30 0v40M0 20h60"/></svg>')
+    sw = f'<a class="lang" href="{other}" hreflang="{"en" if nl else "nl"}" lang="{"en" if nl else "nl"}">{flag_en if nl else flag_nl}{"English" if nl else "Nederlands"}</a>'
     return f"""<a class="skip" href="#main">{"Naar de inhoud" if nl else "Skip to content"}</a>
 <header class="hdr">
 <div class="wrap hdr-in">
